@@ -1,13 +1,18 @@
 package lv.venta.model;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,16 +33,30 @@ public class Overtime {
 	@Column(name = "oid")
 	private long oid;
 	
-	@Min(1)
-	@Max(12)
-	@Column(name = "month")
-	private byte month;
+	@NotNull
+	@Column(name = "date")
+	private LocalDate date;
 	
-	@Min(1)
+	@Min(0)
 	@Column(name = "overtime_hours")
-	private int overtimeHours;
+	private float overtimeHours;
 	
 	@Min(1)
 	@Column(name = "overtime_rate")
 	private float overtimeRate;
+	
+	@Size(max = 100)
+	private String description;
+	
+	@ManyToOne
+	@JoinColumn(name = "eid")
+	private Employee employee;
+	
+	public Overtime(float newOvertimeHours, float newOvertimeRate, String newDescription, Employee newEmployee) {
+		this.date = LocalDate.now();
+		setOvertimeHours(newOvertimeHours);
+		setOvertimeRate(newOvertimeRate);
+		setDescription(newDescription);
+		setEmployee(newEmployee);
+	}
 }

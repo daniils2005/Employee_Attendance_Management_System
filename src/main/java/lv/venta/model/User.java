@@ -2,9 +2,13 @@ package lv.venta.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -41,16 +45,19 @@ public class User {
 	@Column(name = "password")
 	private String password;
 	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	@Column(name = "role")
 	private Role role;
 	
+	@OneToOne
+	@JoinColumn(name = "eid")
+	private Employee employee;
 	
-	//TODO eid one to one 
-	
-	
-	public User(String newUsername, String newPassword, Role newRole) {
+	public User(String newUsername, String newPassword, Role newRole, Employee newEmployee) {
 		setUsername(newUsername);
 		setPassword(newPassword);
 		setRole(newRole);
-		
+		setEmployee(newEmployee);
 	}
 }

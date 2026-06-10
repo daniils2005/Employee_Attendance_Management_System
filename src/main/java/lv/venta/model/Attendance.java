@@ -7,7 +7,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -35,6 +38,18 @@ public class Attendance {
 	private LocalDate workDate;
 	
 	@Min(0)
+	@Max(24)
 	@Column(name = "hours_worked")
-	private int hoursWorked;
+	private float hoursWorked;
+	
+	@ManyToOne
+	@JoinColumn(name = "eid")
+	private Employee employee;
+	
+	public Attendance(float newHoursWorked, Employee newEmployee) {
+		this.workDate = LocalDate.now();
+		setHoursWorked(newHoursWorked);
+		setEmployee(newEmployee);
+	}
+	
 }
