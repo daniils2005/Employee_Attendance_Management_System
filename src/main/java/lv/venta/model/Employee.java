@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lv.venta.model.enums.Status;
 
 @Table(name = "employee_table")
 @Entity
@@ -36,20 +37,23 @@ public class Employee extends Person{
 	@Column(name = "hourly_rate")
 	private double hourlyRate;
 	
-	@Column(name = "department")
+	@Column(name = "status")
+	private Status status;
 	
-	
+	//TODO savienojums
+	//@Column(name = "department")
 	//one to many
 	//on department many employee
-	private Department department;
+	//private Department department;
 	
 	
 	
 	
-	public Employee(String newName, String newSurname, String newPersonCode, String newNumber, String newEmail, double newHourlyRate, Department newDeoartment) {
+	public Employee(String newName, String newSurname, String newPersonCode, String newNumber, String newEmail, double newHourlyRate, Department newDepartment, Status newStatus) {
 		super(newName, newSurname, newPersonCode, newNumber, newEmail);
 		setHourlyRate(newHourlyRate);
-		setDepartment(newDeoartment);
+		//setDepartment(newDepartment);
+		setStatus(newStatus);
 	}
 	
 }

@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lv.venta.model.enums.Role;
 
 @Table(name = "user_table")
 @Entity
@@ -40,15 +41,16 @@ public class User {
 	@Column(name = "password")
 	private String password;
 	
-	//private Role role;
+	private Role role;
 	
 	
-	//TODO eid 
+	//TODO eid one to one 
 	
 	
 	public User(String newUsername, String newPassword, Role newRole) {
 		setUsername(newUsername);
 		setPassword(newPassword);
+		setRole(newRole);
 		
 	}
 }
