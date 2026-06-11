@@ -1,13 +1,75 @@
 package lv.venta;
 
+import java.time.LocalDate;
+import java.util.Arrays;
+
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import lv.venta.model.Attendance;
+import lv.venta.model.Department;
+import lv.venta.model.Employee;
+import lv.venta.model.Overtime;
+import lv.venta.model.User;
+import lv.venta.model.Vacation;
+import lv.venta.model.enums.DepartmentName;
+import lv.venta.model.enums.Position;
+import lv.venta.model.enums.Role;
+import lv.venta.model.enums.Status;
+import lv.venta.repo.IAttendanceRepo;
+import lv.venta.repo.IDepartmentRepo;
+import lv.venta.repo.IEmployeeRepo;
+import lv.venta.repo.IOvertimeRepo;
+import lv.venta.repo.IUserRepo;
+import lv.venta.repo.IVacationRepo;
 
 @SpringBootApplication
 public class EmployeeAttendanceManagementSystemApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(EmployeeAttendanceManagementSystemApplication.class, args);
+	}
+	@Bean
+	public CommandLineRunner testRepo(IAttendanceRepo attendRepo, IDepartmentRepo departRepo, IEmployeeRepo empRepo, IOvertimeRepo overRepo, IUserRepo userRepo, IVacationRepo vacationRepo) {
+		
+		return new CommandLineRunner() {
+			
+			@Override
+			public void run(String... args) throws Exception {
+				Department dep1 = new Department(DepartmentName.IT, "It nodaļa priekš uzņemuma uzturēšanas");
+				departRepo.save(dep1);
+				
+				Employee emp1 = new Employee("Janis", "Berzins", "123456-12345", "12345678", "janis@gmail.com", 10, dep1, Status.Aktīvs, Position.Programmetajs);
+				Employee emp2 = new Employee("Ugis", "Andrums", "123456-12345", "12345679", "Ugis@gmail.com", 10, dep1, Status.Aktīvs, Position.Programmetajs);
+				empRepo.save(emp1);
+				empRepo.save(emp2);
+				
+				User user1 = new User("Janis", "parole", Role.User, emp1);
+				User user2 = new User("Ugis", "parole", Role.Admin, emp2);
+				userRepo.save(user1);
+				userRepo.save(user2);
+				
+				Attendance att1 = new Attendance(8, emp1);
+				Attendance att2 = new Attendance(9, emp1);
+				Attendance att3 = new Attendance(8, emp1);
+				Attendance att4 = new Attendance(10, emp2);
+				Attendance att5 = new Attendance(11, emp2);
+				attendRepo.saveAll(Arrays.asList(att1, att2, att3, att4, att5));
+				
+				Overtime ov1 = new Overtime(1, (float) (emp1.getHourlyRate() * 1.5), "Overtime", emp1);
+				Overtime ov2 = new Overtime(2, (float) (emp2.getHourlyRate() * 1.5), "Overtime", emp2);
+				Overtime ov3 = new Overtime(3, (float) (emp2.getHourlyRate() * 1.5), "Overtime", emp2);
+				overRepo.saveAll(Arrays.asList(ov1, ov2, ov3));
+				
+				Vacation v1 = new Vacation(LocalDate.now(), LocalDate.now().plusWeeks(2), true, emp1);
+				vacationRepo.save(v1);
+				
+				
+				
+			}
+		};
 	}
 
 }
