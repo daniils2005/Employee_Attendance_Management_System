@@ -37,7 +37,7 @@ public class User {
 	@NotNull
 	@NotEmpty
 	@Column(name = "username")
-	@Pattern(regexp = "^.{8,}$")
+	@Pattern(regexp = "^.{3,}$")
 	private String username;
 	
 	@NotNull

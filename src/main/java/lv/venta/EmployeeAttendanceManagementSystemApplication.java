@@ -31,6 +31,7 @@ public class EmployeeAttendanceManagementSystemApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(EmployeeAttendanceManagementSystemApplication.class, args);
 	}
+	
 	@Bean
 	public CommandLineRunner testRepo(IAttendanceRepo attendRepo, IDepartmentRepo departRepo, IEmployeeRepo empRepo, IOvertimeRepo overRepo, IUserRepo userRepo, IVacationRepo vacationRepo) {
 		
@@ -65,8 +66,6 @@ public class EmployeeAttendanceManagementSystemApplication {
 				
 				Vacation v1 = new Vacation(LocalDate.now(), LocalDate.now().plusWeeks(2), true, emp1);
 				vacationRepo.save(v1);
-				
-				
 				
 			}
 		};

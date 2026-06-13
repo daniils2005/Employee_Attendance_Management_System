@@ -46,10 +46,18 @@ public class Vacation {
 	@JoinColumn(name = "eid")
 	private Employee employee;
 	
-	public Vacation(LocalDate newStartDate, LocalDate newEndDate, boolean newIsActive, Employee newEmployee) {
+	public void setActive() {
+		if(!startDate.isAfter(LocalDate.now()) && !endDate.isBefore(LocalDate.now())) {
+			isActive = true;
+		} else {
+			isActive = false;
+		}
+	}
+	
+	public Vacation(LocalDate newStartDate, LocalDate newEndDate, Employee newEmployee) {
 		setStartDate(newStartDate);
 		setEndDate(newEndDate);
-		setActive(newIsActive);
+		setActive();
 		setEmployee(newEmployee);
 	}
 }
