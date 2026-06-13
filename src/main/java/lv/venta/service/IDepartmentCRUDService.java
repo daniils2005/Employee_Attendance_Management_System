@@ -2,7 +2,6 @@ package lv.venta.service;
 
 import java.util.ArrayList;
 
-import lv.venta.model.Attendance;
 import lv.venta.model.Department;
 import lv.venta.model.enums.DepartmentName;
 
@@ -10,7 +9,7 @@ public interface IDepartmentCRUDService {
 	
 	public abstract ArrayList<Department> selectAllDepartments() throws Exception;
 	
-	public abstract Attendance selectDepartmentById(long id) throws Exception;
+	public abstract Department selectDepartmentById(long id) throws Exception;
 	
 	public abstract void deleteDepartmentById(long id) throws Exception;
 	

@@ -15,5 +15,5 @@ public interface IAttendanceCRUDService {
 	
 	public abstract void insertNewAttendance(float hoursWorked, Employee employee) throws Exception;
 	
-	public abstract void updateAttendanceById(long id, float hoursWorked) throws Exception;
+	public abstract void updateAttendanceById(long id, float hoursWorked, Employee employee) throws Exception;
 }

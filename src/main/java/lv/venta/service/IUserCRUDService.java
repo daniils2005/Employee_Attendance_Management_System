@@ -17,5 +17,4 @@ public interface IUserCRUDService {
 	public abstract void insertNewUser(String newUsername, String newPassword, Role newRole, Employee newEmployee) throws Exception;
 	
 	public abstract void updateUserById(long id, String newUsername, String newPassword, Role newRole, Employee newEmployee) throws Exception;
-
 }

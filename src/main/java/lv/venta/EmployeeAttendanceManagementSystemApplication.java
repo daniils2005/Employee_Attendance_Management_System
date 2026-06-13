@@ -40,6 +40,8 @@ public class EmployeeAttendanceManagementSystemApplication {
 			@Override
 			public void run(String... args) throws Exception {
 				Department dep1 = new Department(DepartmentName.IT, "It nodaļa priekš uzņemuma uzturēšanas");
+				Department defaultDepartment = new Department(DepartmentName.Nav_minēts, "Departaments nav bijis uzlikts vai tika nomainīts vai dzēsts");
+
 				departRepo.save(dep1);
 				
 				Employee emp1 = new Employee("Janis", "Berzins", "123456-12345", "12345678", "janis@gmail.com", 10, dep1, Status.Aktīvs, Position.Programmetajs);
@@ -64,7 +66,7 @@ public class EmployeeAttendanceManagementSystemApplication {
 				Overtime ov3 = new Overtime(3, (float) (emp2.getHourlyRate() * 1.5), "Overtime", emp2);
 				overRepo.saveAll(Arrays.asList(ov1, ov2, ov3));
 				
-				Vacation v1 = new Vacation(LocalDate.now(), LocalDate.now().plusWeeks(2), true, emp1);
+				Vacation v1 = new Vacation(LocalDate.now(), LocalDate.now().plusWeeks(2), emp1);
 				vacationRepo.save(v1);
 				
 			}
