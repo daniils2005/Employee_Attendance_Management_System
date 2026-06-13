@@ -2,43 +2,77 @@ package lv.venta.service.impl;
 
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import lv.venta.model.Employee;
 import lv.venta.model.User;
 import lv.venta.model.enums.Role;
+import lv.venta.repo.IUserRepo;
 import lv.venta.service.IUserCRUDService;
 
 public class UserCRUDServiceImpl implements IUserCRUDService {
 
+	@Autowired
+	private IUserRepo userRepo;
+	
 	@Override
 	public ArrayList<User> selectAllUsers() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		if(userRepo.count() == 0) {
+			throw new Exception("User table is empty");
+		}
+		ArrayList<User> result = (ArrayList<User>)userRepo.findAll();
+		return result;
 	}
 
 	@Override
 	public User selectUserById(long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		if(id <= 0) {
+			throw new Exception("id cant be negative or equal to 0");
+		}
+		if(!userRepo.existsById(id)) {
+			throw new Exception("User with id = " + id + " doesnt exist");
+		}
+		return userRepo.findById(id).get();
 	}
 
 	@Override
 	public void deleteUserById(long id) throws Exception {
-		// TODO Auto-generated method stub
-		
+		if(id <= 0) {
+			throw new Exception("id cant be negative or equal to 0");
+		}
+		if(!userRepo.existsById(id)) {
+			throw new Exception("User with id = " + id + " doesn't exist");
+		}
+		User userForDeleting = userRepo.findById(id).get();		
+		userRepo.delete(userForDeleting);
 	}
 
 	@Override
-	public void insertNewUser(String newUsername, String newPassword, Role newRole, Employee newEmployee)
-			throws Exception {
-		// TODO Auto-generated method stub
-		
+	public void insertNewUser(String newUsername, String newPassword, Role newRole, Employee newEmployee) throws Exception {
+		if(newUsername == null || !newUsername.matches("^.{3,}$") || newPassword == null || newRole == null || newEmployee == null) {
+			throw new Exception("One or more input arguments are invalid");
+		}
+		if(userRepo.existsByUsername(newUsername)) {
+			throw new Exception("User with username " + newUsername + " already exists");
+		}
+		User newUser = new User(newUsername, newPassword, newRole, newEmployee);
+		userRepo.save(newUser);
 	}
 
 	@Override
-	public void updateUserById(long id, String newUsername, String newPassword, Role newRole, Employee newEmployee)
-			throws Exception {
-		// TODO Auto-generated method stub
-		
+	public void updateUserById(long id, String newUsername, String newPassword, Role newRole, Employee newEmployee) throws Exception {
+		if(newUsername == null || !newUsername.matches("^.{3,}$") || newPassword == null || newRole == null || newEmployee == null) {
+			throw new Exception("One or more input arguments are invalid");
+		}
+		if(userRepo.existsByUsername(newUsername)) {
+			throw new Exception("User with username " + newUsername + " already exists");
+		}
+		User userForUpdating = userRepo.findById(id).get();
+		userForUpdating.setUsername(newUsername);
+		userForUpdating.setPassword(newPassword);
+		userForUpdating.setRole(newRole);
+		userForUpdating.setEmployee(newEmployee);	
+		userRepo.save(userForUpdating);
 	}
 
 }

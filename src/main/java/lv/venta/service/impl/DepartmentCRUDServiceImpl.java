@@ -82,5 +82,6 @@ public class DepartmentCRUDServiceImpl implements IDepartmentCRUDService {
 		Department departmentForUpdating = departmentRepo.findById(id).get();
 		departmentForUpdating.setDepartmentName(departmentName);
 		departmentForUpdating.setDescription(description);
+		departmentRepo.save(departmentForUpdating);
 	}
 }

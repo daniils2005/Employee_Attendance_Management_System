@@ -11,4 +11,6 @@ public interface IUserRepo extends CrudRepository<User, Long>{
 
 	ArrayList<User> findByEmployee(Employee employeeForDeleting);
 
+	boolean existsByUsername(String newUsername);
+
 }
