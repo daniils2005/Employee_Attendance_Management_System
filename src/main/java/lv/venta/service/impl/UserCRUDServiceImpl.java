@@ -3,6 +3,7 @@ package lv.venta.service.impl;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import lv.venta.model.Employee;
 import lv.venta.model.User;
@@ -10,6 +11,7 @@ import lv.venta.model.enums.Role;
 import lv.venta.repo.IUserRepo;
 import lv.venta.service.IUserCRUDService;
 
+@Service
 public class UserCRUDServiceImpl implements IUserCRUDService {
 
 	@Autowired
@@ -61,13 +63,18 @@ public class UserCRUDServiceImpl implements IUserCRUDService {
 
 	@Override
 	public void updateUserById(long id, String newUsername, String newPassword, Role newRole, Employee newEmployee) throws Exception {
-		if(newUsername == null || !newUsername.matches("^.{3,}$") || newPassword == null || newRole == null || newEmployee == null) {
+		if(id <= 0 || newUsername == null || !newUsername.matches("^.{3,}$") || newPassword == null || newRole == null || newEmployee == null) {
 			throw new Exception("One or more input arguments are invalid");
 		}
-		if(userRepo.existsByUsername(newUsername)) {
-			throw new Exception("User with username " + newUsername + " already exists");
+		if(!userRepo.existsById(id)) {
+			throw new Exception("User with id = " + id + " doesn't exist");
 		}
 		User userForUpdating = userRepo.findById(id).get();
+		if(!userForUpdating.getUsername().equals(newUsername)) {
+			if(userRepo.existsByUsername(newUsername)) {
+				throw new Exception("Cant cange username to " + newUsername + " because it is already taken");
+			}
+		}
 		userForUpdating.setUsername(newUsername);
 		userForUpdating.setPassword(newPassword);
 		userForUpdating.setRole(newRole);

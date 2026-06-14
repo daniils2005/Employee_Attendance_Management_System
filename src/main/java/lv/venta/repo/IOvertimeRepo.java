@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import lv.venta.model.Attendance;
 import lv.venta.model.Employee;
 import lv.venta.model.Overtime;
 

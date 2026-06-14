@@ -3,6 +3,7 @@ package lv.venta.service.impl;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import lv.venta.model.Attendance;
 import lv.venta.model.Employee;
@@ -10,6 +11,7 @@ import lv.venta.repo.IAttendanceRepo;
 import lv.venta.repo.IEmployeeRepo;
 import lv.venta.service.IAttendanceCRUDService;
 
+@Service
 public class AttendanceCRUDServiceImpl implements IAttendanceCRUDService {
 
 	@Autowired
@@ -55,7 +57,7 @@ public class AttendanceCRUDServiceImpl implements IAttendanceCRUDService {
 		if(hoursWorked < 0 || employee == null) {
 			throw new Exception("One or more input arguments are invalid");
 		}
-		if(employeeRepo.existsByPersonCode(employee.getPersonCode())) {
+		if(!employeeRepo.existsByPersonCode(employee.getPersonCode())) {
 			throw new Exception("Can't register an attendance for employee that doesn't exist");
 		}
 		Attendance newAttendance = new Attendance(hoursWorked, employee);

@@ -3,6 +3,7 @@ package lv.venta.service.impl;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lv.venta.model.Department;
@@ -12,6 +13,7 @@ import lv.venta.repo.IDepartmentRepo;
 import lv.venta.repo.IEmployeeRepo;
 import lv.venta.service.IDepartmentCRUDService;
 
+@Service
 public class DepartmentCRUDServiceImpl implements IDepartmentCRUDService {
 
 	@Autowired
@@ -64,7 +66,7 @@ public class DepartmentCRUDServiceImpl implements IDepartmentCRUDService {
 		if(departmentName == null || description == null) {
 			throw new Exception("One or more input arguments are invalid");
 		}
-		if(departmentRepo.existsByDepartmentNameCode(departmentName)) {
+		if(departmentRepo.existsByDepartmentName(departmentName)) {
 			throw new Exception(departmentName + " department already exists");
 		}
 		Department newDepartment = new Department(departmentName, description);

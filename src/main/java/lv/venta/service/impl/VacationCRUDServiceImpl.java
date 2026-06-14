@@ -4,12 +4,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import lv.venta.model.Employee;
 import lv.venta.model.Vacation;
 import lv.venta.repo.IVacationRepo;
 import lv.venta.service.IVacationCRUDService;
 
+@Service
 public class VacationCRUDServiceImpl implements IVacationCRUDService {
 
 	@Autowired

@@ -4,12 +4,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import lv.venta.model.Employee;
 import lv.venta.model.Overtime;
 import lv.venta.repo.IOvertimeRepo;
 import lv.venta.service.IOvertimeCRUDService;
 
+@Service
 public class OvertimeCRUDServiceImpl implements IOvertimeCRUDService {
 
 	@Autowired
@@ -62,8 +64,11 @@ public class OvertimeCRUDServiceImpl implements IOvertimeCRUDService {
 
 	@Override
 	public void updateOvertimeById(long id, float newOvertimeHours, float newOvertimeRate, String newDescription, Employee newEmployee) throws Exception {
-		if(newOvertimeHours < 0 || newOvertimeRate < 0 || newDescription == null || newEmployee == null) {
+		if(id <= 0 || newOvertimeHours < 0 || newOvertimeRate < 0 || newDescription == null || newEmployee == null) {
 			throw new Exception("One or more input arguments are invalid");
+		}
+		if(!overtimeRepo.existsById(id)) {
+			throw new Exception("Overtime with id = " + id + " doesn't exist");
 		}
 		Overtime overtimeForUpdating = overtimeRepo.findById(id).get();
 		overtimeForUpdating.setOvertimeHours(newOvertimeHours);

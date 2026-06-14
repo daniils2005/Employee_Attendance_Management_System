@@ -61,7 +61,7 @@ public class EmployeeCRUDServiceImpl implements IEmployeeCRUDService {
 
 	@Override
 	public void insertNewEmployee(String newName, String newSurname, String newPersonCode, String newNumber, String newEmail, double newHourlyRate, Department newDepartment, Status newStatus, Position newPosition) throws Exception {
-		if(newName == null || newSurname == null || newPersonCode == null || newStatus == null || !newName.matches("^[A-Z][a-zA-Z]{1,29}$") || !newSurname.matches("^[A-Z][a-zA-Z]{1,29}$") || !newPersonCode.matches("^[0-9]{6}-[0-9]{5}$") || newNumber == null || newNumber.matches("[0-9]{8}") || newEmail == null || !newEmail.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\\\.[A-Za-z]{2,}$") || newHourlyRate < 0 || newPosition == null || newDepartment == null) {
+		if(newName == null || newSurname == null || newPersonCode == null || newStatus == null || !newName.matches("^[A-Z][a-zA-Z]{1,29}$") || !newSurname.matches("^[A-Z][a-zA-Z]{1,29}$") || !newPersonCode.matches("^[0-9]{6}-[0-9]{5}$") || newNumber == null || !newNumber.matches("^[0-9]{8}$") || newEmail == null || !newEmail.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$") || newHourlyRate < 0 || newPosition == null || newDepartment == null) {
 			throw new Exception("One or more input arguments are invalid");
 		}
 		if(employeeRepo.existsByPersonCode(newPersonCode)) {
@@ -73,7 +73,7 @@ public class EmployeeCRUDServiceImpl implements IEmployeeCRUDService {
 
 	@Override
 	public void updateEmployeeById(long id, String newName, String newSurname, String newNumber, String newEmail, double newHourlyRate, Department newDepartment, Status newStatus, Position newPosition) throws Exception {
-		if(newName == null || newSurname == null || newStatus == null || !newName.matches("^[A-Z][a-zA-Z]{1,29}$") || !newSurname.matches("^[A-Z][a-zA-Z]{1,29}$") || newNumber == null || newNumber.matches("[0-9]{8}") || newEmail == null || !newEmail.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\\\.[A-Za-z]{2,}$") || newHourlyRate < 0 || newPosition == null || newDepartment == null) {
+		if(newName == null || newSurname == null || newStatus == null || !newName.matches("^[A-Z][a-zA-Z]{1,29}$") || !newSurname.matches("^[A-Z][a-zA-Z]{1,29}$") || newNumber == null || !newNumber.matches("^[0-9]{8}$") || newEmail == null || !newEmail.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$") || newHourlyRate < 0 || newPosition == null || newDepartment == null) {
 			throw new Exception("One or more input arguments are invalid");
 		}
 		if(!employeeRepo.existsById(id)) {
