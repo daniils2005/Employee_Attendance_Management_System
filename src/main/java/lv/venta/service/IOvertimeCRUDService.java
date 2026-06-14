@@ -7,7 +7,7 @@ import lv.venta.model.Overtime;
 
 public interface IOvertimeCRUDService {
 	
-public abstract ArrayList<Overtime> selectAllOvertimes() throws Exception;
+	public abstract ArrayList<Overtime> selectAllOvertimes() throws Exception;
 	
 	public abstract Overtime selectOvertimeById(long id) throws Exception;
 	
