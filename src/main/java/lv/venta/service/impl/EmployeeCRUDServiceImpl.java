@@ -3,6 +3,7 @@ package lv.venta.service.impl;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lv.venta.model.Department;
@@ -14,6 +15,7 @@ import lv.venta.repo.IEmployeeRepo;
 import lv.venta.repo.IUserRepo;
 import lv.venta.service.IEmployeeCRUDService;
 
+@Service
 public class EmployeeCRUDServiceImpl implements IEmployeeCRUDService {
 
 	@Autowired
