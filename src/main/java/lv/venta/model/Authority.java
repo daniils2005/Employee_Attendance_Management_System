@@ -23,7 +23,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(name = "MyAuthorityTable")
+@Table(name = "authority_table")
 @Entity
 public class Authority {
 	

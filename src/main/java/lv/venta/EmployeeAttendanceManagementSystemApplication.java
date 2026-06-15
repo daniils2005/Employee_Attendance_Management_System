@@ -7,6 +7,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lv.venta.model.Attendance;
 import lv.venta.model.Authority;
@@ -54,8 +56,10 @@ public class EmployeeAttendanceManagementSystemApplication {
 				Authority auth2 = new Authority("USER");
 				authorityRepo.saveAll(Arrays.asList(auth1, auth2));
 				
-				User user1 = new User("Janis", "parole", emp1, auth1);
-				User user2 = new User("Ugis", "parole", emp2, auth2);
+				PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+				
+				User user1 = new User("Janis", encoder.encode("parole"), emp1, auth1);
+				User user2 = new User("Ugis", encoder.encode("parole"), emp2, auth2);
 				userRepo.save(user1);
 				userRepo.save(user2);
 				
