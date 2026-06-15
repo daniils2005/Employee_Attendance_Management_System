@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import lv.venta.model.Attendance;
+import lv.venta.model.Authority;
 import lv.venta.model.Department;
 import lv.venta.model.Employee;
 import lv.venta.model.Overtime;
@@ -16,9 +17,9 @@ import lv.venta.model.User;
 import lv.venta.model.Vacation;
 import lv.venta.model.enums.DepartmentName;
 import lv.venta.model.enums.Position;
-import lv.venta.model.enums.Role;
 import lv.venta.model.enums.Status;
 import lv.venta.repo.IAttendanceRepo;
+import lv.venta.repo.IAuthorityRepo;
 import lv.venta.repo.IDepartmentRepo;
 import lv.venta.repo.IEmployeeRepo;
 import lv.venta.repo.IOvertimeRepo;
@@ -33,7 +34,7 @@ public class EmployeeAttendanceManagementSystemApplication {
 	}
 	
 	@Bean
-	public CommandLineRunner testRepo(IAttendanceRepo attendRepo, IDepartmentRepo departRepo, IEmployeeRepo empRepo, IOvertimeRepo overRepo, IUserRepo userRepo, IVacationRepo vacationRepo) {
+	public CommandLineRunner testRepo(IAttendanceRepo attendRepo, IDepartmentRepo departRepo, IEmployeeRepo empRepo, IOvertimeRepo overRepo, IUserRepo userRepo, IVacationRepo vacationRepo, IAuthorityRepo authorityRepo) {
 		
 		return new CommandLineRunner() {
 			
@@ -49,8 +50,12 @@ public class EmployeeAttendanceManagementSystemApplication {
 				empRepo.save(emp1);
 				empRepo.save(emp2);
 				
-				User user1 = new User("Janis", "parole", Role.User, emp1);
-				User user2 = new User("Ugis", "parole", Role.Admin, emp2);
+				Authority auth1 = new Authority("ADMIN");
+				Authority auth2 = new Authority("USER");
+				authorityRepo.saveAll(Arrays.asList(auth1, auth2));
+				
+				User user1 = new User("Janis", "parole", emp1, auth1);
+				User user2 = new User("Ugis", "parole", emp2, auth2);
 				userRepo.save(user1);
 				userRepo.save(user2);
 				

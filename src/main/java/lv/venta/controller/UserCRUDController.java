@@ -65,7 +65,7 @@ public class UserCRUDController {
             return "user-add-page";
         }
         try {
-            userService.insertNewUser(user.getUsername(), user.getPassword(), user.getRole(), user.getEmployee());
+            userService.insertNewUser(user.getUsername(), user.getPassword(), user.getEmployee(), user.getAuthority());
             return "redirect:/user/crud/show/all";
         } catch(Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
@@ -92,7 +92,7 @@ public class UserCRUDController {
             return "user-update-page";
         }
         try {
-            userService.updateUserById(id, user.getUsername(), user.getPassword(), user.getRole(), user.getEmployee());
+            userService.updateUserById(id, user.getUsername(), user.getPassword(), user.getEmployee(), user.getAuthority());
             return "redirect:/user/crud/show/all";
         } catch(Exception e) {
             model.addAttribute("errorMessage", e.getMessage());

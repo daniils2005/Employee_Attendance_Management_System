@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lv.venta.model.Authority;
 import lv.venta.model.Employee;
 import lv.venta.model.User;
-import lv.venta.model.enums.Role;
 import lv.venta.repo.IUserRepo;
 import lv.venta.service.IUserCRUDService;
 
@@ -50,20 +50,20 @@ public class UserCRUDServiceImpl implements IUserCRUDService {
 	}
 
 	@Override
-	public void insertNewUser(String newUsername, String newPassword, Role newRole, Employee newEmployee) throws Exception {
-		if(newUsername == null || !newUsername.matches("^.{3,}$") || newPassword == null || newRole == null || newEmployee == null) {
+	public void insertNewUser(String newUsername, String newPassword, Employee newEmployee, Authority newAuthority) throws Exception {
+		if(newUsername == null || !newUsername.matches("^.{3,}$") || newPassword == null || newEmployee == null) {
 			throw new Exception("One or more input arguments are invalid");
 		}
 		if(userRepo.existsByUsername(newUsername)) {
 			throw new Exception("User with username " + newUsername + " already exists");
 		}
-		User newUser = new User(newUsername, newPassword, newRole, newEmployee);
+		User newUser = new User(newUsername, newPassword, newEmployee, newAuthority);
 		userRepo.save(newUser);
 	}
 
 	@Override
-	public void updateUserById(long id, String newUsername, String newPassword, Role newRole, Employee newEmployee) throws Exception {
-		if(id <= 0 || newUsername == null || !newUsername.matches("^.{3,}$") || newPassword == null || newRole == null || newEmployee == null) {
+	public void updateUserById(long id, String newUsername, String newPassword, Employee newEmployee, Authority newAuthority) throws Exception {
+		if(id <= 0 || newUsername == null || !newUsername.matches("^.{3,}$") || newPassword == null || newEmployee == null) {
 			throw new Exception("One or more input arguments are invalid");
 		}
 		if(!userRepo.existsById(id)) {
@@ -77,7 +77,6 @@ public class UserCRUDServiceImpl implements IUserCRUDService {
 		}
 		userForUpdating.setUsername(newUsername);
 		userForUpdating.setPassword(newPassword);
-		userForUpdating.setRole(newRole);
 		userForUpdating.setEmployee(newEmployee);	
 		userRepo.save(userForUpdating);
 	}
