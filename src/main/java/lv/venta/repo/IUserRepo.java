@@ -13,4 +13,6 @@ public interface IUserRepo extends CrudRepository<User, Long>{
 
 	boolean existsByUsername(String newUsername);
 
+	User findByUsername(String username);
+
 }
