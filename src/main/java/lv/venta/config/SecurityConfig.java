@@ -33,7 +33,8 @@ public class SecurityConfig {
 		http.authorizeHttpRequests(
 				auth->auth
 				.requestMatchers("/home").hasAnyAuthority("ADMIN", "USER")
-				);
+				.anyRequest().permitAll()
+		);
 		
 		http.formLogin(auth->auth.permitAll());
 		return http.build();

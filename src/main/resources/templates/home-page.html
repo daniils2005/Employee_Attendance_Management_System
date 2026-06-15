@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home Page</title>
+</head>
+<body>
+    <h1>Employee Attendance Management System</h1>
+    <a th:href="@{/attendance/crud/show/all}">
+        <button>Attendance</button>
+    </a>
+    <a th:href="@{/employee/crud/show/all}">
+        <button>Employees</button>
+    </a>
+    <a th:href="@{/department/crud/show/all}">
+        <button>Departments</button>
+    </a>
+    <a th:href="@{/overtime/crud/show/all}">
+        <button>Overtimes</button>
+    </a>
+    <a th:href="@{/vacation/crud/show/all}">
+        <button>Vacations</button>
+    </a>
+    <a th:href="@{/user/crud/show/all}">
+        <button>Users</button>
+    </a>
+</body>
+</html>
