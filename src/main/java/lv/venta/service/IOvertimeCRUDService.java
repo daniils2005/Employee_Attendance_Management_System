@@ -13,7 +13,7 @@ public interface IOvertimeCRUDService {
 	
 	public abstract void deleteOvertimeById(long id) throws Exception;
 	
-	public abstract void insertNewOvertime(float newOvertimeHours, float newOvertimeRate, String newDescription, Employee newEmployee) throws Exception;
+	public abstract void insertNewOvertime(float newOvertimeHours, String newDescription, Employee newEmployee) throws Exception;
 	
 	public abstract void updateOvertimeById(long id, float newOvertimeHours, float newOvertimeRate, String newDescription, Employee newEmployee) throws Exception;
 }

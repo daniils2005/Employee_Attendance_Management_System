@@ -46,7 +46,7 @@ public class Overtime {
 	
 	@Min(1)
 	@Column(name = "overtime_rate")
-	private float overtimeRate;
+	private Float overtimeRate;
 	
 	@Size(max = 100)
 	private String description;
@@ -60,12 +60,12 @@ public class Overtime {
 	@JoinColumn(name = "eid")
 	private Employee employee;
 	
-	public Overtime(float newOvertimeHours, float newOvertimeRate, String newDescription, Employee newEmployee) {
+	public Overtime(float newOvertimeHours, String newDescription, Employee newEmployee) {
 		this.date = LocalDate.now();
 		setOvertimeHours(newOvertimeHours);
-		setOvertimeRate(newOvertimeRate);
 		setDescription(newDescription);
 		setEmployee(newEmployee);
+		this.overtimeRate = null;
 		this.status = RequestStatus.IZSKATISANA;
 	}
 }

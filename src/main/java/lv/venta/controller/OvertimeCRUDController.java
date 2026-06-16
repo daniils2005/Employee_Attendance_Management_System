@@ -65,7 +65,7 @@ public class OvertimeCRUDController {
             return "overtime-add-page";
         }
         try {
-            overtimeService.insertNewOvertime(overtime.getOvertimeHours(), overtime.getOvertimeRate(), overtime.getDescription(), overtime.getEmployee());
+            overtimeService.insertNewOvertime(overtime.getOvertimeHours(), overtime.getDescription(), overtime.getEmployee());
             return "redirect:/overtime/crud/show/all";
         } catch(Exception e) {
             model.addAttribute("errorMessage", e.getMessage());

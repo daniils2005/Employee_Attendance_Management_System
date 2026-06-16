@@ -70,10 +70,9 @@ public class EmployeeAttendanceManagementSystemApplication {
 				Attendance att5 = new Attendance(11, emp2);
 				attendRepo.saveAll(Arrays.asList(att1, att2, att3, att4, att5));
 				
-				Overtime ov1 = new Overtime(1, (float) (emp1.getHourlyRate() * 1.5), "Overtime", emp1);
-				Overtime ov2 = new Overtime(2, (float) (emp2.getHourlyRate() * 1.5), "Overtime", emp2);
-				Overtime ov3 = new Overtime(3, (float) (emp2.getHourlyRate() * 1.5), "Overtime", emp2);
-				overRepo.saveAll(Arrays.asList(ov1, ov2, ov3));
+				Overtime ov2 = new Overtime(2, "Overtime", emp2);
+				Overtime ov3 = new Overtime(3, "Overtime", emp2);
+				overRepo.saveAll(Arrays.asList(ov2, ov3));
 				
 				Vacation v1 = new Vacation(LocalDate.now(), LocalDate.now().plusWeeks(2), emp1);
 				vacationRepo.save(v1);

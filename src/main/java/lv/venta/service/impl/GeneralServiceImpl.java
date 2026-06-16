@@ -97,9 +97,6 @@ public class GeneralServiceImpl implements IGeneralService {
 		}
 		LocalDate today = LocalDate.now();
 		ArrayList<Attendance> result = attendanceRepo.findByEmployeeIdThisMonth(eid, today.withDayOfMonth(1), today.withDayOfMonth(today.lengthOfMonth()));
-		if(result.isEmpty()) {
-			throw new Exception("There are no records of attendance for employee id=" + eid + " this month");
-		}
 		return result;
 	}
 
@@ -113,9 +110,6 @@ public class GeneralServiceImpl implements IGeneralService {
 		}
 		LocalDate today = LocalDate.now();
 		ArrayList<Overtime> result = overtimeRepo.findByEmployeeIdThisMonth(eid, today.withDayOfMonth(1), today.withDayOfMonth(today.lengthOfMonth()));
-		if(result.isEmpty()) {
-			throw new Exception("There are no records of overtime for employee id=" + eid + " this month");
-		}
 		return result;
 	}
 
@@ -134,7 +128,9 @@ public class GeneralServiceImpl implements IGeneralService {
 		}
 		if(!overtimeList.isEmpty()) {
 			for(var overtime : overtimeList) {
-				result += employeeHourlyRate * overtime.getOvertimeRate() * overtime.getOvertimeHours();
+				if(overtime.getOvertimeRate() != null) {
+					result += employeeHourlyRate * overtime.getOvertimeRate() * overtime.getOvertimeHours();
+				}
 			}
 		}
 		ArrayList<Attendance> attendanceList = selectAllAttendancesThisMonthForEmployeeId(eid);

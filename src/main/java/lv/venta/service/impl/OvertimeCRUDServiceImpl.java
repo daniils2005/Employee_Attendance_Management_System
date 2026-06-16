@@ -50,15 +50,15 @@ public class OvertimeCRUDServiceImpl implements IOvertimeCRUDService {
 	}
 
 	@Override
-	public void insertNewOvertime(float newOvertimeHours, float newOvertimeRate, String newDescription, Employee newEmployee) throws Exception {
-		if(newOvertimeHours < 0 || newOvertimeRate < 0 || newDescription == null || newEmployee == null) {
+	public void insertNewOvertime(float newOvertimeHours, String newDescription, Employee newEmployee) throws Exception {
+		if(newOvertimeHours < 0 || newDescription == null || newEmployee == null) {
 			throw new Exception("One or more input arguments are invalid");
 		}
 		LocalDate date = LocalDate.now();
 		if(overtimeRepo.existsByEmployeeAndDate(newEmployee, date)) {
 			throw new Exception("Overtime for employee with id=" + newEmployee.getEid() + " has already been registered for today(" + date + ")");
 		}
-		Overtime newOvertime = new Overtime(newOvertimeHours, newOvertimeRate, newDescription, newEmployee);
+		Overtime newOvertime = new Overtime(newOvertimeHours, newDescription, newEmployee);
 		overtimeRepo.save(newOvertime);
 	}
 
