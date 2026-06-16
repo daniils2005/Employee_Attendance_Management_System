@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,6 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lv.venta.model.enums.RequestStatus;
 
 @Getter
 @Setter
@@ -46,8 +49,13 @@ public class Vacation {
 	@JoinColumn(name = "eid")
 	private Employee employee;
 	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	@Column(name = "status")
+	private RequestStatus status;
+	
 	public void setActive() {
-		if(!startDate.isAfter(LocalDate.now()) && !endDate.isBefore(LocalDate.now())) {
+		if(status == RequestStatus.APSTIPRINATS && !startDate.isAfter(LocalDate.now()) && !endDate.isBefore(LocalDate.now())) {
 			isActive = true;
 		} else {
 			isActive = false;
@@ -57,7 +65,8 @@ public class Vacation {
 	public Vacation(LocalDate newStartDate, LocalDate newEndDate, Employee newEmployee) {
 		setStartDate(newStartDate);
 		setEndDate(newEndDate);
-		setActive();
 		setEmployee(newEmployee);
+		this.status = RequestStatus.IZSKATISANA;
+		setActive();
 	}
 }
