@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Vacation</title>
+</head>
+	<body>
+		<a th:href="@{/home}">
+		    <button>Home</button>
+		</a>
+	    <h1>My vacations</h1>
+	    <table style="width: 100%; border-collapse: collapse;">
+	        <tr>
+	            <th style="border: 1px solid black;">Start date</th>
+	            <th style="border: 1px solid black;">End date</th>
+				<th style="border: 1px solid black;">Active</th>
+				<th style="border: 1px solid black;">Status</th>
+				<th style="border: 1px solid black;">Action</th>
+	        </tr>
+	        <tr>
+	            <form th:action="@{/vacation}" method="post">
+					<td style="border: 1px solid black;">
+					    <input type="date" name="startDate" required>
+					</td>
+
+					<td style="border: 1px solid black;">
+					    <input type="date" name="endDate" required>
+					</td>
+					<td style="border: 1px solid black;">
+						false
+					</td>
+					<td style="border: 1px solid black;">
+						IZSKATISANA
+					</td>
+	                <td style="border: 1px solid black;">
+	                    <button type="submit">Add</button>
+	                </td>
+	            </form>
+	        </tr>
+	        <tr style="border: 1px solid black;" th:each="vacation : ${vacations}">
+				<td style="border: 1px solid black;"
+					th:text="${vacation.startDate}">
+				</td>
+	            <td style="border: 1px solid black;"
+	                th:text="${vacation.endDate}">
+	            </td>
+	            <td style="border: 1px solid black;"
+	                th:text="${vacation.isActive}">
+	            </td>
+				<td style="border: 1px solid black;"
+				    th:text="${vacation.status}">
+				</td>
+	        </tr>
+	    </table>
+	</body>
+</html>

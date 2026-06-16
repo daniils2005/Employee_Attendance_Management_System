@@ -66,9 +66,6 @@ public class GeneralServiceImpl implements IGeneralService {
 			throw new Exception("id cant be negative or equal to 0");
 		}
 		ArrayList<Overtime> result = overtimeRepo.findByEmployeeEid(eid);
-		if(result.isEmpty()) {
-			throw new Exception("There are no records of overtime for employee id=" + eid);
-		}
 		return result;
 	}
 
@@ -81,9 +78,6 @@ public class GeneralServiceImpl implements IGeneralService {
 			throw new Exception("id cant be negative or equal to 0");
 		}
 		ArrayList<Vacation> result = vacationRepo.findByEmployeeEid(eid);
-		if(result.isEmpty()) {
-			throw new Exception("There are no records of vacation for employee id=" + eid);
-		}
 		return result;
 	}
 

@@ -16,6 +16,7 @@ import lv.venta.model.User;
 import lv.venta.service.IAttendanceCRUDService;
 import lv.venta.service.IGeneralService;
 import lv.venta.service.IOvertimeCRUDService;
+import lv.venta.service.IVacationCRUDService;
 
 @Controller
 public class GeneralServiceController {
@@ -28,6 +29,9 @@ public class GeneralServiceController {
 	
 	@Autowired
 	private IOvertimeCRUDService overtimeCRUDService;
+	
+	@Autowired
+	private IVacationCRUDService vacationCRUDService;
 	
 	private User getCurrentUser() {
 	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -80,6 +84,31 @@ public class GeneralServiceController {
     	 try {
     		 overtimeCRUDService.insertNewOvertime(overtimeHours, description, currentUser.getEmployee());
     		 return "redirect:/overtime";
+    	 } catch(Exception e) {
+    		 model.addAttribute("errorMessage", e.getMessage());
+    		 return "error-page";
+    	 }
+    }
+    
+    @GetMapping("/vacation")
+    public String getMyVacationPage(Model model) {
+        User currentUser = getCurrentUser();
+        try {
+        	model.addAttribute("vacations", generalService.selectAllVacationsForEmployeeId(currentUser.getEmployee().getEid()));
+        	model.addAttribute("dateToday", LocalDate.now());
+        	return "my-vacation-page";
+        } catch(Exception e) {
+        	model.addAttribute("errorMessage", e.getMessage());
+        	return "error-page";
+        }
+    }
+    
+    @PostMapping("/vacation")
+    public String postMyVacationPage(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate, Model model) {
+    	 User currentUser = getCurrentUser();
+    	 try {
+    		 vacationCRUDService.insertNewVacation(startDate, endDate, currentUser.getEmployee());
+    		 return "redirect:/vacation";
     	 } catch(Exception e) {
     		 model.addAttribute("errorMessage", e.getMessage());
     		 return "error-page";
