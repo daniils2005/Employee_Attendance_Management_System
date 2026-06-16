@@ -2,6 +2,7 @@ package lv.venta.controller;
 
 import java.security.Principal;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/")
 public class MainController {
-    
+	
     @GetMapping("/home")
     public String getHomePage(Model model, Principal principal) {
     	model.addAttribute("username", principal.getName());
@@ -22,5 +23,6 @@ public class MainController {
     	}
     	return "home-page";
     }
+    
     
 }

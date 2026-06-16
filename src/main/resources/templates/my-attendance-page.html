@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Attendance</title>
+</head>
+	<body>
+		<a th:href="@{/home}">
+		    <button>Home</button>
+		</a>
+	    <h1>My attendance this month</h1>
+	    <table style="width: 100%; border-collapse: collapse;">
+	        <tr>
+	            <th style="border: 1px solid black;">Date</th>
+	            <th style="border: 1px solid black;">Hours Worked</th>
+	            <th style="border: 1px solid black;">Action</th>
+	        </tr>
+	        <tr>
+	            <form th:action="@{/attendance}" method="post">
+	                <td style="border: 1px solid black;"
+	                    th:text="${dateToday}">
+	                </td>
+	                <td style="border: 1px solid black;">
+	                    <input type="number" step="0.5" min="0" name="hoursWorked" required>
+	                </td>
+	                <td style="border: 1px solid black;">
+	                    <button type="submit">Add</button>
+	                </td>
+	            </form>
+	        </tr>
+	        <tr style="border: 1px solid black;" th:each="attendance : ${attendances}">
+	            <td style="border: 1px solid black;"
+	                th:text="${attendance.workDate}">
+	            </td>
+	            <td style="border: 1px solid black;"
+	                th:text="${attendance.hoursWorked}">
+	            </td>
+	            <td style="border: 1px solid black;"></td>
+	        </tr>
+	    </table>
+		<p th:text="|Money made this month: ${salary}|"></p>
+	</body>
+</html>
