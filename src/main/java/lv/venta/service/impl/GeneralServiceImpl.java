@@ -143,5 +143,15 @@ public class GeneralServiceImpl implements IGeneralService {
 		}
 		return result;
 	}
+	
+	public ArrayList<Attendance> selectAllAttendanceByEmployeeId(long id) throws Exception {
 
+	    employeeService.selectEmployeeById(id);
+
+	    ArrayList<Attendance> allAttendanceById =
+	            attendanceRepo.findByEmployeeEid(id);
+
+	    return allAttendanceById;
+	}
+	
 }

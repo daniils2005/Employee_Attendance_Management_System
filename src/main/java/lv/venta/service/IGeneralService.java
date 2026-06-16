@@ -21,4 +21,6 @@ public interface IGeneralService {
 	public abstract ArrayList<Overtime> selectAllOvertimesThisMonthForEmployeeId(long eid) throws Exception;
 	
 	public abstract float calculateSalaryThisMonthForEmployeeId(long eid) throws Exception;
+	
+	public ArrayList<Attendance> selectAllAttendanceByEmployeeId(long id) throws Exception;
 }
