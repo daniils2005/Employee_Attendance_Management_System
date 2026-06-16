@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -114,4 +115,26 @@ public class GeneralServiceController {
     		 return "error-page";
     	 }
     }
+    @GetMapping("/manage/attendance")
+    public String attendanceByEmployee(@RequestParam(required = false) Long id, Model model) {
+        try {
+
+            if (id != null) {
+                model.addAttribute("attendances",
+                        generalService.selectAllAttendanceByEmployeeId(id));
+            } else {
+                model.addAttribute("attendances",
+                        attendanceCRUDService.selectAllAttendances());
+            }
+
+            return "manage-attendance-page";
+
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error-page";
+        }
+    }
+    
+    
+    
 }
