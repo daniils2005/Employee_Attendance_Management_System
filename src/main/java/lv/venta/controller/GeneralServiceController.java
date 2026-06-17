@@ -281,12 +281,29 @@ public class GeneralServiceController {
             return "error-page";
         }
     }
-    @PostMapping("/manage/attendance")
-    public String postAttendanceByEmployee(@RequestParam(required = false) Long eid, @RequestParam float hoursWorked, @RequestParam(required = false) LocalDate date, Model model) {
-    	 
+    @PostMapping("/manage/attendance/add")
+    public String addAttendanceByEmployee(@RequestParam(required = false) Long eid, @RequestParam float hoursWorked, @RequestParam(required = false) LocalDate date, Model model) {
     	 try {
     		 Employee employee = employeeCRUDService.selectEmployeeById(eid);
     		  attendanceCRUDService.insertNewAttendanceWithDate(hoursWorked, employee, date);
+    		 return "redirect:/manage/attendance";
+    	 } 
+    	 catch(Exception e) {
+    		 model.addAttribute("errorMessage", e.getMessage());
+    		 return "error-page";
+    	 }
+    }
+    @PostMapping("/manage/attendance/update-or-delete")
+    public String updateAttendanceByEmployee(@RequestParam(required = false) Long eid, @RequestParam(required = false) Long aid, @RequestParam float hoursWorked, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String action, Model model) {
+    	 try {
+    		 if ("save".equals(action)) {
+    			Employee employee = employeeCRUDService.selectEmployeeById(eid);
+    			attendanceCRUDService.updateAttendanceByIdWithDate(aid, hoursWorked, employee, date);
+    		 }
+    		 else {
+    			 attendanceCRUDService.deleteAttendanceById(aid);
+    		 }
+    		 
     		 return "redirect:/manage/attendance";
     	 } 
     	 catch(Exception e) {
@@ -371,6 +388,8 @@ public class GeneralServiceController {
     		 return "error-page";
     	 }
     }
+    
+    
  
    
 }

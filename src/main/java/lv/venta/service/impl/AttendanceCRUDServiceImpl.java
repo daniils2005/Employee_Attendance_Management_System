@@ -22,9 +22,6 @@ public class AttendanceCRUDServiceImpl implements IAttendanceCRUDService {
 	
 	@Override
 	public ArrayList<Attendance> selectAllAttendances() throws Exception {
-		if(attendanceRepo.count() == 0) {
-			throw new Exception("Attendance table is empty");
-		}
 		ArrayList<Attendance> result = (ArrayList<Attendance>)attendanceRepo.findAll();
 		return result;
 	}
@@ -91,6 +88,20 @@ public class AttendanceCRUDServiceImpl implements IAttendanceCRUDService {
 		Attendance attendanceForUpdating = attendanceRepo.findById(id).get();
 		attendanceForUpdating.setHoursWorked(hoursWorked);
 		attendanceForUpdating.setEmployee(employee);
+		attendanceRepo.save(attendanceForUpdating);
+	}
+	
+	public void updateAttendanceByIdWithDate(long id, float hoursWorked, Employee employee, LocalDate date) throws Exception{
+		if(id <= 0 || hoursWorked < 0 || employee == null) {
+			throw new Exception("One or more input arguments are invalid");
+		}
+		if(!attendanceRepo.existsById(id)) {
+			throw new Exception("Attendance with id = " + id + " doesnt exist");
+		}
+		Attendance attendanceForUpdating = attendanceRepo.findById(id).get();
+		attendanceForUpdating.setHoursWorked(hoursWorked);
+		attendanceForUpdating.setEmployee(employee);
+		attendanceForUpdating.setWorkDate(date);
 		attendanceRepo.save(attendanceForUpdating);
 	}
 
