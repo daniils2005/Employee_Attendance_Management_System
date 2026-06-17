@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 
 import lv.venta.model.Attendance;
 import lv.venta.model.Overtime;
+import lv.venta.model.User;
 import lv.venta.model.Vacation;
 import lv.venta.repo.IAttendanceRepo;
 import lv.venta.repo.IOvertimeRepo;
+import lv.venta.repo.IUserRepo;
 import lv.venta.repo.IVacationRepo;
 import lv.venta.service.IAttendanceCRUDService;
 import lv.venta.service.IEmployeeCRUDService;
@@ -38,6 +40,9 @@ public class GeneralServiceImpl implements IGeneralService {
 	
 	@Autowired 
 	private IAttendanceCRUDService attendanceCRUDService;
+	
+	@Autowired
+	private IUserRepo userRepo;
 	
 	@Override
 	public ArrayList<Attendance> selectAllAttendancesForEmployeeId(long eid) throws Exception {
@@ -191,6 +196,11 @@ public class GeneralServiceImpl implements IGeneralService {
 			}
 		}
 		return allOvertimeByDate;
+	}
+
+	public User selectUserByUsername(String username) throws Exception {
+		User resultUser = userRepo.findByUsername(username);
+		return resultUser;
 	}
 
 }

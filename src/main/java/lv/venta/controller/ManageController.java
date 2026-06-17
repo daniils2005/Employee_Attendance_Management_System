@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import lv.venta.model.Attendance;
 import lv.venta.model.Employee;
 import lv.venta.model.Overtime;
+import lv.venta.model.User;
 import lv.venta.model.enums.RequestStatus;
+import lv.venta.repo.IUserRepo;
 import lv.venta.service.IAttendanceCRUDService;
 import lv.venta.service.IEmployeeCRUDService;
 import lv.venta.service.IGeneralService;
 import lv.venta.service.IOvertimeCRUDService;
+import lv.venta.service.IUserCRUDService;
 
 @Controller
 public class ManageController {
@@ -34,6 +37,12 @@ public class ManageController {
 	
 	@Autowired
 	private IOvertimeCRUDService overtimeCRUDService;
+	
+	@Autowired
+	private IUserCRUDService userCRUDService;
+	
+	@Autowired
+	private IUserRepo userRepo;
 	
     @GetMapping("/manage/attendance")
     public String getAttendanceByEmployee(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
@@ -86,7 +95,7 @@ public class ManageController {
     	 
     	 try {
     		 Employee employee = employeeCRUDService.selectEmployeeById(eid);
-    		  attendanceCRUDService.insertNewAttendanceWithDate(hoursWorked, employee, date);
+    		 attendanceCRUDService.insertNewAttendanceWithDate(hoursWorked, employee, date);
     		 return "redirect:/manage/attendance";
     	 } 
     	 catch(Exception e) {
@@ -167,4 +176,28 @@ public class ManageController {
     		 return "error-page";
     	 }
     }
+    
+    @GetMapping("/manage/users")
+    public String getUsers(@RequestParam(required = false) Long id, @RequestParam(required = false) String username, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
+    	try {
+    		ArrayList<User> resultUsers = new ArrayList<User>();
+			if (id != null) {
+				resultUsers.add(userCRUDService.selectUserById(id));
+			}
+			else if (username != null) {
+				resultUsers.add(generalService.selectUserByUsername(username));
+			}
+			else {
+				resultUsers = userCRUDService.selectAllUsers();
+			}
+			model.addAttribute("lastUid", userRepo.count() + 1);
+			model.addAttribute("users", resultUsers);
+    		return "manage-users-page";
+    	}
+    	catch(Exception e) {
+   		 	model.addAttribute("errorMessage", e.getMessage());
+   		 	return "error-page";
+   	 	}
+    }
+    
 }

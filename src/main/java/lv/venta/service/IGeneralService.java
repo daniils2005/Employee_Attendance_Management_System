@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import lv.venta.model.Attendance;
 import lv.venta.model.Overtime;
+import lv.venta.model.User;
 import lv.venta.model.Vacation;
 
 public interface IGeneralService {
@@ -23,14 +24,14 @@ public interface IGeneralService {
 	
 	public abstract float calculateSalaryThisMonthForEmployeeId(long eid) throws Exception;
 
-	public ArrayList<Attendance> selectAllAttendanceByEmployeeIdAndDateMonth(long id, LocalDate timeCheck) throws Exception;
+	public abstract ArrayList<Attendance> selectAllAttendanceByEmployeeIdAndDateMonth(long id, LocalDate timeCheck) throws Exception;
 	
-	public ArrayList<Attendance> selectAllAttendanceByEmployeeDateMonth(LocalDate timeCheck) throws Exception;
+	public abstract ArrayList<Attendance> selectAllAttendanceByEmployeeDateMonth(LocalDate timeCheck) throws Exception;
 	
-	public ArrayList<Overtime> selectAllOvertimeByEmployeeDateMonth(LocalDate timeCheck) throws Exception;
+	public abstract ArrayList<Overtime> selectAllOvertimeByEmployeeDateMonth(LocalDate timeCheck) throws Exception;
 	
-	public ArrayList<Overtime> selectAllOvertimeByEmployeeIdAndDateMonth(long id, LocalDate timeCheck) throws Exception;
+	public abstract ArrayList<Overtime> selectAllOvertimeByEmployeeIdAndDateMonth(long id, LocalDate timeCheck) throws Exception;
 	
-
+	public abstract User selectUserByUsername(String username) throws Exception;
 	
 }
