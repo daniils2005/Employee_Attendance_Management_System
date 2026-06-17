@@ -23,7 +23,6 @@ public interface IGeneralService {
 	
 	public abstract float calculateSalaryThisMonthForEmployeeId(long eid) throws Exception;
 
-
 	public ArrayList<Attendance> selectAllAttendanceByEmployeeIdAndDateMonth(long id, LocalDate timeCheck) throws Exception;
 	
 	public ArrayList<Attendance> selectAllAttendanceByEmployeeDateMonth(LocalDate timeCheck) throws Exception;
