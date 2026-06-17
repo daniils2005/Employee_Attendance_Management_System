@@ -20,4 +20,5 @@ public interface IOvertimeCRUDService {
 	public abstract void insertNewOvertimeWithDateAndStatusAndOvertimeRate(float newOvertimeHours, String newDescription, Employee newEmployee, LocalDate date, RequestStatus status, float overtimeRate) throws Exception;
 	
 	public abstract void updateOvertimeById(long id, float newOvertimeHours, float newOvertimeRate, String newDescription, Employee newEmployee) throws Exception;
+	public void updateOvertimeById(long id, float newOvertimeHours, float newOvertimeRate, String newDescription, Employee newEmployee, LocalDate date) throws Exception;
 }

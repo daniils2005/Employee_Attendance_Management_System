@@ -15,6 +15,8 @@ import lv.venta.model.Attendance;
 import lv.venta.model.Employee;
 import lv.venta.model.Overtime;
 import lv.venta.model.enums.RequestStatus;
+import lv.venta.repo.IAttendanceRepo;
+import lv.venta.repo.IOvertimeRepo;
 import lv.venta.service.IAttendanceCRUDService;
 import lv.venta.service.IEmployeeCRUDService;
 import lv.venta.service.IGeneralService;
@@ -25,7 +27,10 @@ public class ManageController {
 
 	@Autowired
 	private IGeneralService generalService;
-	
+	@Autowired
+	private IOvertimeRepo overtimeRepo;
+	@Autowired
+	private IAttendanceRepo attendanceRepo;
 	@Autowired
 	private IAttendanceCRUDService attendanceCRUDService;
 	
@@ -71,7 +76,7 @@ public class ManageController {
 			else if ("date".equals(sort) && "desc".equals(order)) {
 			    attendances.sort(Comparator.comparing(Attendance::getWorkDate).reversed());
 			}
-	
+			model.addAttribute("lastAid", attendanceRepo.count() + 1);
 			model.addAttribute("attendances", attendances);
 			return "manage-attendance-page";
     	}   
@@ -81,8 +86,8 @@ public class ManageController {
         }
     }
     
-    @PostMapping("/manage/attendance")
-    public String postAttendanceByEmployee(@RequestParam(required = false) Long eid, @RequestParam float hoursWorked, @RequestParam(required = false) LocalDate date, Model model) {
+    @PostMapping("/manage/attendance/add")
+    public String addAttendanceByEmployee(@RequestParam(required = false) Long eid, @RequestParam float hoursWorked, @RequestParam(required = false) LocalDate date, Model model) {
     	 
     	 try {
     		 Employee employee = employeeCRUDService.selectEmployeeById(eid);
@@ -94,9 +99,27 @@ public class ManageController {
     		 return "error-page";
     	 }
     }
+    @PostMapping("/manage/attendance/update-or-delete")
+    public String updateAttendanceByEmployee(@RequestParam(required = false) Long eid, @RequestParam(required = false) Long aid, @RequestParam float hoursWorked, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String action, Model model) {
+    	 try {
+    		 if ("save".equals(action)) {
+    			Employee employee = employeeCRUDService.selectEmployeeById(eid);
+    			attendanceCRUDService.updateAttendanceByIdWithDate(aid, hoursWorked, employee, date);
+    		 }
+    		 else {
+    			 attendanceCRUDService.deleteAttendanceById(aid);
+    		 }
+    		 
+    		 return "redirect:/manage/attendance";
+    	 } 
+    	 catch(Exception e) {
+    		 model.addAttribute("errorMessage", e.getMessage());
+    		 return "error-page";
+    	 }
+    }
     
     @GetMapping("/manage/overtime")
-    public String getOvertimeByEmployees(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, Model model) {
+    public String getOvertimeByEmployees(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
     	try {
     		ArrayList<Overtime> overtime;
     		if (id != null && date != null) {
@@ -112,40 +135,31 @@ public class ManageController {
 				overtime =  overtimeCRUDService.selectAllOvertimes();
 			}
 
-			if ("nameAsc".equals(sort)) {
-				overtime.sort(Comparator.comparing(a -> a.getEmployee().getName()));
+    		if ("eid".equals(sort) && "asc".equals(order)) {
+				 overtime.sort(Comparator.comparing(a -> a.getEmployee().getEid())); 
 			}
-			else if ("nameDesc".equals(sort)) {
-				overtime.sort(Comparator.comparing((Overtime a) -> a.getEmployee().getName()).reversed());
+			else if ("eid".equals(sort) && "desc".equals(order)) {
+				overtime.sort(Comparator.comparing(a -> ( (Overtime) a).getEmployee().getEid()).reversed());
 			}
-			else if ("idAsc".equals(sort)) {
-				overtime.sort(Comparator.comparing(a -> a.getEmployee().getEid()));
-			}
-			else if ("idDesc".equals(sort)) {
-				overtime.sort(Comparator.comparing((Overtime a) -> a.getEmployee().getEid()).reversed());
-			}
-			else if ("dateAsc".equals(sort)) {
+			else if ("date".equals(sort) && "asc".equals(order)) {
 				overtime.sort(Comparator.comparing(Overtime::getDate));
 			}
-			else if ("dateDesc".equals(sort)) {
+			else if ("dateDesc".equals(sort) && "desc".equals(order)) {
 				overtime.sort(Comparator.comparing(Overtime::getDate).reversed());
 			}
-			else if ("overHoursAsc".equals(sort)) {
-				overtime.sort(Comparator.comparing(Overtime::getOvertimeHours));
+			else if ("surname".equals(sort) && "asc".equals(order)) {
+				 overtime.sort(Comparator.comparing(a -> a.getEmployee().getSurname())); 
 			}
-			else if ("overHoursDesc".equals(sort)) {
-				overtime.sort(Comparator.comparing(Overtime::getOvertimeHours).reversed());
+			else if ("surname".equals(sort) && "desc".equals(order)) {
+				 overtime.sort(Comparator.comparing(a -> ((Overtime) a).getEmployee().getSurname()).reversed()); 
 			}
-			else if ("overHoursRateAsc".equals(sort)) {
-				overtime.sort(Comparator.comparing(Overtime::getOvertimeRate,Comparator.nullsLast(Float::compareTo)));
+			else if ("status".equals(sort) && "asc".equals(order)) {
+				overtime.sort(Comparator.comparing(Overtime::getStatus,Comparator.nullsLast(Comparator.naturalOrder())));
 			}
-			else if ("overHoursRateDesc".equals(sort)) {
-				overtime.sort(Comparator.comparing(Overtime::getOvertimeRate,Comparator.nullsLast(Float::compareTo)).reversed());
-			}
-			else if ("statusSort".equals(sort)) {
+			else if ("status".equals(sort) && "desc".equals(order)) {
 				overtime.sort(Comparator.comparing(Overtime::getStatus,Comparator.nullsLast(Comparator.naturalOrder())).reversed());
 			}
-
+    		model.addAttribute("lastOid", overtimeRepo.count() + 1);
     		model.addAttribute("overtimes", overtime);
     		return "manage-overtime-page";
     	}
@@ -155,11 +169,30 @@ public class ManageController {
    	 	}
     }
     
-    @PostMapping("/manage/overtime")
-    public String postOvertimeByEmployees(@RequestParam(required = false) Long id, @RequestParam float overtimeHours, @RequestParam float overtimeRate, @RequestParam(required = false) String description, @RequestParam(required = false) LocalDate date, @RequestParam RequestStatus status, Model model) { 
+    @PostMapping("/manage/overtime/add")
+    public String postOvertimeByEmployees(@RequestParam(required = false) Long eid, @RequestParam float overtimeHours, @RequestParam float overtimeRate, @RequestParam(required = false) String description, @RequestParam(required = false) LocalDate date, @RequestParam RequestStatus status, Model model) { 
     	 try {
-    		 Employee employee = employeeCRUDService.selectEmployeeById(id);
+    		 Employee employee = employeeCRUDService.selectEmployeeById(eid);
     		 overtimeCRUDService.insertNewOvertimeWithDateAndStatusAndOvertimeRate(overtimeHours, description ,employee, date, status, overtimeRate);
+    		 
+    		 return "redirect:/manage/overtime";
+    	 } 
+    	 catch(Exception e) {
+    		 model.addAttribute("errorMessage", e.getMessage());
+    		 return "error-page";
+    	 }
+    }
+    @PostMapping("/manage/overtime/update-or-delete")
+    public String updateOvertimeByEmployees(@RequestParam(required = false) Long eid, @RequestParam(required = false) Long oid, @RequestParam Float overtimeHours, @RequestParam(required = false) Float overtimeRate, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String description, @RequestParam(required = false) String action, @RequestParam(required = false) RequestStatus status, Model model) {
+    	 try {
+    		 if ("save".equals(action)) {
+    			Employee employee = employeeCRUDService.selectEmployeeById(eid);
+    			overtimeCRUDService.updateOvertimeById(oid, overtimeHours, overtimeRate, description, employee, date);
+    		 }
+    		 else {
+    			 overtimeCRUDService.deleteOvertimeById(oid);
+    		 }
+    		 
     		 return "redirect:/manage/overtime";
     	 } 
     	 catch(Exception e) {
