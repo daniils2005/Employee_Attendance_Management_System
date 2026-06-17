@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My account</title>
+</head>
+	<body>
+		<a th:href="@{/home}">
+		    <button>Home</button>
+		</a>
+	    <h1>My account information</h1>
+	    <table style="width: 100%; border-collapse: collapse;">
+	        <tr style="border: 1px solid black;">
+				<form th:action="@{/account/change-username}" method="post">
+				    <td style="border: 1px solid black;">Username</td>
+				    <td style="border: 1px solid black;"><input type="text" name="newUsername" th:value="${user.username}"></td>
+				    <td style="border: 1px solid black;"><button type="submit">Save</button></td>
+				</form>
+			</tr>
+			<tr style="border: 1px solid black;">
+				<form th:action="@{/account/change-name}" method="post">
+				    <td style="border: 1px solid black;">Name</td>
+				    <td style="border: 1px solid black;"><input type="text" name="newName" th:value="${user.employee.name}"></td>
+				    <td style="border: 1px solid black;"><button type="submit">Save</button></td>
+				</form>
+			</tr>
+			<tr style="border: 1px solid black;">
+				<form th:action="@{/account/change-surname}" method="post">
+				    <td style="border: 1px solid black;">Surname</td>
+				    <td style="border: 1px solid black;"><input type="text" name="newSurname" th:value="${user.employee.surname}"></td>
+				    <td style="border: 1px solid black;"><button type="submit">Save</button></td>
+				</form>
+			</tr>
+			<tr style="border: 1px solid black;">
+				<td style="border: 1px solid black;">Person Code</td>
+				<td style="border: 1px solid black;" th:text="${user.employee.personCode}"></td>
+			</tr>
+			<tr style="border: 1px solid black;">
+				<form th:action="@{/account/change-number}" method="post">
+				    <td style="border: 1px solid black;">Number</td>
+				    <td style="border: 1px solid black;"><input type="tel" name="newNumber" th:value="${user.employee.number}"></td>
+				    <td style="border: 1px solid black;"><button type="submit">Save</button></td>
+				</form>
+			</tr>
+			<tr style="border: 1px solid black;">
+				<form th:action="@{/account/change-email}" method="post">
+				    <td style="border: 1px solid black;">Email</td>
+				    <td style="border: 1px solid black;"><input type="email" name="newEmail" th:value="${user.employee.email}"></td>
+				    <td style="border: 1px solid black;"><button type="submit">Save</button></td>
+				</form>
+			</tr>
+			<tr style="border: 1px solid black;">
+				<td style="border: 1px solid black;">Position</td>
+				<td style="border: 1px solid black;" th:text="${user.employee.position}"></td>
+			</tr>
+			<tr style="border: 1px solid black;">
+				<td style="border: 1px solid black;">Status</td>
+				<td style="border: 1px solid black;" th:text="${user.employee.status}"></td>
+			</tr>
+			<tr style="border: 1px solid black;">
+				<td style="border: 1px solid black;">Hourly rate</td>
+				<td style="border: 1px solid black;" th:text="${user.employee.hourlyRate}"></td>
+			</tr>
+			<tr style="border: 1px solid black;">
+				<td style="border: 1px solid black;">Department</td>
+				<td style="border: 1px solid black;" th:text="${user.employee.department.departmentName}"></td>
+	        </tr>
+	    </table>
+		<h2>Change Password</h2>
+		<form th:action="@{/account/change-password}" method="post">
+		    <input type="password" name="currentPassword" placeholder="Current password" required>
+		    <input type="password" name="newPassword" placeholder="New password" required>
+		    <input type="password" name="confirmPassword" placeholder="Confirm new password" required>
+		    <button type="submit">Update Password</button>
+		</form>
+	</body>
+</html>
