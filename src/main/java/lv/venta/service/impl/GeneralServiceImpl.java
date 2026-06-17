@@ -16,6 +16,7 @@ import lv.venta.repo.IVacationRepo;
 import lv.venta.service.IAttendanceCRUDService;
 import lv.venta.service.IEmployeeCRUDService;
 import lv.venta.service.IGeneralService;
+import lv.venta.service.IOvertimeCRUDService;
 
 @Service
 public class GeneralServiceImpl implements IGeneralService {
@@ -25,6 +26,9 @@ public class GeneralServiceImpl implements IGeneralService {
 	
 	@Autowired
 	private IOvertimeRepo overtimeRepo;
+	
+	@Autowired
+	private IOvertimeCRUDService overtimeService;
 	
 	@Autowired
 	private IVacationRepo vacationRepo;
@@ -143,18 +147,9 @@ public class GeneralServiceImpl implements IGeneralService {
 		return result;
 	}
 	
-	public ArrayList<Attendance> selectAllAttendanceByEmployeeId(long id) throws Exception {
-
-	    employeeService.selectEmployeeById(id);
-
-	    ArrayList<Attendance> allAttendanceById =
-	            attendanceRepo.findByEmployeeEid(id);
-
-	    return allAttendanceById;
-	}
 	
 	public ArrayList<Attendance> selectAllAttendanceByEmployeeIdAndDateMonth(long id, LocalDate timeCheck) throws Exception{
-		ArrayList<Attendance> allAttendanceById = selectAllAttendanceByEmployeeId(id);
+		ArrayList<Attendance> allAttendanceById = selectAllAttendancesForEmployeeId(id);
 		ArrayList<Attendance> allAttendanceByDate = new ArrayList<Attendance>();
 		for (int i = 0; i < allAttendanceById.size(); i++) {
 			if(allAttendanceById.get(i).getWorkDate().getYear() == timeCheck.getYear() && allAttendanceById.get(i).getWorkDate().getMonth() == timeCheck.getMonth()) {
@@ -174,6 +169,29 @@ public class GeneralServiceImpl implements IGeneralService {
 			}
 		}
 		return result;
+	}
+	
+	public ArrayList<Overtime> selectAllOvertimeByEmployeeDateMonth(LocalDate timeCheck) throws Exception{
+		ArrayList<Overtime> result = new ArrayList<Overtime>();
+		ArrayList<Overtime> allOvertime = overtimeService.selectAllOvertimes();
+		for (int i = 0; i < allOvertime.size(); i++) {
+			if(allOvertime.get(i).getDate().getYear() == timeCheck.getYear() && allOvertime.get(i).getDate().getMonth() == timeCheck.getMonth()) {
+				result.add(allOvertime.get(i));
+				
+			}
+		}
+		return result;
+	}
+	public ArrayList<Overtime> selectAllOvertimeByEmployeeIdAndDateMonth(long id, LocalDate timeCheck) throws Exception{
+		ArrayList<Overtime> allOvertimeById = selectAllOvertimesForEmployeeId(id);
+		ArrayList<Overtime> allOvertimeByDate = new ArrayList<Overtime>();
+		for (int i = 0; i < allOvertimeById.size(); i++) {
+			if(allOvertimeById.get(i).getDate().getYear() == timeCheck.getYear() && allOvertimeById.get(i).getDate().getMonth() == timeCheck.getMonth()) {
+				allOvertimeByDate.add(allOvertimeById.get(i));
+				
+			}
+		}
+		return allOvertimeByDate;
 	}
 
 }

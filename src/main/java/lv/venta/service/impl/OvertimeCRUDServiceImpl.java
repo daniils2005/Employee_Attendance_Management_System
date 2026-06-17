@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import lv.venta.model.Employee;
 import lv.venta.model.Overtime;
+import lv.venta.model.enums.RequestStatus;
 import lv.venta.repo.IOvertimeRepo;
 import lv.venta.service.IOvertimeCRUDService;
 
@@ -76,6 +77,24 @@ public class OvertimeCRUDServiceImpl implements IOvertimeCRUDService {
 		overtimeForUpdating.setDescription(newDescription);
 		overtimeForUpdating.setEmployee(newEmployee);
 		overtimeRepo.save(overtimeForUpdating);
+	}
+	public void insertNewOvertimeWithDateAndStatusAndOvertimeRate(float newOvertimeHours, String newDescription, Employee newEmployee, LocalDate date, RequestStatus status, float overtimeRate) throws Exception{
+		if(newOvertimeHours < 0 || newDescription == null || newEmployee == null) {
+			throw new Exception("One or more input arguments are invalid");
+		}
+		
+
+		Overtime newOvertime = new Overtime(newOvertimeHours, newDescription, newEmployee);
+		if(date == null) {
+			newOvertime.setDate(LocalDate.now());
+		}
+		else {
+			newOvertime.setDate(date);
+		}
+		newOvertime.setStatus(status);
+		newOvertime.setOvertimeRate(overtimeRate);
+		overtimeRepo.save(newOvertime);
+		
 	}
 	
 }

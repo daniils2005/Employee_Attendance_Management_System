@@ -38,8 +38,11 @@
     <a th:href="@{/manage/overtime(sort='dateAsc', date=${param.date}, id=${param.id})}"><button>Sort date asc</button></a>
 	<a th:href="@{/manage/overtime(sort='dateDesc', date=${param.date}, id=${param.id})}"><button>Sort date desc</button></a>
     
-	<a th:href="@{/manage/overtime(sort='hoursAsc', date=${param.date}, id=${param.id})}"><button>Sort hours worked asc</button></a>
-	<a th:href="@{/manage/overtime(sort='hoursDesc', date=${param.date}, id=${param.id})}"><button>Sort hours worked desc</button></a>
+	<a th:href="@{/manage/overtime(sort='overHoursAsc', date=${param.date}, id=${param.id})}"><button>Sort overtime hours asc</button></a>
+	<a th:href="@{/manage/overtime(sort='overHoursDesc', date=${param.date}, id=${param.id})}"><button>Sort overtime hours desc</button></a>
+	<a th:href="@{/manage/overtime(sort='overHoursRateAsc', date=${param.date}, id=${param.id})}"><button>Sort rate asc</button></a>
+	<a th:href="@{/manage/overtime(sort='overHoursRateDesc', date=${param.date}, id=${param.id})}"><button>Sort rate desc</button></a>
+	<a th:href="@{/manage/overtime(sort='statusSort', date=${param.date}, id=${param.id})}"><button>Sort status</button></a>
 
 </div>
 

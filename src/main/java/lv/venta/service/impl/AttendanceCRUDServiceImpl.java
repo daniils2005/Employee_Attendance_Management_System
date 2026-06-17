@@ -71,7 +71,12 @@ public class AttendanceCRUDServiceImpl implements IAttendanceCRUDService {
 			throw new Exception("Can't register an attendance for employee that doesn't exist");
 		}
 		Attendance newAttendance = new Attendance(hoursWorked, employee);
-		newAttendance.setWorkDate(date);
+		if(date == null) {
+			newAttendance.setWorkDate(LocalDate.now());
+		}
+		else {
+			newAttendance.setWorkDate(date);
+		}
 		attendanceRepo.save(newAttendance);
 	}
 

@@ -22,12 +22,15 @@ public interface IGeneralService {
 	public abstract ArrayList<Overtime> selectAllOvertimesThisMonthForEmployeeId(long eid) throws Exception;
 	
 	public abstract float calculateSalaryThisMonthForEmployeeId(long eid) throws Exception;
-	
-	public ArrayList<Attendance> selectAllAttendanceByEmployeeId(long id) throws Exception;
+
 
 	public ArrayList<Attendance> selectAllAttendanceByEmployeeIdAndDateMonth(long id, LocalDate timeCheck) throws Exception;
 	
 	public ArrayList<Attendance> selectAllAttendanceByEmployeeDateMonth(LocalDate timeCheck) throws Exception;
+	
+	public ArrayList<Overtime> selectAllOvertimeByEmployeeDateMonth(LocalDate timeCheck) throws Exception;
+	
+	public ArrayList<Overtime> selectAllOvertimeByEmployeeIdAndDateMonth(long id, LocalDate timeCheck) throws Exception;
 	
 
 	
