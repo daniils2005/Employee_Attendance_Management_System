@@ -235,10 +235,10 @@ public class GeneralServiceController {
     }
     
     @GetMapping("/manage/attendance")
-    public String getattendanceByEmployee(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, Model model) {
+    public String getAttendanceByEmployee(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
     	try {  
     		ArrayList<Attendance> attendances;
-			if (id != null && date != null) {
+			if (id != null && date != null ) {
 				attendances = generalService.selectAllAttendanceByEmployeeIdAndDateMonth(id, date);
 			}
 			else if (id != null) {
@@ -252,31 +252,26 @@ public class GeneralServiceController {
 			}
 
 		 
-			if ("nameAsc".equals(sort)) {
-			    attendances.sort(Comparator.comparing(a -> a.getEmployee().getName()));
+			if ("id".equals(sort) && "asc".equals(order)) {
+				 attendances.sort(Comparator.comparing(a -> a.getEmployee().getEid()));
+			   
 			}
-			else if ("nameDesc".equals(sort)) {
-			    attendances.sort(Comparator.comparing((Attendance a) -> a.getEmployee().getName()).reversed());
+			else if ("id".equals(sort) && "desc".equals(order)) {
+				 attendances.sort(Comparator.comparing(a -> ((Attendance) a).getEmployee().getEid()).reversed());
 			}
-			else if ("idAsc".equals(sort)) {
-			    attendances.sort(Comparator.comparing(a -> a.getEmployee().getEid()));
+			else if ("surname".equals(sort) && "asc".equals(order)) {
+			    attendances.sort(Comparator.comparing(a -> a.getEmployee().getSurname()));
 			}
-			else if ("idDesc".equals(sort)) {
-			    attendances.sort(Comparator.comparing((Attendance a) -> a.getEmployee().getEid()).reversed());
+			else if ("surname".equals(sort) && "desc".equals(order)) {
+			    attendances.sort(Comparator.comparing(a -> ((Attendance) a).getEmployee().getSurname()).reversed());
 			}
-			else if ("dateAsc".equals(sort)) {
+			else if ("date".equals(sort) && "asc".equals(order)) {
 			    attendances.sort(Comparator.comparing(Attendance::getWorkDate));
 			}
-			else if ("dateDesc".equals(sort)) {
+			else if ("date".equals(sort) && "desc".equals(order)) {
 			    attendances.sort(Comparator.comparing(Attendance::getWorkDate).reversed());
 			}
-			else if ("hoursAsc".equals(sort)) {
-				attendances.sort(Comparator.comparing(Attendance::getHoursWorked));
-			}
-			else if ("hoursDesc".equals(sort)) {
-				attendances.sort(Comparator.comparing(Attendance::getHoursWorked).reversed());
-			}
-
+	
 			model.addAttribute("attendances", attendances);
 
 			return "manage-attendance-page";
@@ -287,10 +282,10 @@ public class GeneralServiceController {
         }
     }
     @PostMapping("/manage/attendance")
-    public String postattendanceByEmployee(@RequestParam(required = false) Long id, @RequestParam float hoursWorked, @RequestParam(required = false) LocalDate date, Model model) {
+    public String postAttendanceByEmployee(@RequestParam(required = false) Long eid, @RequestParam float hoursWorked, @RequestParam(required = false) LocalDate date, Model model) {
     	 
     	 try {
-    		 Employee employee = employeeCRUDService.selectEmployeeById(id);
+    		 Employee employee = employeeCRUDService.selectEmployeeById(eid);
     		  attendanceCRUDService.insertNewAttendanceWithDate(hoursWorked, employee, date);
     		 return "redirect:/manage/attendance";
     	 } 
@@ -299,6 +294,9 @@ public class GeneralServiceController {
     		 return "error-page";
     	 }
     }
+    
+    
+    
     
     @GetMapping("/manage/overtime")
     public String getOvertimeByEmployees(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, Model model) {
