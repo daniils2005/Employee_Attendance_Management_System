@@ -20,9 +20,6 @@ public class OvertimeCRUDServiceImpl implements IOvertimeCRUDService {
 	
 	@Override
 	public ArrayList<Overtime> selectAllOvertimes() throws Exception {
-		if(overtimeRepo.count() == 0) {
-			throw new Exception("Overtime table is empty");
-		}
 		ArrayList<Overtime> result = (ArrayList<Overtime>)overtimeRepo.findAll();
 		return result;
 	}
@@ -76,6 +73,21 @@ public class OvertimeCRUDServiceImpl implements IOvertimeCRUDService {
 		overtimeForUpdating.setOvertimeRate(newOvertimeRate);
 		overtimeForUpdating.setDescription(newDescription);
 		overtimeForUpdating.setEmployee(newEmployee);
+		overtimeRepo.save(overtimeForUpdating);
+	}
+	public void updateOvertimeById(long id, float newOvertimeHours, float newOvertimeRate, String newDescription, Employee newEmployee, LocalDate date) throws Exception {
+		if(id <= 0 || newOvertimeHours < 0 || newOvertimeRate < 0 || newDescription == null || newEmployee == null) {
+			throw new Exception("One or more input arguments are invalid");
+		}
+		if(!overtimeRepo.existsById(id)) {
+			throw new Exception("Overtime with id = " + id + " doesn't exist");
+		}
+		Overtime overtimeForUpdating = overtimeRepo.findById(id).get();
+		overtimeForUpdating.setOvertimeHours(newOvertimeHours);
+		overtimeForUpdating.setOvertimeRate(newOvertimeRate);
+		overtimeForUpdating.setDescription(newDescription);
+		overtimeForUpdating.setEmployee(newEmployee);
+		overtimeForUpdating.setDate(date);
 		overtimeRepo.save(overtimeForUpdating);
 	}
 	public void insertNewOvertimeWithDateAndStatusAndOvertimeRate(float newOvertimeHours, String newDescription, Employee newEmployee, LocalDate date, RequestStatus status, float overtimeRate) throws Exception{

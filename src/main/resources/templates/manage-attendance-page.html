@@ -49,7 +49,7 @@
             <th style="border: 1px solid black;">Action</th>
         </tr>
         <tr>
-            <form th:action="@{/manage/attendance}" method="post">
+            <form th:action="@{/manage/attendance/add}" method="post">
                 <td style="border: 1px solid black;" th:text="${lastAid}"></td>
                 <td style="border: 1px solid black;"><input type="number" min="0" name="eid" required></td>
 				<td style="border: 1px solid black;"></td>
@@ -60,7 +60,7 @@
             </form>
         </tr>
         <tr th:each="attendance : ${attendances}">
-            <form th:action="@{/manage/attendance/update}" method="post">
+            <form th:action="@{/manage/attendance/update-or-delete}" method="post">
                 <td style="border: 1px solid black;"><input type="hidden" name="aid" th:value="${attendance.aid}" th:text="${attendance.aid}"></td>
                 <td style="border: 1px solid black;"><input type="number" min="0" name="eid" th:value="${attendance.employee.eid}"></td>
                 <td style="border: 1px solid black;" th:text="${attendance.employee.name}"></td>
