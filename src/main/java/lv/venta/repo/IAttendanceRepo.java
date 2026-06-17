@@ -17,4 +17,8 @@ public interface IAttendanceRepo extends CrudRepository<Attendance, Long> {
 
 	@Query(value = "SELECT * FROM attendance_table WHERE eid = :eid AND work_date between :min AND :max", nativeQuery = true)
 	ArrayList<Attendance> findByEmployeeIdThisMonth(@Param("eid") long eid, @Param("min") LocalDate min, @Param("max") LocalDate max);
+
+	ArrayList<Attendance> findAllByOrderByEmployee_NameDesc();
+
+	ArrayList<Attendance> findAllByOrderByEmployee_NameAsc();
 }

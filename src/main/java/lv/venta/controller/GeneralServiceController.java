@@ -1,6 +1,8 @@
 package lv.venta.controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lv.venta.helper.MyUserDetails;
+import lv.venta.model.Attendance;
 import lv.venta.model.Department;
 import lv.venta.model.Employee;
 import lv.venta.model.User;
@@ -229,23 +232,70 @@ public class GeneralServiceController {
     }
     
     @GetMapping("/manage/attendance")
-    public String attendanceByEmployee(@RequestParam(required = false) Long id, Model model) {
-        try {
+    public String getattendanceByEmployee(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) Long editingId, Model model) {
+    	try {  
+    		ArrayList<Attendance> attendances;
+    		model.addAttribute("editingId", editingId);
+			if (id != null && date != null) {
+				attendances = generalService.selectAllAttendanceByEmployeeIdAndDateMonth(id, date);
+			}
+			else if (id != null) {
+				attendances = generalService.selectAllAttendanceByEmployeeId(id);
+			}
+			else if (date != null) {
+				attendances = generalService.selectAllAttendanceByEmployeeDateMonth(date);
+			}
+			else {
+				attendances = attendanceCRUDService.selectAllAttendances();
+			}
 
-            if (id != null) {
-                model.addAttribute("attendances",
-                        generalService.selectAllAttendanceByEmployeeId(id));
-            } else {
-                model.addAttribute("attendances",
-                        attendanceCRUDService.selectAllAttendances());
-            }
+		 
+			if ("nameAsc".equals(sort)) {
+			    attendances.sort(Comparator.comparing(a -> a.getEmployee().getName()));
+			}
+			else if ("nameDesc".equals(sort)) {
+			    attendances.sort(Comparator.comparing((Attendance a) -> a.getEmployee().getName()).reversed());
+			}
+			else if ("idAsc".equals(sort)) {
+			    attendances.sort(Comparator.comparing(a -> a.getEmployee().getEid()));
+			}
+			else if ("idDesc".equals(sort)) {
+			    attendances.sort(Comparator.comparing((Attendance a) -> a.getEmployee().getEid()).reversed());
+			}
+			else if ("dateAsc".equals(sort)) {
+			    attendances.sort(Comparator.comparing(Attendance::getWorkDate));
+			}
+			else if ("dateDesc".equals(sort)) {
+			    attendances.sort(Comparator.comparing(Attendance::getWorkDate).reversed());
+			}
+			else if ("hoursAsc".equals(sort)) {
+				attendances.sort(Comparator.comparing(Attendance::getHoursWorked));
+			}
+			else if ("hoursDesc".equals(sort)) {
+				attendances.sort(Comparator.comparing(Attendance::getHoursWorked).reversed());
+			}
 
-            return "manage-attendance-page";
+			model.addAttribute("attendances", attendances);
 
-        } catch (Exception e) {
+			return "manage-attendance-page";
+    	}   
+        catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error-page";
         }
     }
+    @PostMapping("/manage/attendance")
+    public String postattendanceByEmployee(@RequestParam(required = false) Long id, @RequestParam float hoursWorked, @RequestParam(required = false) LocalDate date, Model model) {
+    	 
+    	 try {
+    		 Employee employee = employeeCRUDService.selectEmployeeById(id);
+    		  attendanceCRUDService.insertNewAttendanceWithDate(hoursWorked, employee, date);
+    		 return "redirect:/manage/attendance";
+    	 } catch(Exception e) {
+    		 model.addAttribute("errorMessage", e.getMessage());
+    		 return "error-page";
+    	 }
+    }
+ 
    
 }

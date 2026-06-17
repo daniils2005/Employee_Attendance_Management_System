@@ -2,6 +2,7 @@ package lv.venta.service.impl;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import lv.venta.model.Vacation;
 import lv.venta.repo.IAttendanceRepo;
 import lv.venta.repo.IOvertimeRepo;
 import lv.venta.repo.IVacationRepo;
+import lv.venta.service.IAttendanceCRUDService;
 import lv.venta.service.IEmployeeCRUDService;
 import lv.venta.service.IGeneralService;
 
@@ -29,6 +31,9 @@ public class GeneralServiceImpl implements IGeneralService {
 	
 	@Autowired
 	private IEmployeeCRUDService employeeService;
+	
+	@Autowired 
+	private IAttendanceCRUDService attendanceCRUDService;
 	
 	@Override
 	public ArrayList<Attendance> selectAllAttendancesForEmployeeId(long eid) throws Exception {
@@ -148,4 +153,27 @@ public class GeneralServiceImpl implements IGeneralService {
 	    return allAttendanceById;
 	}
 	
+	public ArrayList<Attendance> selectAllAttendanceByEmployeeIdAndDateMonth(long id, LocalDate timeCheck) throws Exception{
+		ArrayList<Attendance> allAttendanceById = selectAllAttendanceByEmployeeId(id);
+		ArrayList<Attendance> allAttendanceByDate = new ArrayList<Attendance>();
+		for (int i = 0; i < allAttendanceById.size(); i++) {
+			if(allAttendanceById.get(i).getWorkDate().getYear() == timeCheck.getYear() && allAttendanceById.get(i).getWorkDate().getMonth() == timeCheck.getMonth()) {
+				allAttendanceByDate.add(allAttendanceById.get(i));
+				
+			}
+		}
+		return allAttendanceByDate;
+	}
+	public ArrayList<Attendance> selectAllAttendanceByEmployeeDateMonth(LocalDate timeCheck) throws Exception{
+		ArrayList<Attendance> result = new ArrayList<Attendance>();
+		ArrayList<Attendance> allAttendance = attendanceCRUDService.selectAllAttendances();
+		for (int i = 0; i < allAttendance.size(); i++) {
+			if(allAttendance.get(i).getWorkDate().getYear() == timeCheck.getYear() && allAttendance.get(i).getWorkDate().getMonth() == timeCheck.getMonth()) {
+				result.add(allAttendance.get(i));
+				
+			}
+		}
+		return result;
+	}
+
 }

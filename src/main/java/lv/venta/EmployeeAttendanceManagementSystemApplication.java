@@ -68,6 +68,7 @@ public class EmployeeAttendanceManagementSystemApplication {
 				Attendance att3 = new Attendance(8, emp1);
 				Attendance att4 = new Attendance(10, emp2);
 				Attendance att5 = new Attendance(11, emp2);
+				att4.setWorkDate(LocalDate.of(2025, 12, 5));
 				attendRepo.saveAll(Arrays.asList(att1, att2, att3, att4, att5));
 				
 				Overtime ov2 = new Overtime(2, "Overtime", emp2);

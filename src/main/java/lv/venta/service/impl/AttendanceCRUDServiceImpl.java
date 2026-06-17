@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.time.LocalDate;
 import lv.venta.model.Attendance;
 import lv.venta.model.Employee;
 import lv.venta.repo.IAttendanceRepo;
@@ -61,6 +61,17 @@ public class AttendanceCRUDServiceImpl implements IAttendanceCRUDService {
 			throw new Exception("Can't register an attendance for employee that doesn't exist");
 		}
 		Attendance newAttendance = new Attendance(hoursWorked, employee);
+		attendanceRepo.save(newAttendance);
+	}
+	public void insertNewAttendanceWithDate(float hoursWorked, Employee employee, LocalDate date) throws Exception{
+		if(hoursWorked < 0 || employee == null) {
+			throw new Exception("One or more input arguments are invalid");
+		}
+		if(!employeeRepo.existsByPersonCode(employee.getPersonCode())) {
+			throw new Exception("Can't register an attendance for employee that doesn't exist");
+		}
+		Attendance newAttendance = new Attendance(hoursWorked, employee);
+		newAttendance.setWorkDate(date);
 		attendanceRepo.save(newAttendance);
 	}
 

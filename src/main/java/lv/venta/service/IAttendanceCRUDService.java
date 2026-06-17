@@ -1,5 +1,6 @@
 package lv.venta.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import lv.venta.model.Attendance;
@@ -14,6 +15,7 @@ public interface IAttendanceCRUDService {
 	public abstract void deleteAttendanceById(long id) throws Exception;
 	
 	public abstract void insertNewAttendance(float hoursWorked, Employee employee) throws Exception;
+	public abstract void insertNewAttendanceWithDate(float hoursWorked, Employee employee, LocalDate date) throws Exception;
 	
 	public abstract void updateAttendanceById(long id, float hoursWorked, Employee employee) throws Exception;
 }
