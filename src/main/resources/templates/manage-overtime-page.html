@@ -6,119 +6,169 @@
 
 <body>
 
-<a th:href="@{/home}">
-    <button>Home</button>
-</a>
-
-<h1>Manage Overtime</h1>
-
-
-<h2>Overtime</h2>
-<h3>Filter</h3>
-<form th:action="@{/manage/overtime}" method="get">
-
-    <input type="number" name="id" placeholder="Enter Employee ID">
-
-    <input type="date" name="date">
-
-    <button type="submit">Search</button>
-
-    <a th:href="@{/manage/overtime}">
-        <button type="button">Reset</button>
+    <a th:href="@{/home}">
+        <button>Home</button>
     </a>
 
-</form>
+    <h1>Manage Overtime</h1>
 
-<div style="margin-bottom: 10px;">
-	<a th:href="@{/manage/overtime(sort='idAsc', date=${param.date}, id=${param.id})}"><button>Sort id asc</button></a>
-	<a th:href="@{/manage/overtime(sort='idDesc', date=${param.date}, id=${param.id})}"><button>Sort id desc</button></a>
-  	<a th:href="@{/manage/overtime(sort='nameAsc', date=${param.date}, id=${param.id})}"><button>Sort A-Z</button></a>
-	<a th:href="@{/manage/overtime(sort='nameDesc', date=${param.date}, id=${param.id})}"><button>Sort Z-A</button></a>
+    <h2>Search Overtime</h2>
 
-    <a th:href="@{/manage/overtime(sort='dateAsc', date=${param.date}, id=${param.id})}"><button>Sort date asc</button></a>
-	<a th:href="@{/manage/overtime(sort='dateDesc', date=${param.date}, id=${param.id})}"><button>Sort date desc</button></a>
-    
-	<a th:href="@{/manage/overtime(sort='overHoursAsc', date=${param.date}, id=${param.id})}"><button>Sort overtime hours asc</button></a>
-	<a th:href="@{/manage/overtime(sort='overHoursDesc', date=${param.date}, id=${param.id})}"><button>Sort overtime hours desc</button></a>
-	<a th:href="@{/manage/overtime(sort='overHoursRateAsc', date=${param.date}, id=${param.id})}"><button>Sort rate asc</button></a>
-	<a th:href="@{/manage/overtime(sort='overHoursRateDesc', date=${param.date}, id=${param.id})}"><button>Sort rate desc</button></a>
-	<a th:href="@{/manage/overtime(sort='statusSort', date=${param.date}, id=${param.id})}"><button>Sort status</button></a>
+    <form th:action="@{/manage/overtime}" method="get">
 
-</div>
+        <input type="number" name="id" placeholder="Enter Employee ID">
 
-<table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+        <input type="date" name="date">
 
-	        <tr>
-	        	<th style="border: 1px solid black;">Id</th>
-	        	<th style="border: 1px solid black;">Employee</th>
-	            <th style="border: 1px solid black;">Date</th>
-	            <th style="border: 1px solid black;">Overtime hours</th>
-				<th style="border: 1px solid black;">Overtime rate</th>
-				<th style="border: 1px solid black;">Description</th>
-				<th style="border: 1px solid black;">Status</th>
-				<th style="border: 1px solid black;">Action</th>
-	        </tr>
-   <tr>
-    <form th:action="@{/manage/overtime}" method="post">
+        <button type="submit">Search</button>
 
-        <td style="border: 1px solid black;">
-            <input type="number" name="id" placeholder="Employee ID" required>
-        </td>
-        <td style="border: 1px solid black;">
-            -
-        </td>
-        <td style="border: 1px solid black;">
-            <input type="date" name="date" required>
-        </td>
-
-        <td style="border: 1px solid black;">
-            <input type="number" step="0.5" min="0" name="overtimeHours" required>
-        </td>
-         <td style="border: 1px solid black;">
-            <input type="number" step="0.1" min="0" name="overtimeRate" required>
-        </td>
-         <td style="border: 1px solid black;">
-            <input type="text" name="description">
-        </td>
-         <td style="border: 1px solid black;">
-            <select name="status" required>
-             <option value="IZSKATISANA">IZSKATISANA</option>
-             <option value="APSTIPRINATS">APSTIPRINATS</option>
-             <option value="NORAIDITS">NORAIDITS</option>
-        </select>
-
-        <td style="border: 1px solid black;">
-            <button type="submit">Add</button>
-        </td>
+        <a th:href="@{/manage/overtime}">
+            <button type="button">Reset</button>
+        </a>
 
     </form>
-    
-	</tr>
 
-    <tr th:each="overtime : ${overtimes}">
-    	<td style="border: 1px solid black;"
-            th:text="${overtime.employee.eid}">
-        </td>
-    	<td style="border: 1px solid black;"
-            th:text="${overtime.employee.name + ' ' + overtime.employee.surname}">
-        </td>
-        <td style="border: 1px solid black;"
-            th:text="${overtime.date}">
-        </td>
+    <h2>Attendance</h2>
 
-        <td style="border: 1px solid black;"
-            th:text="${overtime.overtimeHours}">
-        </td>
-        <td style="border: 1px solid black;"
-            th:text="${overtime.overtimeRate}">
-        </td>
-        <td style="border: 1px solid black;"
-            th:text="${overtime.description}">
-        </td>
-        <td style="border: 1px solid black;"
-            th:text="${overtime.status}">
-        </td>
-    </tr>
-</table>
+    <form th:action="@{/manage/overtime}" method="get">
+        <label>Sort by:</label>
+        <select name="sort">
+            <option value="id">Employee ID</option>
+            <option value="surname">Employee surname</option>
+            <option value="date">Date</option>
+        </select>
+
+        <label>Order:</label>
+        <select name="order">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+        </select>
+
+        <button type="submit">Sort</button>
+    </form>
+
+    <table style="width: 100%; border-collapse: collapse;">
+
+        <tr>
+            <th style="border: 1px solid black;">Overtime id</th>
+            <th style="border: 1px solid black;">Employee id</th>
+             <th style="border: 1px solid black;">Employee name</th>
+              <th style="border: 1px solid black;">Employee surname</th>
+            <th style="border: 1px solid black;">Date</th>
+            <th style="border: 1px solid black;">Overtime hours worked</th>
+            <th style="border: 1px solid black;">Overtime rate</th>
+            <th style="border: 1px solid black;">Description</th>
+            <th style="border: 1px solid black;">Status</th>
+            <th style="border: 1px solid black;">Action</th>
+        </tr>
+
+        <tr>
+            <form th:action="@{/manage/overtime/add}" method="post">
+
+                <td style="border: 1px solid black;"
+                    th:text="${lastAid}">
+                </td>
+
+                <td style="border: 1px solid black;">
+                    <input type="number" min="0" name="eid" required>
+                </td>
+				<td style="border: 1px solid black;"></td>
+                <td style="border: 1px solid black;"></td>
+                <td style="border: 1px solid black;">
+                    <input type="date" name="date" required>
+                </td>
+
+	        <td style="border: 1px solid black;">
+	            <input type="number" step="0.5" min="0" name="overtimeHours" required>
+	        </td>
+	         <td style="border: 1px solid black;">
+	            <input type="number" step="0.1" min="0" name="overtimeRate" required>
+	        </td>
+	         <td style="border: 1px solid black;">
+	            <input type="text" name="description">
+	        </td>
+              <td style="border: 1px solid black;">
+			          <select name="status" required>
+			             <option value="IZSKATISANA">IZSKATISANA</option>
+			             <option value="APSTIPRINATS">APSTIPRINATS</option>
+			             <option value="NORAIDITS">NORAIDITS</option>
+			       	 </select>
+
+                <td style="border: 1px solid black;">
+                    <button type="submit">Add</button>
+                </td>
+
+            </form>
+        </tr>
+
+        <tr th:each="overtime : ${overtimes}">
+
+            <form th:action="@{/manage/overtime/update-or-delete}" method="post">
+
+                <td style="border: 1px solid black;">
+                    <input type="hidden" name="aid" th:value="${overtime.oid}">
+                    <span th:text="${overtime.oid}"></span>
+                </td>
+
+                <td style="border: 1px solid black;">
+                    <input type="number" min="0" name="eid" th:value="${overtime.employee.eid}">
+                </td>
+                <td style="border: 1px solid black;" th:text="${overtime.employee.name}">
+       			 </td>
+                <td style="border: 1px solid black;" th:text="${overtime.employee.surname}">
+       			 </td>
+       			 
+
+                <td style="border: 1px solid black;">
+                    <input type="date"
+                           name="date"
+                           th:value="${overtime.date}">
+                </td>
+
+                <td style="border: 1px solid black;">
+                    <input type="number"
+                           min="0"
+                           max="24"
+                           step="0.5"
+                           name="overtimeWorked"
+                           th:value="${overtime.overtimeHours}">
+                </td>
+                 <td style="border: 1px solid black;">
+                    <input type="number"
+                           min="0"
+                           max="24"
+                           step="0.5"
+                           name="overtimeWorked"
+                           th:value="${overtime.overtimeRate}">
+                </td>
+                 <td style="border: 1px solid black;">
+                    <input type="number"
+                           min="0"
+                           max="24"
+                           step="0.5"
+                           name="overtimeWorked"
+                           th:value="${overtime.description}">
+                </td>
+		          <td style="border: 1px solid black;"
+		            th:text="${overtime.status}">
+		        </td>
+
+                <td style="border: 1px solid black;">
+                    <button type="submit" name="action" value="save">Save
+                    </button>
+
+                    <button type="submit"
+                            name="action"
+                            value="delete">
+                        Delete
+                    </button>
+                </td>
+
+            </form>
+
+        </tr>
+
+    </table>
+
 </body>
 </html>

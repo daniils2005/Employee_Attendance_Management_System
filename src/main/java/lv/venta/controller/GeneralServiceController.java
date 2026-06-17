@@ -375,8 +375,8 @@ public class GeneralServiceController {
    		 return "error-page";
    	 	}
     }
-    @PostMapping("/manage/overtime")
-    public String postOvertimeByEmployees(@RequestParam(required = false) Long id, @RequestParam float overtimeHours, @RequestParam float overtimeRate, @RequestParam(required = false) String description, @RequestParam(required = false) LocalDate date, @RequestParam RequestStatus status, Model model) {
+    @PostMapping("/manage/overtime/add")
+    public String addOvertimeByEmployees(@RequestParam(required = false) Long id, @RequestParam float overtimeHours, @RequestParam float overtimeRate, @RequestParam(required = false) String description, @RequestParam(required = false) LocalDate date, @RequestParam RequestStatus status, Model model) {
     	 
     	 try {
     		 Employee employee = employeeCRUDService.selectEmployeeById(id);
