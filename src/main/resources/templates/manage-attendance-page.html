@@ -59,7 +59,6 @@
                 <td style="border: 1px solid black;"><button type="submit">Add</button></td>
             </form>
         </tr>
-
         <tr th:each="attendance : ${attendances}">
             <form th:action="@{/manage/attendance/update}" method="post">
                 <td style="border: 1px solid black;"><input type="hidden" name="aid" th:value="${attendance.aid}" th:text="${attendance.aid}"></td>
