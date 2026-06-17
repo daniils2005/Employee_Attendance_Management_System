@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Manage Overtime</title>
+</head>
+
+<body>
+
+<a th:href="@{/home}">
+    <button>Home</button>
+</a>
+
+<h1>Manage Overtime</h1>
+
+
+<h2>Overtime</h2>
+<h3>Filter</h3>
+<form th:action="@{/manage/overtime}" method="get">
+
+    <input type="number" name="id" placeholder="Enter Employee ID">
+
+    <input type="date" name="date">
+
+    <button type="submit">Search</button>
+
+    <a th:href="@{/manage/overtime}">
+        <button type="button">Reset</button>
+    </a>
+
+</form>
+
+<div style="margin-bottom: 10px;">
+	<a th:href="@{/manage/overtime(sort='idAsc', date=${param.date}, id=${param.id})}"><button>Sort id asc</button></a>
+	<a th:href="@{/manage/overtime(sort='idDesc', date=${param.date}, id=${param.id})}"><button>Sort id desc</button></a>
+  	<a th:href="@{/manage/overtime(sort='nameAsc', date=${param.date}, id=${param.id})}"><button>Sort A-Z</button></a>
+	<a th:href="@{/manage/overtime(sort='nameDesc', date=${param.date}, id=${param.id})}"><button>Sort Z-A</button></a>
+
+    <a th:href="@{/manage/overtime(sort='dateAsc', date=${param.date}, id=${param.id})}"><button>Sort date asc</button></a>
+	<a th:href="@{/manage/overtime(sort='dateDesc', date=${param.date}, id=${param.id})}"><button>Sort date desc</button></a>
+    
+	<a th:href="@{/manage/overtime(sort='hoursAsc', date=${param.date}, id=${param.id})}"><button>Sort hours worked asc</button></a>
+	<a th:href="@{/manage/overtime(sort='hoursDesc', date=${param.date}, id=${param.id})}"><button>Sort hours worked desc</button></a>
+
+</div>
+
+<table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+
+	        <tr>
+	        	<th style="border: 1px solid black;">Id</th>
+	        	<th style="border: 1px solid black;">Employee</th>
+	            <th style="border: 1px solid black;">Date</th>
+	            <th style="border: 1px solid black;">Overtime hours</th>
+				<th style="border: 1px solid black;">Overtime rate</th>
+				<th style="border: 1px solid black;">Description</th>
+				<th style="border: 1px solid black;">Status</th>
+				<th style="border: 1px solid black;">Action</th>
+	        </tr>
+   <tr>
+    <form th:action="@{/manage/overtime}" method="post">
+
+        <td style="border: 1px solid black;">
+            <input type="number" name="id" placeholder="Employee ID" required>
+        </td>
+        <td style="border: 1px solid black;">
+            -
+        </td>
+        <td style="border: 1px solid black;">
+            <input type="date" name="date" required>
+        </td>
+
+        <td style="border: 1px solid black;">
+            <input type="number" step="0.5" min="0" name="overtimeHours" required>
+        </td>
+         <td style="border: 1px solid black;">
+            <input type="number" step="0.1" min="0" name="overtimeRate" required>
+        </td>
+         <td style="border: 1px solid black;">
+            <input type="text" name="description">
+        </td>
+         <td style="border: 1px solid black;">
+            <select name="status" required>
+             <option value="IZSKATISANA">IZSKATISANA</option>
+             <option value="APSTIPRINATS">APSTIPRINATS</option>
+             <option value="NORAIDITS">NORAIDITS</option>
+        </select>
+
+        <td style="border: 1px solid black;">
+            <button type="submit">Add</button>
+        </td>
+
+    </form>
+    
+	</tr>
+
+    <tr th:each="overtime : ${overtimes}">
+    	<td style="border: 1px solid black;"
+            th:text="${overtime.employee.eid}">
+        </td>
+    	<td style="border: 1px solid black;"
+            th:text="${overtime.employee.name + ' ' + overtime.employee.surname}">
+        </td>
+        <td style="border: 1px solid black;"
+            th:text="${overtime.date}">
+        </td>
+
+        <td style="border: 1px solid black;"
+            th:text="${overtime.overtimeHours}">
+        </td>
+        <td style="border: 1px solid black;"
+            th:text="${overtime.overtimeRate}">
+        </td>
+        <td style="border: 1px solid black;"
+            th:text="${overtime.description}">
+        </td>
+        <td style="border: 1px solid black;"
+            th:text="${overtime.status}">
+        </td>
+    </tr>
+</table>
+</body>
+</html>

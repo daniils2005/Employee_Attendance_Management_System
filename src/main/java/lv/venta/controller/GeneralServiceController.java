@@ -20,6 +20,7 @@ import lv.venta.helper.MyUserDetails;
 import lv.venta.model.Attendance;
 import lv.venta.model.Department;
 import lv.venta.model.Employee;
+import lv.venta.model.Overtime;
 import lv.venta.model.User;
 import lv.venta.model.enums.Position;
 import lv.venta.model.enums.Status;
@@ -52,6 +53,7 @@ public class GeneralServiceController {
 	
 	@Autowired
 	private IEmployeeCRUDService employeeCRUDService;
+	
 	
 	private User getCurrentUser() {
 	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -235,7 +237,6 @@ public class GeneralServiceController {
     public String getattendanceByEmployee(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) Long editingId, Model model) {
     	try {  
     		ArrayList<Attendance> attendances;
-    		model.addAttribute("editingId", editingId);
 			if (id != null && date != null) {
 				attendances = generalService.selectAllAttendanceByEmployeeIdAndDateMonth(id, date);
 			}
@@ -291,10 +292,24 @@ public class GeneralServiceController {
     		 Employee employee = employeeCRUDService.selectEmployeeById(id);
     		  attendanceCRUDService.insertNewAttendanceWithDate(hoursWorked, employee, date);
     		 return "redirect:/manage/attendance";
-    	 } catch(Exception e) {
+    	 } 
+    	 catch(Exception e) {
     		 model.addAttribute("errorMessage", e.getMessage());
     		 return "error-page";
     	 }
+    }
+    
+    @GetMapping("/manage/overtime")
+    public String getOvertimeByEmployees(Model model) {
+    	try {
+    		//ArrayList<Overtime> overtime;
+    		model.addAttribute("overtimes", overtimeCRUDService.selectAllOvertimes());
+    		return "manage-overtime-page";
+    	}
+    	catch(Exception e) {
+   		 model.addAttribute("errorMessage", e.getMessage());
+   		 return "error-page";
+   	 }
     }
  
    
