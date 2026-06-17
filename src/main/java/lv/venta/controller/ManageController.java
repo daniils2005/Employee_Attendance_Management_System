@@ -51,7 +51,6 @@ public class ManageController {
 			else {
 				attendances = attendanceCRUDService.selectAllAttendances();
 			}
-
 		 
 			if ("id".equals(sort) && "asc".equals(order)) {
 				 attendances.sort(Comparator.comparing(a -> a.getEmployee().getEid())); 
@@ -71,7 +70,8 @@ public class ManageController {
 			else if ("date".equals(sort) && "desc".equals(order)) {
 			    attendances.sort(Comparator.comparing(Attendance::getWorkDate).reversed());
 			}
-	
+			long lastAid = attendances.getLast().getAid() + 1;
+			model.addAttribute("lastAid", lastAid);
 			model.addAttribute("attendances", attendances);
 			return "manage-attendance-page";
     	}   

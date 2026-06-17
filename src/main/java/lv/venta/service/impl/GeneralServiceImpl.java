@@ -147,18 +147,17 @@ public class GeneralServiceImpl implements IGeneralService {
 		return result;
 	}
 	
-	
 	public ArrayList<Attendance> selectAllAttendanceByEmployeeIdAndDateMonth(long id, LocalDate timeCheck) throws Exception{
 		ArrayList<Attendance> allAttendanceById = selectAllAttendancesForEmployeeId(id);
 		ArrayList<Attendance> allAttendanceByDate = new ArrayList<Attendance>();
 		for (int i = 0; i < allAttendanceById.size(); i++) {
 			if(allAttendanceById.get(i).getWorkDate().getYear() == timeCheck.getYear() && allAttendanceById.get(i).getWorkDate().getMonth() == timeCheck.getMonth()) {
 				allAttendanceByDate.add(allAttendanceById.get(i));
-				
 			}
 		}
 		return allAttendanceByDate;
 	}
+	
 	public ArrayList<Attendance> selectAllAttendanceByEmployeeDateMonth(LocalDate timeCheck) throws Exception{
 		ArrayList<Attendance> result = new ArrayList<Attendance>();
 		ArrayList<Attendance> allAttendance = attendanceCRUDService.selectAllAttendances();
@@ -182,13 +181,13 @@ public class GeneralServiceImpl implements IGeneralService {
 		}
 		return result;
 	}
+	
 	public ArrayList<Overtime> selectAllOvertimeByEmployeeIdAndDateMonth(long id, LocalDate timeCheck) throws Exception{
 		ArrayList<Overtime> allOvertimeById = selectAllOvertimesForEmployeeId(id);
 		ArrayList<Overtime> allOvertimeByDate = new ArrayList<Overtime>();
 		for (int i = 0; i < allOvertimeById.size(); i++) {
 			if(allOvertimeById.get(i).getDate().getYear() == timeCheck.getYear() && allOvertimeById.get(i).getDate().getMonth() == timeCheck.getMonth()) {
 				allOvertimeByDate.add(allOvertimeById.get(i));
-				
 			}
 		}
 		return allOvertimeByDate;
