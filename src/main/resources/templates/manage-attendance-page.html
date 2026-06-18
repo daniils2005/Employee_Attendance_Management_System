@@ -4,110 +4,114 @@
     <title>Manage Attendance</title>
 	<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-
-<body>
-
-	<p>User options</p>
-	<a th:href="@{/home}">
-	    <button>Home</button>
-	</a>
-	<a th:href="@{/attendance}">
-	    <button>My attendance</button>
-	</a>
-	<a th:href="@{/overtime}">
-	    <button>My overtime</button>
-	</a>
-	<a th:href="@{/vacation}">
-	    <button>My vacation</button>
-	</a>
-	<a th:href="@{/account}">
-	    <button>My user account</button>
-	</a>
-	<hr>
-	<div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
-	    <p>Admin options</p>
-	    <a th:href="@{/manage/attendance}">
-	        <button>Manage attendance</button>
-	    </a>
-	    <a th:href="@{/manage/overtime}">
-	        <button>Manage overtime</button>
-	    </a>
-	    <a th:href="@{/manage/vacation}">
-	        <button>Manage vacation</button>
-	    </a>
-	    <a th:href="@{/manage/department}">
-	        <button>Manage department</button>
-	    </a>
-	    <a th:href="@{/manage/employee}">
-	        <button>Manage employees</button>
-	    </a>
-	    <a th:href="@{/manage/user}">
-	        <button>Manage users</button>
-	    </a>
-		<hr>
-	</div>
-
-    <h1>Manage Attendance</h1>
-    <h2>Search Attendance</h2>
-
-    <form th:action="@{/manage/attendance}" method="get">
-        <input type="number" name="id" placeholder="Enter Employee ID">
-        <input type="date" name="date">
-        <button type="submit">Search</button>
-        <a th:href="@{/manage/attendance}"><button type="button">Reset</button></a>
-    </form>
-
-    <h2>Attendance</h2>
-
-    <form th:action="@{/manage/attendance}" method="get">
-        <label>Sort by:</label>
-        <select name="sort">
-            <option value="id">Employee ID</option>
-            <option value="surname">Employee surname</option>
-            <option value="date">Date</option>
-        </select>
-
-        <label>Order:</label>
-        <select name="order">
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option>
-        </select>
-        <button type="submit">Sort</button>
-    </form>
-
-    <table style="width: 100%; border-collapse: collapse;">
-        <tr>
-            <th style="border: 1px solid black;">Attendance id</th>
-            <th style="border: 1px solid black;">Employee id</th>
-            <th style="border: 1px solid black;">Employee name</th>
-            <th style="border: 1px solid black;">Employee surname</th>
-            <th style="border: 1px solid black;">Date</th>
-            <th style="border: 1px solid black;">Hours worked</th>
-            <th style="border: 1px solid black;">Action</th>
-        </tr>
-        <tr>
-            <form th:action="@{/manage/attendance/add}" method="post">
-                <td style="border: 1px solid black;" th:text="${lastAid}"></td>
-                <td style="border: 1px solid black;"><input type="number" min="0" name="eid" required></td>
-				<td style="border: 1px solid black;"></td>
-                <td style="border: 1px solid black;"></td>
-                <td style="border: 1px solid black;"><input type="date" name="date" required></td>
-                <td style="border: 1px solid black;"><input type="number" min="0" max="24" step="0.5" name="hoursWorked" required></td>
-                <td style="border: 1px solid black;"><button type="submit">Add</button></td>
-            </form>
-        </tr>
-        <tr th:each="attendance : ${attendances}">
-            <form th:action="@{/manage/attendance/update-or-delete}" method="post">
-                <td style="border: 1px solid black;"><input type="hidden" name="aid" th:value="${attendance.aid}" th:text="${attendance.aid}"></td>
-                <td style="border: 1px solid black;"><input type="number" min="0" name="eid" th:value="${attendance.employee.eid}"></td>
-                <td style="border: 1px solid black;" th:text="${attendance.employee.name}"></td>
-                <td style="border: 1px solid black;" th:text="${attendance.employee.surname}"></td>
-                <td style="border: 1px solid black;"><input type="date" name="date" th:value="${attendance.workDate}"></td>
-                <td style="border: 1px solid black;"><input type="number" min="0" max="24" step="0.5" name="hoursWorked" th:value="${attendance.hoursWorked}"></td>
-                <td style="border: 1px solid black;"><button type="submit" name="action" value="save">Save</button><button type="submit" name="action" value="delete">Delete</button></td>
+	<body>
+		<p>User options</p>
+		<div class="header">
+			<div class="other-buttons-container">
+				<a th:href="@{/home}">
+					<button>Home</button>
+				</a>
+				<a th:href="@{/attendance}">
+					<button>My attendance</button>
+				</a>
+				<a th:href="@{/overtime}">
+					<button>My overtime</button>
+				</a>
+				<a th:href="@{/vacation}">
+					<button>My vacation</button>
+				</a>
+				<a th:href="@{/account}">
+					<button>My user account</button>
+				</a>
+			</div>
+			<form th:action="@{/logout}" method="post">
+				<button type="submit" class="logout-button">Logout</button>
 			</form>
-        </tr>
-    </table>
-
-</body>
+		</div>
+		<hr>
+		<div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+		    <p>Admin options</p>
+		    <a th:href="@{/manage/attendance}">
+		        <button>Manage attendance</button>
+		    </a>
+		    <a th:href="@{/manage/overtime}">
+		        <button>Manage overtime</button>
+		    </a>
+		    <a th:href="@{/manage/vacation}">
+		        <button>Manage vacation</button>
+		    </a>
+		    <a th:href="@{/manage/department}">
+		        <button>Manage department</button>
+		    </a>
+		    <a th:href="@{/manage/employee}">
+		        <button>Manage employees</button>
+		    </a>
+		    <a th:href="@{/manage/user}">
+		        <button>Manage users</button>
+		    </a>
+			<hr>
+		</div>
+	
+	    <h1>Manage Attendance</h1>
+	    <h2>Search Attendance</h2>
+	
+	    <form th:action="@{/manage/attendance}" method="get">
+	        <input type="number" name="id" placeholder="Enter Employee ID">
+	        <input type="date" name="date">
+	        <button type="submit">Search</button>
+	        <a th:href="@{/manage/attendance}"><button type="button">Reset</button></a>
+	    </form>
+	
+	    <h2>Attendance</h2>
+	
+	    <form th:action="@{/manage/attendance}" method="get">
+	        <label>Sort by:</label>
+	        <select name="sort">
+	            <option value="id">Employee ID</option>
+	            <option value="surname">Employee surname</option>
+	            <option value="date">Date</option>
+	        </select>
+	
+	        <label>Order:</label>
+	        <select name="order">
+	            <option value="asc">Ascending</option>
+	            <option value="desc">Descending</option>
+	        </select>
+	        <button type="submit">Sort</button>
+	    </form>
+	
+	    <table style="width: 100%; border-collapse: collapse;">
+	        <tr>
+	            <th style="border: 1px solid black;">Attendance id</th>
+	            <th style="border: 1px solid black;">Employee id</th>
+	            <th style="border: 1px solid black;">Employee name</th>
+	            <th style="border: 1px solid black;">Employee surname</th>
+	            <th style="border: 1px solid black;">Date</th>
+	            <th style="border: 1px solid black;">Hours worked</th>
+	            <th style="border: 1px solid black;">Action</th>
+	        </tr>
+	        <tr>
+	            <form th:action="@{/manage/attendance/add}" method="post">
+	                <td style="border: 1px solid black;" th:text="${lastAid}"></td>
+	                <td style="border: 1px solid black;"><input type="number" min="0" name="eid" required></td>
+					<td style="border: 1px solid black;"></td>
+	                <td style="border: 1px solid black;"></td>
+	                <td style="border: 1px solid black;"><input type="date" name="date" required></td>
+	                <td style="border: 1px solid black;"><input type="number" min="0" max="24" step="0.5" name="hoursWorked" required></td>
+	                <td style="border: 1px solid black;"><button type="submit">Add</button></td>
+	            </form>
+	        </tr>
+	        <tr th:each="attendance : ${attendances}">
+	            <form th:action="@{/manage/attendance/update-or-delete}" method="post">
+	                <td style="border: 1px solid black;"><input type="hidden" name="aid" th:value="${attendance.aid}" th:text="${attendance.aid}"></td>
+	                <td style="border: 1px solid black;"><input type="number" min="0" name="eid" th:value="${attendance.employee.eid}"></td>
+	                <td style="border: 1px solid black;" th:text="${attendance.employee.name}"></td>
+	                <td style="border: 1px solid black;" th:text="${attendance.employee.surname}"></td>
+	                <td style="border: 1px solid black;"><input type="date" name="date" th:value="${attendance.workDate}"></td>
+	                <td style="border: 1px solid black;"><input type="number" min="0" max="24" step="0.5" name="hoursWorked" th:value="${attendance.hoursWorked}"></td>
+	                <td style="border: 1px solid black;"><button type="submit" name="action" value="save">Save</button><button type="submit" name="action" value="delete">Delete</button></td>
+				</form>
+	        </tr>
+	    </table>
+	</body>
 </html>

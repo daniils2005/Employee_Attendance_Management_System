@@ -51,3 +51,18 @@ th, td {
 tr:nth-child(even) {
     background-color: #f8f8f8;
 }
+
+.header {
+	display: flex;
+	justify-content: space-between;
+}
+
+.other-buttons-container {
+	display: flex;
+}
+
+.logout-button {
+	width: 120px;
+	height: 40px;
+	margin-left: auto;
+}

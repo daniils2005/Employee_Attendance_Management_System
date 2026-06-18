@@ -6,7 +6,12 @@
 	<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 	<body>
-	    <h1>Employee Attendance Management System</h1>
+		<div class="header">
+			<h1>Employee Attendance Management System</h1>
+			<form th:action="@{/logout}" method="post">
+			    <button type="submit" class="logout-button">Logout</button>
+			</form>
+		</div>
 		<p th:text="|Welcome back ${username}!|"></p>
 	    <a th:href="@{/attendance}">
 	        <button>My attendance</button>

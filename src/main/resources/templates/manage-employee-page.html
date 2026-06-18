@@ -4,185 +4,182 @@
     <title>Manage Employees</title>
 	<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-
-<body>
-
-	<p>User options</p>
-	<a th:href="@{/home}">
-	    <button>Home</button>
-	</a>
-	<a th:href="@{/attendance}">
-	    <button>My attendance</button>
-	</a>
-	<a th:href="@{/overtime}">
-	    <button>My overtime</button>
-	</a>
-	<a th:href="@{/vacation}">
-	    <button>My vacation</button>
-	</a>
-	<a th:href="@{/account}">
-	    <button>My user account</button>
-	</a>
-	<hr>
-	<div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
-	    <p>Admin options</p>
-	    <a th:href="@{/manage/attendance}">
-	        <button>Manage attendance</button>
-	    </a>
-	    <a th:href="@{/manage/overtime}">
-	        <button>Manage overtime</button>
-	    </a>
-	    <a th:href="@{/manage/vacation}">
-	        <button>Manage vacation</button>
-	    </a>
-	    <a th:href="@{/manage/department}">
-	        <button>Manage department</button>
-	    </a>
-	    <a th:href="@{/manage/employee}">
-	        <button>Manage employees</button>
-	    </a>
-	    <a th:href="@{/manage/user}">
-	        <button>Manage users</button>
-	    </a>
-		<hr>
-	</div>
-
-    <h1>Manage Employees</h1>
-    <h2>Search Employees</h2>
-
-    <form th:action="@{/manage/employee}" method="get">
-        <input type="number" name="eid" placeholder="Enter employee ID">
-        <input type="text" name="surname" placeholder="Enter surname">
-        <button type="submit">Search</button>
-        <a th:href="@{/manage/employee}"><button type="button">Reset</button></a>
-    </form>
-
-	<form th:action="@{/manage/employee}" method="get">
-	    <label>Search by status:</label>
-	    <select name="status">
-			<option value="">Any</option>
-			<option value="Aktivs">Aktivs</option>
-			<option value="Neaktivs">Neaktivs</option>
-	        <option value="Slims">Slims</option>
-			<option value="Atvalinajums">Atvalinajums</option>
-			<option value="Dekrets">Dekrets</option>
-	    </select>
-
-	    <label>Search by position:</label>
-	    <select name="position">
-			<option value="">Any</option>
-	        <option value="Programmetajs">Programmetajs</option>
-	        <option value="Testetajs">Testetajs</option>
-			<option value="Sistemu_arhitekts">Sistemu_arhitekts</option>
-			<option value="DevOps_inzenieris">DevOps_inzenieris</option>
-			<option value="Datu_analitikis">Datu_analitikis</option>
-	    </select>
-		
-		<label>Search by department:</label>
-		<select name="department">
-			<option value="">Any</option>
-			<option th:each="department : ${departments}"
-			        th:value="${department.departmentName}"
-			        th:text="${department.departmentName}">
-			</option>
-		</select>
-	    <button type="submit">Search</button>
-	</form>
-	
-    <h2>Employees</h2>
-
-    <table style="width: 100%; border-collapse: collapse;">
-        <tr>
-            <th style="border: 1px solid black;">Employee id</th>
-			<th style="border: 1px solid black;">Employee name</th>
-			<th style="border: 1px solid black;">Employee surname</th>
-			<th style="border: 1px solid black;">Person code</th>
-			<th style="border: 1px solid black;">Hourly rate</th>
-			<th style="border: 1px solid black;">Position</th>
-			<th style="border: 1px solid black;">Department</th>
-			<th style="border: 1px solid black;">Status</th>
-			<th style="border: 1px solid black;">Email</th>
-			<th style="border: 1px solid black;">Phone number</th>
-			<th style="border: 1px solid black;">Action</th>
-        </tr>
-        <tr>
-            <form th:action="@{/manage/employee/add}" method="post">
-                <td style="border: 1px solid black;" th:text="${lastEid}"></td>
-				<td style="border: 1px solid black;"><input type="text" name="name" required></td>
-                <td style="border: 1px solid black;"><input type="text" name="surname" required></td>
-				<td style="border: 1px solid black;"><input type="text" name="personCode" required></td>
-                <td style="border: 1px solid black;"><input type="number" min="0" name="hourlyRate" required></td>
-				<td style="border: 1px solid black;">
-					<select name="position" required>
-					    <option value="Programmetajs">Programmetajs</option>
-					    <option value="Testetajs">Testetajs</option>
-						<option value="Sistemu_arhitekts">Sistemu_arhitekts</option>
-						<option value="DevOps_inzenieris">DevOps_inzenieris</option>
-						<option value="Datu_analitikis">Datu_analitikis</option>
-					</select>
-				</td>
-				<td style="border: 1px solid black;">				
-					<select name="department">
-						<option th:each="department : ${departments}"
-						        th:value="${department.departmentName}"
-						        th:text="${department.departmentName}">
-						</option>
-					</select>
-				</td>
-				<td style="border: 1px solid black;">		
-					<select name="status" required>
-						<option value="Aktivs">Aktivs</option>
-						<option value="Neaktivs">Neaktivs</option>
-					    <option value="Slims">Slims</option>
-						<option value="Atvalinajums">Atvalinajums</option>
-						<option value="Dekrets">Dekrets</option>
-					</select>
-				</td>
-				<td style="border: 1px solid black;"><input type="text" name="email" required></td>
-				<td style="border: 1px solid black;"><input type="text" name="number" required></td>
-                <td style="border: 1px solid black;"><button type="submit">Add</button></td>
-            </form>
-        </tr>
-        <tr th:each="employee : ${employees}">
-            <form th:action="@{/manage/employee/update-or-delete}" method="post">
-				<td style="border: 1px solid black;"><span th:text="${employee.eid}"></span><input type="hidden" name="eid" th:value="${employee.eid}"></td>
-				<td style="border: 1px solid black;"><input type="text" name="name" th:value="${employee.name}"></td>
-				<td style="border: 1px solid black;"><input type="text" name="surname" th:value="${employee.surname}"></td>
-				<td style="border: 1px solid black;" th:text="${employee.personCode}"></td>
-				<td style="border: 1px solid black;"><input type="number" min="0" step="0.01" name="hourlyRate" th:value="${employee.hourlyRate}"></td>
-				<td style="border: 1px solid black;">
-					<select name="position">
-						<option value="Programmetajs" th:selected="${employee.position == T(lv.venta.model.enums.Position).Programmetajs}">Programmetajs</option>
-						<option value="Testetajs" th:selected="${employee.position == T(lv.venta.model.enums.Position).Testetajs}">Testetajs</option>
-						<option value="Sistemu_arhitekts" th:selected="${employee.position == T(lv.venta.model.enums.Position).Sistemu_arhitekts}">Sistemu_arhitekts</option>
-						<option value="DevOps_inzenieris" th:selected="${employee.position == T(lv.venta.model.enums.Position).DevOps_inzenieris}">DevOps_inzenieris</option>
-						<option value="Datu_analitikis" th:selected="${employee.position == T(lv.venta.model.enums.Position).Datu_analitikis}">Datu_analitikis</option>
-					</select>
-				</td>
-				<td style="border: 1px solid black;">
-					<select name="department">
-						<option th:each="department : ${departments}"
-						        th:value="${department.departmentName}"
-						        th:text="${department.departmentName}"
-								th:selected="${employee.department.departmentName == department.departmentName}">
-						</option>
-					</select>
-				</td>
-				<td style="border: 1px solid black;">
-					<select name="status">
-						<option value="Aktivs" th:selected="${employee.status == T(lv.venta.model.enums.Status).Aktivs}">Aktivs</option>
-						<option value="Neaktivs" th:selected="${employee.status == T(lv.venta.model.enums.Status).Neaktivs}">Neaktivs</option>
-					    <option value="Slims" th:selected="${employee.status == T(lv.venta.model.enums.Status).Slims}">Slims</option>
-						<option value="Atvalinajums" th:selected="${employee.status == T(lv.venta.model.enums.Status).Atvalinajums}">Atvalinajums</option>
-						<option value="Dekrets" th:selected="${employee.status == T(lv.venta.model.enums.Status).Dekrets}">Dekrets</option>
-					</select>
-				</td>
-				<td style="border: 1px solid black;"><input type="text" name="email" th:value="${employee.email}"></td>
-				<td style="border: 1px solid black;"><input type="text" name="phoneNumber" th:value="${employee.number}"></td>
-                <td style="border: 1px solid black;"><button type="submit" name="action" value="save">Save</button></td>
+	<body>
+		<p>User options</p>
+		<div class="header">
+			<div class="other-buttons-container">
+				<a th:href="@{/home}">
+					<button>Home</button>
+				</a>
+				<a th:href="@{/attendance}">
+					<button>My attendance</button>
+				</a>
+				<a th:href="@{/overtime}">
+					<button>My overtime</button>
+				</a>
+				<a th:href="@{/vacation}">
+					<button>My vacation</button>
+				</a>
+				<a th:href="@{/account}">
+					<button>My user account</button>
+				</a>
+			</div>
+			<form th:action="@{/logout}" method="post">
+				<button type="submit" class="logout-button">Logout</button>
 			</form>
-        </tr>
-    </table>
-
-</body>
+		</div>
+		<hr>
+		<div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+		    <p>Admin options</p>
+		    <a th:href="@{/manage/attendance}">
+		        <button>Manage attendance</button>
+		    </a>
+		    <a th:href="@{/manage/overtime}">
+		        <button>Manage overtime</button>
+		    </a>
+		    <a th:href="@{/manage/vacation}">
+		        <button>Manage vacation</button>
+		    </a>
+		    <a th:href="@{/manage/department}">
+		        <button>Manage department</button>
+		    </a>
+		    <a th:href="@{/manage/employee}">
+		        <button>Manage employees</button>
+		    </a>
+		    <a th:href="@{/manage/user}">
+		        <button>Manage users</button>
+		    </a>
+			<hr>
+		</div>
+	    <h1>Manage Employees</h1>
+	    <h2>Search Employees</h2>
+	    <form th:action="@{/manage/employee}" method="get">
+	        <input type="number" name="eid" placeholder="Enter employee ID">
+	        <input type="text" name="surname" placeholder="Enter surname">
+	        <button type="submit">Search</button>
+	        <a th:href="@{/manage/employee}"><button type="button">Reset</button></a>
+	    </form>
+	    <h2>Employees</h2>
+		<form th:action="@{/manage/employee}" method="get">
+		    <label>Search by status:</label>
+		    <select name="status">
+				<option value="">Any</option>
+				<option value="Aktivs">Aktivs</option>
+				<option value="Neaktivs">Neaktivs</option>
+		        <option value="Slims">Slims</option>
+				<option value="Atvalinajums">Atvalinajums</option>
+				<option value="Dekrets">Dekrets</option>
+		    </select>
+		    <label>Search by position:</label>
+		    <select name="position">
+				<option value="">Any</option>
+		        <option value="Programmetajs">Programmetajs</option>
+		        <option value="Testetajs">Testetajs</option>
+				<option value="Sistemu_arhitekts">Sistemu_arhitekts</option>
+				<option value="DevOps_inzenieris">DevOps_inzenieris</option>
+				<option value="Datu_analitikis">Datu_analitikis</option>
+		    </select>
+			<label>Search by department:</label>
+			<select name="department">
+				<option value="">Any</option>
+				<option th:each="department : ${departments}"
+				        th:value="${department.departmentName}"
+				        th:text="${department.departmentName}">
+				</option>
+			</select>
+		    <button type="submit">Search</button>
+		</form>
+	    <table style="width: 100%; border-collapse: collapse;">
+	        <tr>
+	            <th style="border: 1px solid black;">Employee id</th>
+				<th style="border: 1px solid black;">Employee name</th>
+				<th style="border: 1px solid black;">Employee surname</th>
+				<th style="border: 1px solid black;">Person code</th>
+				<th style="border: 1px solid black;">Hourly rate</th>
+				<th style="border: 1px solid black;">Position</th>
+				<th style="border: 1px solid black;">Department</th>
+				<th style="border: 1px solid black;">Status</th>
+				<th style="border: 1px solid black;">Email</th>
+				<th style="border: 1px solid black;">Phone number</th>
+				<th style="border: 1px solid black;">Action</th>
+	        </tr>
+	        <tr>
+	            <form th:action="@{/manage/employee/add}" method="post">
+	                <td style="border: 1px solid black;" th:text="${lastEid}"></td>
+					<td style="border: 1px solid black;"><input type="text" name="name" required></td>
+	                <td style="border: 1px solid black;"><input type="text" name="surname" required></td>
+					<td style="border: 1px solid black;"><input type="text" name="personCode" required></td>
+	                <td style="border: 1px solid black;"><input type="number" min="0" name="hourlyRate" required></td>
+					<td style="border: 1px solid black;">
+						<select name="position" required>
+						    <option value="Programmetajs">Programmetajs</option>
+						    <option value="Testetajs">Testetajs</option>
+							<option value="Sistemu_arhitekts">Sistemu_arhitekts</option>
+							<option value="DevOps_inzenieris">DevOps_inzenieris</option>
+							<option value="Datu_analitikis">Datu_analitikis</option>
+						</select>
+					</td>
+					<td style="border: 1px solid black;">				
+						<select name="department">
+							<option th:each="department : ${departments}"
+							        th:value="${department.departmentName}"
+							        th:text="${department.departmentName}">
+							</option>
+						</select>
+					</td>
+					<td style="border: 1px solid black;">		
+						<select name="status" required>
+							<option value="Aktivs">Aktivs</option>
+							<option value="Neaktivs">Neaktivs</option>
+						    <option value="Slims">Slims</option>
+							<option value="Atvalinajums">Atvalinajums</option>
+							<option value="Dekrets">Dekrets</option>
+						</select>
+					</td>
+					<td style="border: 1px solid black;"><input type="text" name="email" required></td>
+					<td style="border: 1px solid black;"><input type="text" name="number" required></td>
+	                <td style="border: 1px solid black;"><button type="submit">Add</button></td>
+	            </form>
+	        </tr>
+	        <tr th:each="employee : ${employees}">
+	            <form th:action="@{/manage/employee/update-or-delete}" method="post">
+					<td style="border: 1px solid black;"><span th:text="${employee.eid}"></span><input type="hidden" name="eid" th:value="${employee.eid}"></td>
+					<td style="border: 1px solid black;"><input type="text" name="name" th:value="${employee.name}"></td>
+					<td style="border: 1px solid black;"><input type="text" name="surname" th:value="${employee.surname}"></td>
+					<td style="border: 1px solid black;" th:text="${employee.personCode}"></td>
+					<td style="border: 1px solid black;"><input type="number" min="0" step="0.01" name="hourlyRate" th:value="${employee.hourlyRate}"></td>
+					<td style="border: 1px solid black;">
+						<select name="position">
+							<option value="Programmetajs" th:selected="${employee.position == T(lv.venta.model.enums.Position).Programmetajs}">Programmetajs</option>
+							<option value="Testetajs" th:selected="${employee.position == T(lv.venta.model.enums.Position).Testetajs}">Testetajs</option>
+							<option value="Sistemu_arhitekts" th:selected="${employee.position == T(lv.venta.model.enums.Position).Sistemu_arhitekts}">Sistemu_arhitekts</option>
+							<option value="DevOps_inzenieris" th:selected="${employee.position == T(lv.venta.model.enums.Position).DevOps_inzenieris}">DevOps_inzenieris</option>
+							<option value="Datu_analitikis" th:selected="${employee.position == T(lv.venta.model.enums.Position).Datu_analitikis}">Datu_analitikis</option>
+						</select>
+					</td>
+					<td style="border: 1px solid black;">
+						<select name="department">
+							<option th:each="department : ${departments}"
+							        th:value="${department.departmentName}"
+							        th:text="${department.departmentName}"
+									th:selected="${employee.department.departmentName == department.departmentName}">
+							</option>
+						</select>
+					</td>
+					<td style="border: 1px solid black;">
+						<select name="status">
+							<option value="Aktivs" th:selected="${employee.status == T(lv.venta.model.enums.Status).Aktivs}">Aktivs</option>
+							<option value="Neaktivs" th:selected="${employee.status == T(lv.venta.model.enums.Status).Neaktivs}">Neaktivs</option>
+						    <option value="Slims" th:selected="${employee.status == T(lv.venta.model.enums.Status).Slims}">Slims</option>
+							<option value="Atvalinajums" th:selected="${employee.status == T(lv.venta.model.enums.Status).Atvalinajums}">Atvalinajums</option>
+							<option value="Dekrets" th:selected="${employee.status == T(lv.venta.model.enums.Status).Dekrets}">Dekrets</option>
+						</select>
+					</td>
+					<td style="border: 1px solid black;"><input type="text" name="email" th:value="${employee.email}"></td>
+					<td style="border: 1px solid black;"><input type="text" name="phoneNumber" th:value="${employee.number}"></td>
+	                <td style="border: 1px solid black;"><button type="submit" name="action" value="save">Save</button></td>
+				</form>
+	        </tr>
+	    </table>
+	</body>
 </html>

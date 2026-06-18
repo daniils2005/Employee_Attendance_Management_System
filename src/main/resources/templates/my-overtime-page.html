@@ -4,25 +4,30 @@
     <title>My Overtime</title>
 	<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-
 	<body>
-	
 		<p>User options</p>
-		<a th:href="@{/home}">
-		    <button>Home</button>
-		</a>
-		<a th:href="@{/attendance}">
-		    <button>My attendance</button>
-		</a>
-		<a th:href="@{/overtime}">
-		    <button>My overtime</button>
-		</a>
-		<a th:href="@{/vacation}">
-		    <button>My vacation</button>
-		</a>
-		<a th:href="@{/account}">
-		    <button>My user account</button>
-		</a>
+		<div class="header">
+			<div class="other-buttons-container">
+				<a th:href="@{/home}">
+					<button>Home</button>
+				</a>
+				<a th:href="@{/attendance}">
+					<button>My attendance</button>
+				</a>
+				<a th:href="@{/overtime}">
+					<button>My overtime</button>
+				</a>
+				<a th:href="@{/vacation}">
+					<button>My vacation</button>
+				</a>
+				<a th:href="@{/account}">
+					<button>My user account</button>
+				</a>
+			</div>
+			<form th:action="@{/logout}" method="post">
+				<button type="submit" class="logout-button">Logout</button>
+			</form>
+		</div>
 		<hr>
 		<div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
 		    <p>Admin options</p>

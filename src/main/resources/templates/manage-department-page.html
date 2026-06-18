@@ -4,95 +4,89 @@
     <title>Manage Department</title>
 	<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-
-<body>
-
-	<p>User options</p>
-	<a th:href="@{/home}">
-	    <button>Home</button>
-	</a>
-	<a th:href="@{/attendance}">
-	    <button>My attendance</button>
-	</a>
-	<a th:href="@{/overtime}">
-	    <button>My overtime</button>
-	</a>
-	<a th:href="@{/vacation}">
-	    <button>My vacation</button>
-	</a>
-	<a th:href="@{/account}">
-	    <button>My user account</button>
-	</a>
-	<hr>
-	<div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
-	    <p>Admin options</p>
-	    <a th:href="@{/manage/attendance}">
-	        <button>Manage attendance</button>
-	    </a>
-	    <a th:href="@{/manage/overtime}">
-	        <button>Manage overtime</button>
-	    </a>
-	    <a th:href="@{/manage/vacation}">
-	        <button>Manage vacation</button>
-	    </a>
-	    <a th:href="@{/manage/department}">
-	        <button>Manage department</button>
-	    </a>
-	    <a th:href="@{/manage/employee}">
-	        <button>Manage employees</button>
-	    </a>
-	    <a th:href="@{/manage/user}">
-	        <button>Manage users</button>
-	    </a>
+	<body>
+		<p>User options</p>
+		<div class="header">
+			<div class="other-buttons-container">
+				<a th:href="@{/home}">
+					<button>Home</button>
+				</a>
+				<a th:href="@{/attendance}">
+					<button>My attendance</button>
+				</a>
+				<a th:href="@{/overtime}">
+					<button>My overtime</button>
+				</a>
+				<a th:href="@{/vacation}">
+					<button>My vacation</button>
+				</a>
+				<a th:href="@{/account}">
+					<button>My user account</button>
+				</a>
+			</div>
+			<form th:action="@{/logout}" method="post">
+				<button type="submit" class="logout-button">Logout</button>
+			</form>
+		</div>
 		<hr>
-	</div>
-
-    <h1>Manage Department</h1>
-   
-    <h2>Department</h2>
-
-    <form th:action="@{/manage/department}" method="get">
-        <label>Sort by:</label>
-        <select name="sort">
-        	<option value="did">Department ID</option>
-            <option value="departmentName">Department name</option>
-        </select>
-        <label>Order:</label><select name="order">
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option></select>
-        <button type="submit">Sort</button>
-    </form>
-
-    <table style="width: 100%; border-collapse: collapse;">
-        <tr>
-			<th style="border: 1px solid black;">Department id</th>
-			<th style="border: 1px solid black;">Department name</th>
-			<th style="border: 1px solid black;">Department description</th>
-			<th style="border: 1px solid black;">Action</th>
-        </tr>
-
-        <tr>
-            <form th:action="@{/manage/department/add}" method="post">
-				<td style="border: 1px solid black;"th:text="${lastDid}"></td>
-				<td style="border: 1px solid black;"><input type="text" name="addDepartmentName" required>
-				<td style="border: 1px solid black;"><input type="text" name="description"></td>
-               	<td style="border: 1px solid black;"><button type="submit">Add</button></td>
-            </form>
-        </tr>
-
-        <tr th:each="department : ${departments}">
-            <form th:action="@{/manage/department/update-or-delete}" method="post">
-            
-				<td style="border: 1px solid black;"><input type="hidden" name="did" th:value="${department.did}"><span th:text="${department.did}"></span></td>
-				<td style="border: 1px solid black;"><input type="text" name="departmentName" th:value="${department.departmentName}"></td>
-			
-                <td style="border: 1px solid black;"><input type="text" name="description" th:value="${department.description}"></td>
-                <td style="border: 1px solid black;"><button type="submit" name="action" value="save">Save</button><button type="submit"name="action"value="delete">Delete</button></td>
-
-            </form>
-        </tr>
-
-    </table>
-
-</body>
+		<div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+		    <p>Admin options</p>
+		    <a th:href="@{/manage/attendance}">
+		        <button>Manage attendance</button>
+		    </a>
+		    <a th:href="@{/manage/overtime}">
+		        <button>Manage overtime</button>
+		    </a>
+		    <a th:href="@{/manage/vacation}">
+		        <button>Manage vacation</button>
+		    </a>
+		    <a th:href="@{/manage/department}">
+		        <button>Manage department</button>
+		    </a>
+		    <a th:href="@{/manage/employee}">
+		        <button>Manage employees</button>
+		    </a>
+		    <a th:href="@{/manage/user}">
+		        <button>Manage users</button>
+		    </a>
+			<hr>
+		</div>
+	    <h1>Manage Department</h1>
+	    <h2>Department</h2>
+	    <form th:action="@{/manage/department}" method="get">
+	        <label>Sort by:</label>
+	        <select name="sort">
+	        	<option value="did">Department ID</option>
+	            <option value="departmentName">Department name</option>
+	        </select>
+	        <label>Order:</label><select name="order">
+	            <option value="asc">Ascending</option>
+	            <option value="desc">Descending</option></select>
+	        <button type="submit">Sort</button>
+	    </form>
+	    <table style="width: 100%; border-collapse: collapse;">
+	        <tr>
+				<th style="border: 1px solid black;">Department id</th>
+				<th style="border: 1px solid black;">Department name</th>
+				<th style="border: 1px solid black;">Department description</th>
+				<th style="border: 1px solid black;">Action</th>
+	        </tr>
+	        <tr>
+	            <form th:action="@{/manage/department/add}" method="post">
+					<td style="border: 1px solid black;"th:text="${lastDid}"></td>
+					<td style="border: 1px solid black;"><input type="text" name="addDepartmentName" required>
+					<td style="border: 1px solid black;"><input type="text" name="description"></td>
+	               	<td style="border: 1px solid black;"><button type="submit">Add</button></td>
+	            </form>
+	        </tr>
+	        <tr th:each="department : ${departments}">
+	            <form th:action="@{/manage/department/update-or-delete}" method="post">
+					<td style="border: 1px solid black;"><input type="hidden" name="did" th:value="${department.did}"><span th:text="${department.did}"></span></td>
+					<td style="border: 1px solid black;"><input type="text" name="departmentName" th:value="${department.departmentName}"></td>
+	                <td style="border: 1px solid black;"><input type="text" name="description" th:value="${department.description}"></td>
+	                <td style="border: 1px solid black;"><button type="submit" name="action" value="save">Save</button><button type="submit"name="action"value="delete">Delete</button></td>
+	            </form>
+	        </tr>
+	    </table>
+	</body>
 </html>
