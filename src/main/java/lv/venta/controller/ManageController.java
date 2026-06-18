@@ -537,7 +537,7 @@ public class ManageController {
     		 return "error-page";
     	 }
     }
-    
+ 
     @PostMapping("/manage/department/update-or-delete")
     public String updateDepartment(@RequestParam String action, @RequestParam Long did, @RequestParam DepartmentName departmentName, @RequestParam String description, Model model) {
     	 try {

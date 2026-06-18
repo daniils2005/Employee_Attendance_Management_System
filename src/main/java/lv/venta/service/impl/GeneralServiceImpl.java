@@ -83,8 +83,8 @@ public class GeneralServiceImpl implements IGeneralService {
 		if(eid <= 0) {
 			throw new Exception("id cant be negative or equal to 0");
 		}
-		ArrayList<Overtime> result = overtimeRepo.findByEmployeeEid(eid);
-		return result;
+		
+		return overtimeRepo.findByEmployeeEid(eid);
 	}
 
 	@Override
@@ -95,8 +95,7 @@ public class GeneralServiceImpl implements IGeneralService {
 		if(eid <= 0) {
 			throw new Exception("id cant be negative or equal to 0");
 		}
-		ArrayList<Vacation> result = vacationRepo.findByEmployeeEid(eid);
-		return result;
+		return vacationRepo.findByEmployeeEid(eid);
 	}
 
 	@Override
@@ -108,8 +107,7 @@ public class GeneralServiceImpl implements IGeneralService {
 			throw new Exception("id cant be negative or equal to 0");
 		}
 		LocalDate today = LocalDate.now();
-		ArrayList<Attendance> result = attendanceRepo.findByEmployeeIdThisMonth(eid, today.withDayOfMonth(1), today.withDayOfMonth(today.lengthOfMonth()));
-		return result;
+		return attendanceRepo.findByEmployeeIdThisMonth(eid, today.withDayOfMonth(1), today.withDayOfMonth(today.lengthOfMonth()));
 	}
 
 	@Override
@@ -202,9 +200,8 @@ public class GeneralServiceImpl implements IGeneralService {
 		return allOvertimeByDate;
 	}
 	
-	public User selectUserByUsername(String username) throws Exception {
-		User resultUser = userRepo.findByUsername(username);
-		return resultUser;
+	public User selectUserByUsername(String username) throws Exception { 
+		return userRepo.findByUsername(username);
 	}
 	
 	public Authority selectAuthorityByTitle(String authorityTitle) throws Exception {
