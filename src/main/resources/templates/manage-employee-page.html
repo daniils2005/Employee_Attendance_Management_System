@@ -113,7 +113,7 @@
 				<td style="border: 1px solid black;"><input type="text" name="name" th:value="${employee.name}"></td>
 				<td style="border: 1px solid black;"><input type="text" name="surname" th:value="${employee.surname}"></td>
 				<td style="border: 1px solid black;" th:text="${employee.personCode}"></td>
-				<td style="border: 1px solid black;"><input type="number" min="0" name="hourlyRate" th:value="${employee.hourlyRate}"></td>
+				<td style="border: 1px solid black;"><input type="number" min="0" step="0.01" name="hourlyRate" th:value="${employee.hourlyRate}"></td>
 				<td style="border: 1px solid black;">
 					<select name="position">
 						<option value="Programmetajs" th:selected="${employee.position == T(lv.venta.model.enums.Position).Programmetajs}">Programmetajs</option>

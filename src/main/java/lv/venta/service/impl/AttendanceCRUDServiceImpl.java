@@ -60,6 +60,8 @@ public class AttendanceCRUDServiceImpl implements IAttendanceCRUDService {
 		Attendance newAttendance = new Attendance(hoursWorked, employee);
 		attendanceRepo.save(newAttendance);
 	}
+	
+	@Override
 	public void insertNewAttendanceWithDate(float hoursWorked, Employee employee, LocalDate date) throws Exception{
 		if(hoursWorked < 0 || employee == null) {
 			throw new Exception("One or more input arguments are invalid");

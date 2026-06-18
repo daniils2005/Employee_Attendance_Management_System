@@ -46,10 +46,14 @@ public class Attendance {
 	@JoinColumn(name = "eid")
 	private Employee employee;
 	
-	//TODO ielikt datumu kura diena strada
-	
 	public Attendance(float newHoursWorked, Employee newEmployee) {
 		this.workDate = LocalDate.now();
+		setHoursWorked(newHoursWorked);
+		setEmployee(newEmployee);
+	}
+	
+	public Attendance(float newHoursWorked, Employee newEmployee, LocalDate newWorkDate) {
+		setWorkDate(newWorkDate);
 		setHoursWorked(newHoursWorked);
 		setEmployee(newEmployee);
 	}
