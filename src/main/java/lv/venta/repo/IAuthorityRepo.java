@@ -6,4 +6,6 @@ import lv.venta.model.Authority;
 
 public interface IAuthorityRepo extends CrudRepository<Authority, Long>{
 
+	Authority findByTitle(String authorityTitle);
+
 }

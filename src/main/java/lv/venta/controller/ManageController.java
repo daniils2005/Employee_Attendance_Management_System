@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,25 +16,38 @@ import org.springframework.web.bind.annotation.RequestParam;
 import lv.venta.model.Attendance;
 import lv.venta.model.Employee;
 import lv.venta.model.Overtime;
+
 import lv.venta.model.Vacation;
 import lv.venta.model.enums.RequestStatus;
 import lv.venta.repo.IAttendanceRepo;
 import lv.venta.repo.IOvertimeRepo;
 import lv.venta.repo.IVacationRepo;
+
+import lv.venta.model.User;
+
+import lv.venta.repo.IEmployeeRepo;
+import lv.venta.repo.IUserRepo;
+
 import lv.venta.service.IAttendanceCRUDService;
 import lv.venta.service.IEmployeeCRUDService;
 import lv.venta.service.IGeneralService;
 import lv.venta.service.IOvertimeCRUDService;
 import lv.venta.service.IVacationCRUDService;
+import lv.venta.service.IUserCRUDService;
 
 @Controller
 public class ManageController {
 
+	PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	
 	@Autowired
+	
 	private IGeneralService generalService;
 	@Autowired
+	
 	private IOvertimeRepo overtimeRepo;
 	@Autowired
+	
 	private IAttendanceRepo attendanceRepo;
 	@Autowired
 	private IAttendanceCRUDService attendanceCRUDService;
@@ -44,10 +59,20 @@ public class ManageController {
 	private IOvertimeCRUDService overtimeCRUDService;
 	
 	@Autowired
+
 	private IVacationCRUDService vacationCRUDService;
 	
 	@Autowired
 	private IVacationRepo vacationRepo;
+
+	private IUserCRUDService userCRUDService;
+	
+	@Autowired
+	private IUserRepo userRepo;
+	
+	@Autowired
+	private IEmployeeRepo employeeRepo;
+
 	
     @GetMapping("/manage/attendance")
     public String getAttendanceByEmployee(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
@@ -103,7 +128,7 @@ public class ManageController {
     	 
     	 try {
     		 Employee employee = employeeCRUDService.selectEmployeeById(eid);
-    		  attendanceCRUDService.insertNewAttendanceWithDate(hoursWorked, employee, date);
+    		 attendanceCRUDService.insertNewAttendanceWithDate(hoursWorked, employee, date);
     		 return "redirect:/manage/attendance";
     	 } 
     	 catch(Exception e) {
@@ -199,6 +224,7 @@ public class ManageController {
     		 return "error-page";
     	 }
     }
+
     @PostMapping("/manage/overtime/update-or-delete")
     public String updateOvertimeByEmployees(@RequestParam(required = false) Long eid, @RequestParam(required = false) Long oid, @RequestParam Float overtimeHours, @RequestParam(required = false) Float overtimeRate, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String description, @RequestParam(required = false) String action, @RequestParam(required = false) RequestStatus status, Model model) {
     	 try {
@@ -217,6 +243,7 @@ public class ManageController {
     		 return "error-page";
     	 }
     }
+
     @GetMapping("/manage/vacation")
     public String getVacationByEmpoyees(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
     	 try {
@@ -273,6 +300,7 @@ public class ManageController {
     		 return "error-page";
     	 }
     }
+    
     @PostMapping("/manage/vacation/add")
     public String addVacationByEmpoyees(@RequestParam(required = false) Long eid, @RequestParam(required = false) LocalDate startDate, @RequestParam(required = false) LocalDate endDate, @RequestParam RequestStatus status, Model model) { 
     	 try {
@@ -286,6 +314,7 @@ public class ManageController {
     		 return "error-page";
     	 }
     }
+    
     @PostMapping("/manage/vacation/update-or-delete")
     public String updateVacationByEmpoyees(@RequestParam(required = false) Long eid, @RequestParam(required = false) Long vid, @RequestParam(required = false) LocalDate startDate, @RequestParam(required = false) LocalDate endDate, @RequestParam RequestStatus status, @RequestParam(required = false) String action, Model model) {
     	 try {
@@ -297,12 +326,99 @@ public class ManageController {
     		 else {
     			 vacationCRUDService.deleteVacationById(vid);
     		 }
-    		 
-    		 return "redirect:/manage/vacation";
+    	 return "redirect:/manage/vacation";
+    	 }
+    	 catch(Exception e) {
+    		 model.addAttribute("errorMessage", e.getMessage());
+    		 return "error-page";
+    	 }
+    }
+    
+    @GetMapping("/manage/user")
+    public String getUsers(@RequestParam(required = false) Long userId, @RequestParam(required = false) String username, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
+    	try {
+    		ArrayList<User> resultUsers = new ArrayList<User>();
+			if (userId != null) {
+				resultUsers.add(userCRUDService.selectUserById(userId));
+			}
+			else if (username != null) {
+				resultUsers.add(generalService.selectUserByUsername(username));
+			}
+			else {
+				resultUsers = userCRUDService.selectAllUsers();
+			}
+			
+			if("eid".equals(sort) && "asc".equals(order)) {
+				resultUsers.sort(Comparator.comparing(a -> a.getEmployee().getEid()));
+			}
+			else if("eid".equals(sort) && "desc".equals(order)) {
+				resultUsers.sort(Comparator.comparing(a -> ((User)a).getEmployee().getEid()).reversed());
+			}
+			else if("username".equals(sort) && "asc".equals(order)) {
+				resultUsers.sort(Comparator.comparing(a -> a.getUsername())); 
+			}
+			else if("username".equals(sort) && "desc".equals(order)) {
+				resultUsers.sort(Comparator.comparing(a -> ((User)a).getUsername()).reversed()); 
+			}
+			else if ("surname".equals(sort) && "asc".equals(order)) {
+				resultUsers.sort(Comparator.comparing(a -> a.getEmployee().getSurname())); 
+			}
+			else if("surname".equals(sort) && "desc".equals(order)) {
+				resultUsers.sort(Comparator.comparing(a -> ((User)a).getEmployee().getSurname()).reversed());
+			}
+			else if("authority".equals(sort) && "asc".equals(order)) {
+				resultUsers.sort(Comparator.comparing(a -> a.getAuthority().getTitle()));
+			}
+			else if("authority".equals(sort) && "desc".equals(order)) {
+				resultUsers.sort(Comparator.comparing(a -> ((User)a).getAuthority().getTitle()).reversed());
+			}
+			
+			model.addAttribute("lastUid", userRepo.count() + 1);
+			model.addAttribute("users", resultUsers);
+    		return "manage-user-page";
+    	}
+    	catch(Exception e) {
+   		 	model.addAttribute("errorMessage", e.getMessage());
+   		 	return "error-page";
+   	 	}
+    }
+    
+    @PostMapping("/manage/user/add")
+    public String postUsers(@RequestParam long eid, @RequestParam String username, @RequestParam String authority, Model model) { 
+    	 try {
+    		 userCRUDService.insertNewUser(username, encoder.encode("parole"), employeeCRUDService.selectEmployeeById(eid), generalService.selectAuthorityByTitle(authority));
+    		 return "redirect:/manage/user";
     	 } 
     	 catch(Exception e) {
     		 model.addAttribute("errorMessage", e.getMessage());
     		 return "error-page";
     	 }
     }
+    
+    @PostMapping("/manage/user/update-or-delete")
+    public String updateUsers(@RequestParam String action, @RequestParam long uid, @RequestParam long eid, @RequestParam String username, @RequestParam String employeeName, @RequestParam String employeeSurname, @RequestParam String email, @RequestParam String phoneNumber, @RequestParam String authority, Model model) {
+    	 try {
+    		if ("save".equals(action)) {
+    			User user = userCRUDService.selectUserById(uid);
+    			Employee employee = employeeCRUDService.selectEmployeeById(eid);
+    			if(user.getEmployee().getEid() == eid) {
+    				employeeCRUDService.updateEmployeeById(eid, employeeName, employeeSurname, phoneNumber, email, employee.getHourlyRate(), employee.getDepartment(), employee.getStatus(), employee.getPosition());
+    			}
+    			userCRUDService.updateUserById(uid, username, user.getPassword(), employee, generalService.selectAuthorityByTitle(authority));
+    		 }
+    		 else {
+     			User user = userCRUDService.selectUserById(uid);
+    			Employee employee = user.getEmployee();
+    			employee.setUser(null);
+    			employeeRepo.save(employee);
+    			userCRUDService.deleteUserById(uid);
+    		 }
+    		 return "redirect:/manage/user";
+    	 } 
+    	 catch(Exception e) {
+    		 model.addAttribute("errorMessage", e.getMessage());
+    		 return "error-page";
+    	 }
+    }
+
 }
