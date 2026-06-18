@@ -14,7 +14,7 @@
     <h2>Search Users</h2>
 
     <form th:action="@{/manage/user}" method="get">
-        <input type="number" name="id" placeholder="Enter User ID">
+        <input type="number" name="uid" placeholder="Enter User ID">
         <input type="text" name="username" placeholder="Enter username">
         <button type="submit">Search</button>
         <a th:href="@{/manage/user}"><button type="button">Reset</button></a>

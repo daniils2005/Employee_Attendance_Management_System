@@ -53,7 +53,7 @@ public class DepartmentCRUDServiceImpl implements IDepartmentCRUDService {
 		}
 		Department departmentForDeleting = departmentRepo.findById(id).get();
 		ArrayList<Employee> employeesFromDepartment = employeeRepo.findByDepartment(departmentForDeleting);
-		Department defaultDepartment = departmentRepo.findByDepartmentName(DepartmentName.Nav_minēts);
+		Department defaultDepartment = departmentRepo.findByDepartmentName(DepartmentName.Nav_minets);
 		for(var employee : employeesFromDepartment) {
 			employee.setDepartment(defaultDepartment);
 		}

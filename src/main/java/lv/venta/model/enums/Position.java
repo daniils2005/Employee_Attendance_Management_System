@@ -4,6 +4,6 @@ public enum Position {
 	Programmetajs,
 	Testetajs,
 	Sistemu_arhiteks,
-	DevOps_inženieris,
-	Datu_analītiķis
+	DevOps_inzenieris,
+	Datu_analitikis
 }

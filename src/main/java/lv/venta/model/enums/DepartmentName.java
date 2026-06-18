@@ -2,7 +2,7 @@ package lv.venta.model.enums;
 
 public enum DepartmentName {
 	IT,
-	Grāmatvedība,
-	Personālā_nodaļa,
-	Nav_minēts
+	Gramatvediba,
+	Personala_nodala,
+	Nav_minets
 }

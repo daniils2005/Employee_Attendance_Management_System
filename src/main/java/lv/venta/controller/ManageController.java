@@ -41,14 +41,14 @@ public class ManageController {
 	PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	
 	@Autowired
-	
 	private IGeneralService generalService;
-	@Autowired
 	
+	@Autowired
 	private IOvertimeRepo overtimeRepo;
-	@Autowired
 	
+	@Autowired
 	private IAttendanceRepo attendanceRepo;
+	
 	@Autowired
 	private IAttendanceCRUDService attendanceCRUDService;
 	
@@ -59,12 +59,12 @@ public class ManageController {
 	private IOvertimeCRUDService overtimeCRUDService;
 	
 	@Autowired
-
 	private IVacationCRUDService vacationCRUDService;
 	
 	@Autowired
 	private IVacationRepo vacationRepo;
 
+	@Autowired
 	private IUserCRUDService userCRUDService;
 	
 	@Autowired
@@ -335,11 +335,11 @@ public class ManageController {
     }
     
     @GetMapping("/manage/user")
-    public String getUsers(@RequestParam(required = false) Long userId, @RequestParam(required = false) String username, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
+    public String getUsers(@RequestParam(required = false) Long uid, @RequestParam(required = false) String username, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
     	try {
     		ArrayList<User> resultUsers = new ArrayList<User>();
-			if (userId != null) {
-				resultUsers.add(userCRUDService.selectUserById(userId));
+			if (uid != null) {
+				resultUsers.add(userCRUDService.selectUserById(uid));
 			}
 			else if (username != null) {
 				resultUsers.add(generalService.selectUserByUsername(username));
