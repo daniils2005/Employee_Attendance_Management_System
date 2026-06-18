@@ -26,9 +26,6 @@ public class EmployeeCRUDServiceImpl implements IEmployeeCRUDService {
 	
 	@Override
 	public ArrayList<Employee> selectAllEmployees() throws Exception {
-		if(employeeRepo.count() == 0) {
-			throw new Exception("Employee table is empty");
-		}
 		ArrayList<Employee> result = (ArrayList<Employee>)employeeRepo.findAll();
 		return result;
 	}
@@ -37,9 +34,6 @@ public class EmployeeCRUDServiceImpl implements IEmployeeCRUDService {
 	public Employee selectEmployeeById(long id) throws Exception {
 		if(id <= 0) {
 			throw new Exception("id cant be negative or equal to 0");
-		}
-		if(!employeeRepo.existsById(id)) {
-			throw new Exception("Employee with id = " + id + " doesnt exist");
 		}
 		return employeeRepo.findById(id).get();
 	}
@@ -54,8 +48,8 @@ public class EmployeeCRUDServiceImpl implements IEmployeeCRUDService {
 			throw new Exception("Employee with id = " + id + " doesnt exist");
 		}
 		Employee employeeForDeleting = employeeRepo.findById(id).get();
-		ArrayList<User> usersTiedToEmployee = userRepo.findByEmployee(employeeForDeleting);
-		userRepo.deleteAll(usersTiedToEmployee);
+		User userTiedToEmployee = userRepo.findByEmployee(employeeForDeleting);
+		userRepo.delete(userTiedToEmployee);;
 		employeeRepo.delete(employeeForDeleting);
 	}
 

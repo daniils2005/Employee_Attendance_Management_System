@@ -9,7 +9,7 @@ import lv.venta.model.User;
 
 public interface IUserRepo extends CrudRepository<User, Long>{
 
-	ArrayList<User> findByEmployee(Employee employeeForDeleting);
+	User findByEmployee(Employee employeeForDeleting);
 
 	boolean existsByUsername(String newUsername);
 

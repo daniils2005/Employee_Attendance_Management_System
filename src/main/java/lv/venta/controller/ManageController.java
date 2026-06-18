@@ -20,7 +20,9 @@ import lv.venta.model.Overtime;
 
 import lv.venta.model.Vacation;
 import lv.venta.model.enums.DepartmentName;
+import lv.venta.model.enums.Position;
 import lv.venta.model.enums.RequestStatus;
+import lv.venta.model.enums.Status;
 import lv.venta.repo.IAttendanceRepo;
 import lv.venta.repo.IDepartmentRepo;
 import lv.venta.repo.IOvertimeRepo;
@@ -67,7 +69,7 @@ public class ManageController {
 	
 	@Autowired
 	private IVacationRepo vacationRepo;
-	
+
 	@Autowired
 	private IUserCRUDService userCRUDService;
 	
@@ -78,10 +80,11 @@ public class ManageController {
 	private IEmployeeRepo employeeRepo;
 	
 	@Autowired
-	private IDepartmentCRUDService departmentCRUDService;
+	private IDepartmentRepo departmentRepo;
 	
 	@Autowired
-	private IDepartmentRepo departmentRepo;
+	private IDepartmentCRUDService departmentCRUDService;
+	
     @GetMapping("/manage/attendance")
     public String getAttendanceByEmployee(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
     	try {  
@@ -144,6 +147,7 @@ public class ManageController {
     		 return "error-page";
     	 }
     }
+    
     @PostMapping("/manage/attendance/update-or-delete")
     public String updateAttendanceByEmployee(@RequestParam(required = false) Long eid, @RequestParam(required = false) Long aid, @RequestParam float hoursWorked, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String action, Model model) {
     	 try {
@@ -430,12 +434,69 @@ public class ManageController {
     		 return "error-page";
     	 }
     }
-    @GetMapping("/manage/department")
-    public String getDepartment(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
+    
+    @GetMapping("/manage/employee")
+    public String getEmployees(@RequestParam(required = false) Long eid, @RequestParam(required = false) String surname, @RequestParam(required = false) Status status, @RequestParam(required = false) Position position, @RequestParam(required = false) DepartmentName department, Model model) {
+    	try {
+    		ArrayList<Employee> resultEmployees = new ArrayList<Employee>();
+			if(eid != null) {
+				resultEmployees.add(employeeCRUDService.selectEmployeeById(eid));
+			}
+			else if(surname != null) {
+				resultEmployees = employeeRepo.findBySurname(surname);
+			}
+			else if(status != null) {
+				resultEmployees = employeeRepo.findByStatus(status);
+			}
+			else if(position != null) {
+				resultEmployees = employeeRepo.findByPosition(position);
+			}
+			else if(department != null) {
+				resultEmployees = employeeRepo.findByDepartmentDepartmentName(department);
+			} else {
+				resultEmployees = employeeCRUDService.selectAllEmployees();
+			}
+			model.addAttribute("lastEid", employeeRepo.count() + 1);
+			model.addAttribute("employees", resultEmployees);
+    		return "manage-employee-page";
+    	}
+    	catch(Exception e) {
+   		 	model.addAttribute("errorMessage", e.getMessage());
+   		 	return "error-page";
+   	 	}
+    }
+    
+    @PostMapping("/manage/employee/add")
+    public String postEmployees(@RequestParam String name, @RequestParam String surname, @RequestParam String personCode, @RequestParam float hourlyRate, @RequestParam Position position, @RequestParam DepartmentName department, @RequestParam Status status, @RequestParam String email, @RequestParam String number, Model model) { 
     	 try {
-    		ArrayList<Department> department;
-    		department = departmentCRUDService.selectAllDepartments();
+    		 employeeCRUDService.insertNewEmployee(name, surname, personCode, number, email, hourlyRate, departmentRepo.findByDepartmentName(department), status, position);
+    		 return "redirect:/manage/employee";
+    	 } 
+    	 catch(Exception e) {
+    		 model.addAttribute("errorMessage", e.getMessage());
+    		 return "error-page";
+    	 }
+    }
+    
+    @PostMapping("/manage/employee/update-or-delete")
+    public String updateEmployees(@RequestParam long eid, @RequestParam String name, @RequestParam String surname, @RequestParam float hourlyRate, @RequestParam Position position, @RequestParam DepartmentName department, @RequestParam Status status, @RequestParam String email, @RequestParam String phoneNumber, @RequestParam String action, Model model) {
+    	try {
+    		if("save".equals(action)) {
+    			employeeCRUDService.updateEmployeeById(eid, name, surname, phoneNumber, email, hourlyRate, departmentRepo.findByDepartmentName(department), status, position);
+    		}
+    		return "redirect:/manage/employee";
+    	 } 
+    	 catch(Exception e) {
+    		 model.addAttribute("errorMessage", e.getMessage());
+    		 return "error-page";
+    	 }
+    }
 
+	@GetMapping("/manage/department")
+	public String getDepartment(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
+		 try {
+			ArrayList<Department> department;
+			department = departmentCRUDService.selectAllDepartments();
      		if ("did".equals(sort) && "asc".equals(order)) {
      			department.sort(Comparator.comparing(a -> a.getDid())); 
  			}
