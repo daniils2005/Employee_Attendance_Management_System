@@ -177,7 +177,7 @@ public class ManageController {
     	 }
     }
     
-    @GetMapping("/manage/users")
+    @GetMapping("/manage/user")
     public String getUsers(@RequestParam(required = false) Long id, @RequestParam(required = false) String username, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
     	try {
     		ArrayList<User> resultUsers = new ArrayList<User>();
@@ -190,9 +190,35 @@ public class ManageController {
 			else {
 				resultUsers = userCRUDService.selectAllUsers();
 			}
+			
+			if("eid".equals(sort) && "asc".equals(order)) {
+				resultUsers.sort(Comparator.comparing(a -> a.getEmployee().getEid()));
+			}
+			else if("eid".equals(sort) && "desc".equals(order)) {
+				resultUsers.sort(Comparator.comparing(a -> ((User)a).getEmployee().getEid()).reversed());
+			}
+			else if("username".equals(sort) && "asc".equals(order)) {
+				resultUsers.sort(Comparator.comparing(a -> a.getUsername())); 
+			}
+			else if("username".equals(sort) && "desc".equals(order)) {
+				resultUsers.sort(Comparator.comparing(a -> ((User)a).getUsername()).reversed()); 
+			}
+			else if ("surname".equals(sort) && "asc".equals(order)) {
+				resultUsers.sort(Comparator.comparing(a -> a.getEmployee().getSurname())); 
+			}
+			else if("surname".equals(sort) && "desc".equals(order)) {
+				resultUsers.sort(Comparator.comparing(a -> ((User)a).getEmployee().getSurname()).reversed());
+			}
+			else if("authority".equals(sort) && "asc".equals(order)) {
+				resultUsers.sort(Comparator.comparing(a -> a.getAuthority().getTitle()));
+			}
+			else if("authority".equals(sort) && "desc".equals(order)) {
+				resultUsers.sort(Comparator.comparing(a -> ((User)a).getAuthority().getTitle()).reversed());
+			}
+			
 			model.addAttribute("lastUid", userRepo.count() + 1);
 			model.addAttribute("users", resultUsers);
-    		return "manage-users-page";
+    		return "manage-user-page";
     	}
     	catch(Exception e) {
    		 	model.addAttribute("errorMessage", e.getMessage());

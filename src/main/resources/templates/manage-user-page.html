@@ -22,13 +22,13 @@
 
     <h2>Users</h2>
 
-    <form th:action="@{/manage/attendance}" method="get">
+    <form th:action="@{/manage/user}" method="get">
         <label>Sort by:</label>
         <select name="sort">
 			<option value="eid">Employee ID</option>
             <option value="username">Username</option>
 			<option value="surname">Surname</option>
-            <option value="date">Authority</option>
+            <option value="authority">Authority</option>
         </select>
 
         <label>Order:</label>
