@@ -39,6 +39,7 @@ public class SecurityConfig {
 				.requestMatchers("/account").hasAnyAuthority("ADMIN", "USER")
 				.requestMatchers("/account/**").hasAnyAuthority("ADMIN", "USER")
 				.requestMatchers("/manage/**").hasAnyAuthority("ADMIN")
+				.requestMatchers("/css/**").permitAll()
 		);
 		
 		http.formLogin(auth->auth.permitAll());
