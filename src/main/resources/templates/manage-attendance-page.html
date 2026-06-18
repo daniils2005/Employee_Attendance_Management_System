@@ -7,9 +7,45 @@
 
 <body>
 
-    <a th:href="@{/home}">
-        <button>Home</button>
-    </a>
+	<p>User options</p>
+	<a th:href="@{/home}">
+	    <button>Home</button>
+	</a>
+	<a th:href="@{/attendance}">
+	    <button>My attendance</button>
+	</a>
+	<a th:href="@{/overtime}">
+	    <button>My overtime</button>
+	</a>
+	<a th:href="@{/vacation}">
+	    <button>My vacation</button>
+	</a>
+	<a th:href="@{/account}">
+	    <button>My user account</button>
+	</a>
+	<hr>
+	<div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+	    <p>Admin options</p>
+	    <a th:href="@{/manage/attendance}">
+	        <button>Manage attendance</button>
+	    </a>
+	    <a th:href="@{/manage/overtime}">
+	        <button>Manage overtime</button>
+	    </a>
+	    <a th:href="@{/manage/vacation}">
+	        <button>Manage vacation</button>
+	    </a>
+	    <a th:href="@{/manage/department}">
+	        <button>Manage department</button>
+	    </a>
+	    <a th:href="@{/manage/employee}">
+	        <button>Manage employees</button>
+	    </a>
+	    <a th:href="@{/manage/user}">
+	        <button>Manage users</button>
+	    </a>
+		<hr>
+	</div>
 
     <h1>Manage Attendance</h1>
     <h2>Search Attendance</h2>
