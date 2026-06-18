@@ -18,4 +18,6 @@ public interface IOvertimeRepo extends CrudRepository<Overtime, Long>{
 
 	@Query(value = "SELECT * FROM overtime_table WHERE eid = :eid AND date between :min AND :max", nativeQuery = true)
 	ArrayList<Overtime> findByEmployeeIdThisMonth(@Param("eid") long eid, @Param("min") LocalDate min, @Param("max") LocalDate max);
+
+	ArrayList<Overtime> findTopByOrderByOidDesc();
 }

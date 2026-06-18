@@ -75,7 +75,7 @@ public class OvertimeCRUDServiceImpl implements IOvertimeCRUDService {
 		overtimeForUpdating.setEmployee(newEmployee);
 		overtimeRepo.save(overtimeForUpdating);
 	}
-	public void updateOvertimeById(long id, float newOvertimeHours, float newOvertimeRate, String newDescription, Employee newEmployee, LocalDate date) throws Exception {
+	public void updateOvertimeById(long id, float newOvertimeHours, float newOvertimeRate, String newDescription, Employee newEmployee, RequestStatus status, LocalDate date) throws Exception {
 		if(id <= 0 || newOvertimeHours < 0 || newOvertimeRate < 0 || newDescription == null || newEmployee == null) {
 			throw new Exception("One or more input arguments are invalid");
 		}
@@ -88,6 +88,7 @@ public class OvertimeCRUDServiceImpl implements IOvertimeCRUDService {
 		overtimeForUpdating.setDescription(newDescription);
 		overtimeForUpdating.setEmployee(newEmployee);
 		overtimeForUpdating.setDate(date);
+		overtimeForUpdating.setStatus(status);
 		overtimeRepo.save(overtimeForUpdating);
 	}
 	public void insertNewOvertimeWithDateAndStatusAndOvertimeRate(float newOvertimeHours, String newDescription, Employee newEmployee, LocalDate date, RequestStatus status, float overtimeRate) throws Exception{

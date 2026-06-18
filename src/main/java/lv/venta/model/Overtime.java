@@ -65,7 +65,7 @@ public class Overtime {
 		setOvertimeHours(newOvertimeHours);
 		setDescription(newDescription);
 		setEmployee(newEmployee);
-		this.overtimeRate = null;
+		this.overtimeRate = (float) 1;
 		this.status = RequestStatus.IZSKATISANA;
 	}
 }

@@ -159,7 +159,11 @@ public class ManageController {
 			else if ("status".equals(sort) && "desc".equals(order)) {
 				overtime.sort(Comparator.comparing(Overtime::getStatus,Comparator.nullsLast(Comparator.naturalOrder())).reversed());
 			}
-    		model.addAttribute("lastOid", overtimeRepo.count() + 1);
+    		if(overtimeRepo.count() != 0) {
+    			ArrayList<Overtime> overtimeLastOid = overtimeRepo.findTopByOrderByOidDesc();
+    			model.addAttribute("lastOid", overtimeLastOid.get(0).getOid() + 1);
+    		}
+    		
     		model.addAttribute("overtimes", overtime);
     		return "manage-overtime-page";
     	}
@@ -187,7 +191,7 @@ public class ManageController {
     	 try {
     		 if ("save".equals(action)) {
     			Employee employee = employeeCRUDService.selectEmployeeById(eid);
-    			overtimeCRUDService.updateOvertimeById(oid, overtimeHours, overtimeRate, description, employee, date);
+    			overtimeCRUDService.updateOvertimeById(oid, overtimeHours, overtimeRate, description, employee, status, date);
     		 }
     		 else {
     			 overtimeCRUDService.deleteOvertimeById(oid);

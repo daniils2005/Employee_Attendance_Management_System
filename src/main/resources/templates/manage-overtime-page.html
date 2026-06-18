@@ -80,9 +80,9 @@
                 <td style="border: 1px solid black;"><input type="number" min="0" max="24" step="0.5" name="overtimeRate"th:value="${overtime.overtimeRate}"></td>
                 <td style="border: 1px solid black;"><input type="text" name="description" th:value="${overtime.description}"></td>
                 <td style="border: 1px solid black;"><select name="status">
-		             <option value="IZSKATISANA" th:selected="${overtime.status} == 'IZSKATISANA'">IZSKATISANA</option>
-		             <option value="APSTIPRINATS" th:selected="${overtime.status} == 'APSTIPRINATS'">APSTIPRINATS</option>
-		             <option value="NORAIDITS" th:selected="${overtime.status} == 'NORAIDITS'">NORAIDITS</option></select></td>
+		             <option value="IZSKATISANA" th:selected="${overtime.status == T(lv.venta.model.enums.RequestStatus).IZSKATISANA}">IZSKATISANA</option>
+		             <option value="APSTIPRINATS" th:selected="${overtime.status == T(lv.venta.model.enums.RequestStatus).APSTIPRINATS}">APSTIPRINATS</option>
+		             <option value="NORAIDITS"  th:selected="${overtime.status == T(lv.venta.model.enums.RequestStatus).NORAIDITS}">NORAIDITS</option></select></td>
                 <td style="border: 1px solid black;"><button type="submit" name="action" value="save">Save</button><button type="submit"name="action"value="delete">Delete</button></td>
 
             </form>
