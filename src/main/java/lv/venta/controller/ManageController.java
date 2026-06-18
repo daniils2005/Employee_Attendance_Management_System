@@ -466,6 +466,7 @@ public class ManageController {
      			model.addAttribute("lastEid", employeeLastEid.get(0).getEid() + 1);
      		}
 			model.addAttribute("employees", resultEmployees);
+			model.addAttribute("departments", resultDepartment);
     		return "manage-employee-page";
     	}
     	catch(Exception e) {
@@ -524,7 +525,6 @@ public class ManageController {
      			model.addAttribute("lastDid", departmentLastDid.get(0).getDid() + 1);
      		}
 
-     		
      		model.addAttribute("departments", department);
      		return "manage-department-page";
     	 } 

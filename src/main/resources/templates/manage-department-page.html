@@ -38,11 +38,7 @@
         <tr>
             <form th:action="@{/manage/department/add}" method="post">
 				<td style="border: 1px solid black;"th:text="${lastDid}"></td>
-				<td style="border: 1px solid black;"><select name="departmentName" required>
-		             <option value="IT">IT</option>
-		             <option value="Gramatvediba">Gramatvediba</option>
-		             <option value="Personala_nodala">Personala_nodala</option>
-		             <option value="Nav_minets">Nav_minets</option></select></td>
+				<td style="border: 1px solid black;"><input type="text" name="addDepartmentName" required>
 				<td style="border: 1px solid black;"><input type="text" name="description"></td>
                	<td style="border: 1px solid black;"><button type="submit">Add</button></td>
             </form>
@@ -52,11 +48,8 @@
             <form th:action="@{/manage/department/update-or-delete}" method="post">
             
 				<td style="border: 1px solid black;"><input type="hidden" name="did" th:value="${department.did}"><span th:text="${department.did}"></span></td>
-				<td style="border: 1px solid black;"><select name="departmentName">
-					<option value="IT" th:selected="${department.departmentName == T(lv.venta.model.enums.DepartmentName).IT}">IT</option>
-		            <option value="Gramatvediba" th:selected="${department.departmentName == T(lv.venta.model.enums.DepartmentName).Gramatvediba}">Gramatvediba</option>
-		            <option value="Personala_nodala"  th:selected="${department.departmentName == T(lv.venta.model.enums.DepartmentName).Personala_nodala}">Personala_nodala</option>
-		            <option value="Nav_minets"  th:selected="${department.departmentName == T(lv.venta.model.enums.DepartmentName).Nav_minets}">Nav_minets</option></select></td>
+				<td style="border: 1px solid black;"><input type="text" name="departmentName" th:value="${department.departmentName}"></td>
+			
                 <td style="border: 1px solid black;"><input type="text" name="description" th:value="${department.description}"></td>
                 <td style="border: 1px solid black;"><button type="submit" name="action" value="save">Save</button><button type="submit"name="action"value="delete">Delete</button></td>
 
