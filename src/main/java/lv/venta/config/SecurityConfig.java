@@ -33,7 +33,12 @@ public class SecurityConfig {
 		http.authorizeHttpRequests(
 				auth->auth
 				.requestMatchers("/home").hasAnyAuthority("ADMIN", "USER")
-				.anyRequest().permitAll()
+				.requestMatchers("/attendance").hasAnyAuthority("ADMIN", "USER")
+				.requestMatchers("/overtime").hasAnyAuthority("ADMIN", "USER")
+				.requestMatchers("/vacation").hasAnyAuthority("ADMIN", "USER")
+				.requestMatchers("/account").hasAnyAuthority("ADMIN", "USER")
+				.requestMatchers("/account/**").hasAnyAuthority("ADMIN", "USER")
+				.requestMatchers("/manage/**").hasAnyAuthority("ADMIN")
 		);
 		
 		http.formLogin(auth->auth.permitAll());

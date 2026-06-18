@@ -525,6 +525,7 @@ public class ManageController {
     		 return "error-page";
     	 }
     }
+	
     @PostMapping("/manage/department/add")
     public String addDepartment(@RequestParam DepartmentName departmentName, @RequestParam String description, Model model) { 
     	 try {
