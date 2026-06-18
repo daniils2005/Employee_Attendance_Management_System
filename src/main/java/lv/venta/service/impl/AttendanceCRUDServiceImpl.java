@@ -98,11 +98,13 @@ public class AttendanceCRUDServiceImpl implements IAttendanceCRUDService {
 		if(!attendanceRepo.existsById(id)) {
 			throw new Exception("Attendance with id = " + id + " doesnt exist");
 		}
+		
 		Attendance attendanceForUpdating = attendanceRepo.findById(id).get();
 		attendanceForUpdating.setHoursWorked(hoursWorked);
 		attendanceForUpdating.setEmployee(employee);
 		attendanceForUpdating.setWorkDate(date);
 		attendanceRepo.save(attendanceForUpdating);
+		
 	}
 
 }

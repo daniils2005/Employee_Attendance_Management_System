@@ -33,6 +33,7 @@ public class SecurityConfig {
 		http.authorizeHttpRequests(
 				auth->auth
 				.requestMatchers("/home").hasAnyAuthority("ADMIN", "USER")
+				.requestMatchers("/manage/**").hasAnyAuthority("ADMIN")
 				.anyRequest().permitAll()
 		);
 		

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.validation.Valid;
 import lv.venta.model.Attendance;
 import lv.venta.model.Department;
 import lv.venta.model.Employee;
@@ -475,7 +476,7 @@ public class ManageController {
     		 return "error-page";
     	 }
     }
-    
+ 
     @PostMapping("/manage/department/update-or-delete")
     public String updateDepartment(@RequestParam String action, @RequestParam Long did, @RequestParam DepartmentName departmentName, @RequestParam String description, Model model) {
     	 try {
