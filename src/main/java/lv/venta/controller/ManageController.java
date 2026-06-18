@@ -439,6 +439,7 @@ public class ManageController {
     public String getEmployees(@RequestParam(required = false) Long eid, @RequestParam(required = false) String surname, @RequestParam(required = false) Status status, @RequestParam(required = false) Position position, @RequestParam(required = false) DepartmentName department, Model model) {
     	try {
     		ArrayList<Employee> resultEmployees = new ArrayList<Employee>();
+    		ArrayList<Department> resultDepartment = departmentCRUDService.selectAllDepartments();
 			if(eid != null) {
 				resultEmployees.add(employeeCRUDService.selectEmployeeById(eid));
 			}
@@ -458,6 +459,7 @@ public class ManageController {
 			}
 			model.addAttribute("lastEid", employeeRepo.count() + 1);
 			model.addAttribute("employees", resultEmployees);
+			model.addAttribute("departments", resultDepartment);
     		return "manage-employee-page";
     	}
     	catch(Exception e) {
