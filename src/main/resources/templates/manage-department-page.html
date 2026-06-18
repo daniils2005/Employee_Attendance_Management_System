@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Manage Department</title>
+</head>
+
+<body>
+
+    <a th:href="@{/home}">
+        <button>Home</button>
+    </a>
+
+    <h1>Manage Department</h1>
+   
+    <h2>Department</h2>
+
+    <form th:action="@{/manage/department}" method="get">
+        <label>Sort by:</label>
+        <select name="sort">
+        	<option value="did">Department ID</option>
+            <option value="departmentName">Department name</option>
+        </select>
+        <label>Order:</label><select name="order">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option></select>
+        <button type="submit">Sort</button>
+    </form>
+
+    <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+			<th style="border: 1px solid black;">Department id</th>
+			<th style="border: 1px solid black;">Department name</th>
+			<th style="border: 1px solid black;">Department description</th>
+			<th style="border: 1px solid black;">Action</th>
+        </tr>
+
+        <tr>
+            <form th:action="@{/manage/department/add}" method="post">
+				<td style="border: 1px solid black;"th:text="${lastDid}"></td>
+				<td style="border: 1px solid black;"><select name="departmentName" required>
+		             <option value="IT">IT</option>
+		             <option value="Gramatvediba">Gramatvediba</option>
+		             <option value="Personāla_nodaļa">Personāla_nodaļa</option>
+		             <option value="Nav_minets">Nav_minets</option></select></td>
+				<td style="border: 1px solid black;"><input type="text" name="description"></td>
+               	<td style="border: 1px solid black;"><button type="submit">Add</button></td>
+            </form>
+        </tr>
+
+        <tr th:each="department : ${departments}">
+            <form th:action="@{/manage/department/update-or-delete}" method="post">
+            
+				<td style="border: 1px solid black;"><input type="hidden" name="did" th:value="${department.did}"><span th:text="${department.did}"></span></td>
+				<td style="border: 1px solid black;"><select name="departmentName">
+					<option value="IT" th:selected="${department.departmentName == T(lv.venta.model.enums.DepartmentName).IT}">IT</option>
+		            <option value="Gramatvediba" th:selected="${department.departmentName == T(lv.venta.model.enums.DepartmentName).Gramatvediba}">Gramatvediba</option>
+		            <option value="Personala_nodala"  th:selected="${department.departmentName == T(lv.venta.model.enums.DepartmentName).Personala_nodala}">Personala_nodala</option>
+		            <option value="Nav_minets"  th:selected="${department.departmentName == T(lv.venta.model.enums.DepartmentName).Nav_minets}">Nav_minets</option></select></td>
+                <td style="border: 1px solid black;"><input type="text" name="description" th:value="${department.description}"></td>
+                <td style="border: 1px solid black;"><button type="submit" name="action" value="save">Save</button><button type="submit"name="action"value="delete">Delete</button></td>
+
+            </form>
+        </tr>
+
+    </table>
+
+</body>
+</html>

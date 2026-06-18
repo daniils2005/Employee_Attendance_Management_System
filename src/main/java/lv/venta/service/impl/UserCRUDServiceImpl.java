@@ -74,7 +74,8 @@ public class UserCRUDServiceImpl implements IUserCRUDService {
 		}
 		userForUpdating.setUsername(newUsername);
 		userForUpdating.setPassword(newPassword);
-		userForUpdating.setEmployee(newEmployee);	
+		userForUpdating.setEmployee(newEmployee);
+		userForUpdating.setAuthority(newAuthority);	
 		userRepo.save(userForUpdating);
 	}
 

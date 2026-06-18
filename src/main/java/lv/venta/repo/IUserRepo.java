@@ -15,4 +15,6 @@ public interface IUserRepo extends CrudRepository<User, Long>{
 
 	User findByUsername(String username);
 
+	ArrayList<User> findTopByOrderByUidDesc();
+
 }

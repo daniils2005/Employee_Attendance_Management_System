@@ -14,12 +14,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lv.venta.model.Attendance;
+import lv.venta.model.Department;
 import lv.venta.model.Employee;
 import lv.venta.model.Overtime;
 
 import lv.venta.model.Vacation;
+import lv.venta.model.enums.DepartmentName;
 import lv.venta.model.enums.RequestStatus;
 import lv.venta.repo.IAttendanceRepo;
+import lv.venta.repo.IDepartmentRepo;
 import lv.venta.repo.IOvertimeRepo;
 import lv.venta.repo.IVacationRepo;
 
@@ -29,6 +32,7 @@ import lv.venta.repo.IEmployeeRepo;
 import lv.venta.repo.IUserRepo;
 
 import lv.venta.service.IAttendanceCRUDService;
+import lv.venta.service.IDepartmentCRUDService;
 import lv.venta.service.IEmployeeCRUDService;
 import lv.venta.service.IGeneralService;
 import lv.venta.service.IOvertimeCRUDService;
@@ -41,14 +45,14 @@ public class ManageController {
 	PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	
 	@Autowired
-	
 	private IGeneralService generalService;
-	@Autowired
 	
+	@Autowired
 	private IOvertimeRepo overtimeRepo;
-	@Autowired
 	
+	@Autowired
 	private IAttendanceRepo attendanceRepo;
+	
 	@Autowired
 	private IAttendanceCRUDService attendanceCRUDService;
 	
@@ -59,12 +63,12 @@ public class ManageController {
 	private IOvertimeCRUDService overtimeCRUDService;
 	
 	@Autowired
-
 	private IVacationCRUDService vacationCRUDService;
 	
 	@Autowired
 	private IVacationRepo vacationRepo;
-
+	
+	@Autowired
 	private IUserCRUDService userCRUDService;
 	
 	@Autowired
@@ -72,8 +76,12 @@ public class ManageController {
 	
 	@Autowired
 	private IEmployeeRepo employeeRepo;
-
 	
+	@Autowired
+	private IDepartmentCRUDService departmentCRUDService;
+	
+	@Autowired
+	private IDepartmentRepo departmentRepo;
     @GetMapping("/manage/attendance")
     public String getAttendanceByEmployee(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
     	try {  
@@ -335,11 +343,11 @@ public class ManageController {
     }
     
     @GetMapping("/manage/user")
-    public String getUsers(@RequestParam(required = false) Long userId, @RequestParam(required = false) String username, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
+    public String getUsers(@RequestParam(required = false) Long uid, @RequestParam(required = false) String username, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
     	try {
     		ArrayList<User> resultUsers = new ArrayList<User>();
-			if (userId != null) {
-				resultUsers.add(userCRUDService.selectUserById(userId));
+			if (uid != null) {
+				resultUsers.add(userCRUDService.selectUserById(uid));
 			}
 			else if (username != null) {
 				resultUsers.add(generalService.selectUserByUsername(username));
@@ -372,8 +380,10 @@ public class ManageController {
 			else if("authority".equals(sort) && "desc".equals(order)) {
 				resultUsers.sort(Comparator.comparing(a -> ((User)a).getAuthority().getTitle()).reversed());
 			}
-			
-			model.addAttribute("lastUid", userRepo.count() + 1);
+			if(userRepo.count() != 0) {
+     			ArrayList<User> userLastUid = userRepo.findTopByOrderByUidDesc();
+     			model.addAttribute("lastUid", userLastUid.get(0).getUid() + 1);
+     		}
 			model.addAttribute("users", resultUsers);
     		return "manage-user-page";
     	}
@@ -420,5 +430,66 @@ public class ManageController {
     		 return "error-page";
     	 }
     }
+    @GetMapping("/manage/department")
+    public String getDepartment(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
+    	 try {
+    		ArrayList<Department> department;
+    		department = departmentCRUDService.selectAllDepartments();
 
+     		if ("did".equals(sort) && "asc".equals(order)) {
+     			department.sort(Comparator.comparing(a -> a.getDid())); 
+ 			}
+ 			else if ("did".equals(sort) && "desc".equals(order)) {
+ 				department.sort(Comparator.comparing(a -> ((Department) a).getDid()).reversed()); 
+ 			}
+ 			else if ("departmentName".equals(sort) && "asc".equals(order)) {
+ 				department.sort(Comparator.comparing(Department::getDepartmentName,Comparator.nullsLast(Comparator.naturalOrder())));
+ 	 			
+ 			}
+ 			else if ("departmentName".equals(sort) && "desc".equals(order)) {
+ 				department.sort(Comparator.comparing(Department::getDepartmentName,Comparator.nullsLast(Comparator.naturalOrder())).reversed()); 			}
+
+     		
+     		if(departmentRepo.count() != 0) {
+     			ArrayList<Department> departmentLastDid = departmentRepo.findTopByOrderByDidDesc();
+     			model.addAttribute("lastDid", departmentLastDid.get(0).getDid() + 1);
+     		}
+
+     		
+     		model.addAttribute("departments", department);
+     		return "manage-department-page";
+    	 } 
+    	 catch(Exception e) {
+    		 model.addAttribute("errorMessage", e.getMessage());
+    		 return "error-page";
+    	 }
+    }
+    @PostMapping("/manage/department/add")
+    public String addDepartment(@RequestParam DepartmentName departmentName, @RequestParam String description, Model model) { 
+    	 try {
+    		 departmentCRUDService.insertNewDepartment(departmentName, description);
+    		 return "redirect:/manage/department";
+    	 } 
+    	 catch(Exception e) {
+    		 model.addAttribute("errorMessage", e.getMessage());
+    		 return "error-page";
+    	 }
+    }
+    
+    @PostMapping("/manage/department/update-or-delete")
+    public String updateDepartment(@RequestParam String action, @RequestParam Long did, @RequestParam DepartmentName departmentName, @RequestParam String description, Model model) {
+    	 try {
+    		 if ("save".equals(action)) {
+    			departmentCRUDService.updateDepartmentById(did, departmentName, description);
+    		 }
+    		 else {
+    			 departmentCRUDService.deleteDepartmentById(did);
+    		 }
+    	 return "redirect:/manage/department";
+    	 }
+    	 catch(Exception e) {
+    		 model.addAttribute("errorMessage", e.getMessage());
+    		 return "error-page";
+    	 }
+    }
 }

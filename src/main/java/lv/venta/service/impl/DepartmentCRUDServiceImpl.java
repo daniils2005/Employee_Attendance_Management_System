@@ -24,9 +24,9 @@ public class DepartmentCRUDServiceImpl implements IDepartmentCRUDService {
 	
 	@Override
 	public ArrayList<Department> selectAllDepartments() throws Exception {
-		if(departmentRepo.count() == 0) {
-			throw new Exception("Department table is empty");
-		}
+//		if(departmentRepo.count() == 0) {
+//			throw new Exception("Department table is empty");
+//		}
 		ArrayList<Department> result = (ArrayList<Department>)departmentRepo.findAll();
 		return result;
 	}
@@ -53,7 +53,7 @@ public class DepartmentCRUDServiceImpl implements IDepartmentCRUDService {
 		}
 		Department departmentForDeleting = departmentRepo.findById(id).get();
 		ArrayList<Employee> employeesFromDepartment = employeeRepo.findByDepartment(departmentForDeleting);
-		Department defaultDepartment = departmentRepo.findByDepartmentName(DepartmentName.Nav_minēts);
+		Department defaultDepartment = departmentRepo.findByDepartmentName(DepartmentName.Nav_minets);
 		for(var employee : employeesFromDepartment) {
 			employee.setDepartment(defaultDepartment);
 		}
