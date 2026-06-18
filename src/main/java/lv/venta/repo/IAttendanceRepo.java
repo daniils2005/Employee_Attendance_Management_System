@@ -21,4 +21,6 @@ public interface IAttendanceRepo extends CrudRepository<Attendance, Long> {
 	ArrayList<Attendance> findAllByOrderByEmployee_NameDesc();
 
 	ArrayList<Attendance> findAllByOrderByEmployee_NameAsc();
+
+	ArrayList<Attendance> findTopByOrderByAidDesc();
 }

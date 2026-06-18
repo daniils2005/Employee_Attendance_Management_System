@@ -76,8 +76,9 @@ public class EmployeeAttendanceManagementSystemApplication {
 				overRepo.saveAll(Arrays.asList(ov2, ov3));
 				
 				Vacation v1 = new Vacation(LocalDate.now(), LocalDate.now().plusWeeks(2), emp1);
+				Vacation v2 = new Vacation(LocalDate.now(), LocalDate.now().plusWeeks(2), emp2);
 				vacationRepo.save(v1);
-				
+				vacationRepo.save(v2);
 			}
 		};
 	}

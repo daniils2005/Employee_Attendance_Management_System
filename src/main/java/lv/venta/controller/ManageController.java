@@ -14,13 +14,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import lv.venta.model.Attendance;
 import lv.venta.model.Employee;
 import lv.venta.model.Overtime;
+import lv.venta.model.Vacation;
 import lv.venta.model.enums.RequestStatus;
 import lv.venta.repo.IAttendanceRepo;
 import lv.venta.repo.IOvertimeRepo;
+import lv.venta.repo.IVacationRepo;
 import lv.venta.service.IAttendanceCRUDService;
 import lv.venta.service.IEmployeeCRUDService;
 import lv.venta.service.IGeneralService;
 import lv.venta.service.IOvertimeCRUDService;
+import lv.venta.service.IVacationCRUDService;
 
 @Controller
 public class ManageController {
@@ -39,6 +42,12 @@ public class ManageController {
 	
 	@Autowired
 	private IOvertimeCRUDService overtimeCRUDService;
+	
+	@Autowired
+	private IVacationCRUDService vacationCRUDService;
+	
+	@Autowired
+	private IVacationRepo vacationRepo;
 	
     @GetMapping("/manage/attendance")
     public String getAttendanceByEmployee(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
@@ -76,8 +85,10 @@ public class ManageController {
 			    attendances.sort(Comparator.comparing(Attendance::getWorkDate).reversed());
 			}
 
-			model.addAttribute("lastAid", attendanceRepo.count() + 1);
-
+			if(attendanceRepo.count() != 0) {
+    			ArrayList<Attendance> AttendanceLastAid = attendanceRepo.findTopByOrderByAidDesc();
+    			model.addAttribute("lastAid", AttendanceLastAid.get(0).getAid() + 1);
+    		}
 			model.addAttribute("attendances", attendances);
 			return "manage-attendance-page";
     	}   
@@ -145,7 +156,7 @@ public class ManageController {
 			else if ("date".equals(sort) && "asc".equals(order)) {
 				overtime.sort(Comparator.comparing(Overtime::getDate));
 			}
-			else if ("dateDesc".equals(sort) && "desc".equals(order)) {
+			else if ("date".equals(sort) && "desc".equals(order)) {
 				overtime.sort(Comparator.comparing(Overtime::getDate).reversed());
 			}
 			else if ("surname".equals(sort) && "asc".equals(order)) {
@@ -160,7 +171,12 @@ public class ManageController {
 			else if ("status".equals(sort) && "desc".equals(order)) {
 				overtime.sort(Comparator.comparing(Overtime::getStatus,Comparator.nullsLast(Comparator.naturalOrder())).reversed());
 			}
-    		model.addAttribute("lastOid", overtimeRepo.count() + 1);
+    		if(overtimeRepo.count() != 0) {
+    			ArrayList<Overtime> overtimeLastOid = overtimeRepo.findTopByOrderByOidDesc();
+    			model.addAttribute("lastOid", overtimeLastOid.get(0).getOid() + 1);
+    		}
+
+    		
     		model.addAttribute("overtimes", overtime);
     		return "manage-overtime-page";
     	}
@@ -171,7 +187,7 @@ public class ManageController {
     }
     
     @PostMapping("/manage/overtime/add")
-    public String postOvertimeByEmployees(@RequestParam(required = false) Long eid, @RequestParam float overtimeHours, @RequestParam float overtimeRate, @RequestParam(required = false) String description, @RequestParam(required = false) LocalDate date, @RequestParam RequestStatus status, Model model) { 
+    public String addOvertimeByEmployees(@RequestParam(required = false) Long eid, @RequestParam float overtimeHours, @RequestParam float overtimeRate, @RequestParam(required = false) String description, @RequestParam(required = false) LocalDate date, @RequestParam RequestStatus status, Model model) { 
     	 try {
     		 Employee employee = employeeCRUDService.selectEmployeeById(eid);
     		 overtimeCRUDService.insertNewOvertimeWithDateAndStatusAndOvertimeRate(overtimeHours, description ,employee, date, status, overtimeRate);
@@ -188,13 +204,101 @@ public class ManageController {
     	 try {
     		 if ("save".equals(action)) {
     			Employee employee = employeeCRUDService.selectEmployeeById(eid);
-    			overtimeCRUDService.updateOvertimeById(oid, overtimeHours, overtimeRate, description, employee, date);
+    			overtimeCRUDService.updateOvertimeById(oid, overtimeHours, overtimeRate, description, employee, status, date);
     		 }
     		 else {
     			 overtimeCRUDService.deleteOvertimeById(oid);
     		 }
     		 
     		 return "redirect:/manage/overtime";
+    	 } 
+    	 catch(Exception e) {
+    		 model.addAttribute("errorMessage", e.getMessage());
+    		 return "error-page";
+    	 }
+    }
+    @GetMapping("/manage/vacation")
+    public String getVacationByEmpoyees(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
+    	 try {
+    		ArrayList<Vacation> vacation;
+     		if (id != null && date != null) {
+     			vacation = vacationRepo.findByVidAndStartDate(id, date);
+ 			}
+ 			else if (id != null) {
+ 				vacation = vacationRepo.findByVid(id);
+ 			}
+ 			else if (date != null) {
+ 				vacation = vacationRepo.findByStartDate(date);
+ 			}
+ 			else {
+ 				vacation =  vacationCRUDService.selectAllVacations();
+ 			}
+
+     		if ("id".equals(sort) && "asc".equals(order)) {
+     			vacation.sort(Comparator.comparing(a -> a.getEmployee().getEid())); 
+ 			}
+ 			else if ("id".equals(sort) && "desc".equals(order)) {
+ 				vacation.sort(Comparator.comparing(a -> ( (Vacation) a).getEmployee().getEid()).reversed());
+ 			}
+ 			else if ("date".equals(sort) && "asc".equals(order)) {
+ 				vacation.sort(Comparator.comparing(Vacation::getStartDate));
+ 			}
+ 			else if ("date".equals(sort) && "desc".equals(order)) {
+ 				vacation.sort(Comparator.comparing(Vacation::getStartDate).reversed());
+ 			}
+ 			else if ("active".equals(sort) && "asc".equals(order)) {
+ 				vacation.sort(Comparator.comparing(Vacation::isActive));
+ 			}
+ 			else if ("active".equals(sort) && "desc".equals(order)) {
+ 				vacation.sort(Comparator.comparing(Vacation::isActive).reversed());
+ 			}
+ 			else if ("status".equals(sort) && "asc".equals(order)) {
+ 				vacation.sort(Comparator.comparing(Vacation::getStatus,Comparator.nullsLast(Comparator.naturalOrder())));
+ 			}
+ 			else if ("status".equals(sort) && "desc".equals(order)) {
+ 				vacation.sort(Comparator.comparing(Vacation::getStatus,Comparator.nullsLast(Comparator.naturalOrder())).reversed());
+ 			}
+     		
+     		if(vacationRepo.count() != 0) {
+     			ArrayList<Vacation> vacationLastVid = vacationRepo.findTopByOrderByVidDesc();
+     			model.addAttribute("lastVid", vacationLastVid.get(0).getVid() + 1);
+     		}
+
+     		
+     		model.addAttribute("vacations", vacation);
+    		 return "manage-vacation-page";
+    	 } 
+    	 catch(Exception e) {
+    		 model.addAttribute("errorMessage", e.getMessage());
+    		 return "error-page";
+    	 }
+    }
+    @PostMapping("/manage/vacation/add")
+    public String addVacationByEmpoyees(@RequestParam(required = false) Long eid, @RequestParam(required = false) LocalDate startDate, @RequestParam(required = false) LocalDate endDate, @RequestParam RequestStatus status, Model model) { 
+    	 try {
+    		 Employee employee = employeeCRUDService.selectEmployeeById(eid);
+    		 vacationCRUDService.insertNewVacation(startDate, endDate ,employee, status);
+    		 
+    		 return "redirect:/manage/vacation";
+    	 } 
+    	 catch(Exception e) {
+    		 model.addAttribute("errorMessage", e.getMessage());
+    		 return "error-page";
+    	 }
+    }
+    @PostMapping("/manage/vacation/update-or-delete")
+    public String updateVacationByEmpoyees(@RequestParam(required = false) Long eid, @RequestParam(required = false) Long vid, @RequestParam(required = false) LocalDate startDate, @RequestParam(required = false) LocalDate endDate, @RequestParam RequestStatus status, @RequestParam(required = false) String action, Model model) {
+    	 try {
+    		 if ("save".equals(action)) {
+    			Employee employee = employeeCRUDService.selectEmployeeById(eid);
+    			//long id, LocalDate newStartDate, LocalDate newEndDate, Employee newEmployee, boolean isActive, RequestStatus status
+    			vacationCRUDService.updateVacationById(vid, startDate, endDate, employee, status);
+    		 }
+    		 else {
+    			 vacationCRUDService.deleteVacationById(vid);
+    		 }
+    		 
+    		 return "redirect:/manage/vacation";
     	 } 
     	 catch(Exception e) {
     		 model.addAttribute("errorMessage", e.getMessage());

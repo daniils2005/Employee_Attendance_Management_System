@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import lv.venta.model.Employee;
 import lv.venta.model.Vacation;
+import lv.venta.model.enums.RequestStatus;
 import lv.venta.repo.IVacationRepo;
 import lv.venta.service.IVacationCRUDService;
 
@@ -19,9 +20,6 @@ public class VacationCRUDServiceImpl implements IVacationCRUDService {
 	
 	@Override
 	public ArrayList<Vacation> selectAllVacations() throws Exception {
-		if(vacationRepo.count() == 0) {
-			throw new Exception("Vacation table is empty");
-		}
 		ArrayList<Vacation> result = (ArrayList<Vacation>)vacationRepo.findAll();
 		return result;
 	}
@@ -82,6 +80,51 @@ public class VacationCRUDServiceImpl implements IVacationCRUDService {
 		vacationForUpdating.setStartDate(newStartDate);
 		vacationForUpdating.setEndDate(newEndDate);
 		vacationForUpdating.setEmployee(newEmployee);
+		vacationRepo.save(vacationForUpdating);
+	}
+	
+	public void insertNewVacation(LocalDate newStartDate, LocalDate newEndDate, Employee newEmployee, RequestStatus status) throws Exception{
+		if(newStartDate == null || newEndDate == null || newEmployee == null) {
+			return;
+			//throw new Exception("One or more input arguments are invalid");
+		}
+		if(newStartDate.isAfter(newEndDate)) {
+			//throw new Exception("Vacation start date can't be after the end date");
+			return;
+		}
+		if(vacationRepo.existsOverlappingVacation(newEmployee, newStartDate, newEndDate)) {
+			//throw new Exception("Vacation for employee id=" + newEmployee.getEid() + " for " + newStartDate + "-" + newEndDate + " has already been registered");
+			return;
+		}
+		Vacation newVacation = new Vacation(newStartDate, newEndDate, newEmployee);
+		newVacation.setStatus(status);
+		newVacation.setActive();
+		vacationRepo.save(newVacation);
+	}
+	
+	public void updateVacationById(long id, LocalDate newStartDate, LocalDate newEndDate, Employee newEmployee, RequestStatus status) throws Exception{
+		if(id <= 0 || newStartDate == null || newEndDate == null || newEmployee == null) {
+			return;
+			//throw new Exception("One or more input arguments are invalid");
+		}
+		if(!vacationRepo.existsById(id)) {
+			return;
+			//throw new Exception("Vacation with id = " + id + " doesn't exist");
+		}
+		if(newStartDate.isAfter(newEndDate)) {
+			return;
+			//throw new Exception("Vacation start date can't be after the end date");
+		}
+		if(vacationRepo.existsOverlappingVacationForUpdate(id, newEmployee, newStartDate, newEndDate)) {
+			return;
+			//throw new Exception("Another vacation in time period of " + newStartDate + "-" + newEndDate + " already exists");
+		}
+		Vacation vacationForUpdating = vacationRepo.findById(id).get();
+		vacationForUpdating.setStartDate(newStartDate);
+		vacationForUpdating.setEndDate(newEndDate);
+		vacationForUpdating.setEmployee(newEmployee);
+		vacationForUpdating.setStatus(status);
+		vacationForUpdating.setActive();
 		vacationRepo.save(vacationForUpdating);
 	}
 
