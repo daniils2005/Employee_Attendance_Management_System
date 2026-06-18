@@ -43,7 +43,7 @@ public class EmployeeAttendanceManagementSystemApplication {
 			@Override
 			public void run(String... args) throws Exception {
 				Department dep1 = new Department(DepartmentName.IT, "It nodaļa priekš uzņemuma uzturēšanas");
-				Department defaultDepartment = new Department(DepartmentName.Nav_minēts, "Departaments nav bijis uzlikts vai tika nomainīts vai dzēsts");
+				Department defaultDepartment = new Department(DepartmentName.Nav_minets, "Departaments nav bijis uzlikts vai tika nomainīts vai dzēsts");
 
 				departRepo.save(dep1);
 				
