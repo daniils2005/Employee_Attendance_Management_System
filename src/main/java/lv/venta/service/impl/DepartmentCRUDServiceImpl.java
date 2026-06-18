@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lv.venta.model.Department;
 import lv.venta.model.Employee;
-import lv.venta.model.enums.DepartmentName;
 import lv.venta.repo.IDepartmentRepo;
 import lv.venta.repo.IEmployeeRepo;
 import lv.venta.service.IDepartmentCRUDService;

@@ -86,11 +86,11 @@
 					</select>
 				</td>
 				<td style="border: 1px solid black;">				
-					<select name="department" required>
-					    <option value="IT">IT</option>
-					    <option value="Gramatvediba">Gramatvediba</option>
-						<option value="Personala_nodala">Personala_nodala</option>
-						<option value="Nav_minets">Nav_minets</option>
+					<select name="department">
+						<option th:each="department : ${departments}"
+						        th:value="${department.departmentName}"
+						        th:text="${department.departmentName}">
+						</option>
 					</select>
 				</td>
 				<td style="border: 1px solid black;">		

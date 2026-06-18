@@ -3,7 +3,6 @@ package lv.venta.service;
 import java.util.ArrayList;
 
 import lv.venta.model.Department;
-import lv.venta.model.enums.DepartmentName;
 
 public interface IDepartmentCRUDService {
 	
