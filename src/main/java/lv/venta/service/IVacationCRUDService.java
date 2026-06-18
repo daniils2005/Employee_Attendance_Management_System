@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import lv.venta.model.Employee;
 import lv.venta.model.Vacation;
+import lv.venta.model.enums.RequestStatus;
 
 public interface IVacationCRUDService {
 
@@ -15,6 +16,8 @@ public interface IVacationCRUDService {
 	public abstract void deleteVacationById(long id) throws Exception;
 	
 	public abstract void insertNewVacation(LocalDate newStartDate, LocalDate newEndDate, Employee newEmployee) throws Exception;
+	public abstract void insertNewVacation(LocalDate newStartDate, LocalDate newEndDate, Employee newEmployee, RequestStatus status) throws Exception;
 	
 	public abstract void updateVacationById(long id, LocalDate newStartDate, LocalDate newEndDate, Employee newEmployee) throws Exception;
+	public abstract void updateVacationById(long id, LocalDate newStartDate, LocalDate newEndDate, Employee newEmployee, RequestStatus status) throws Exception;
 }
