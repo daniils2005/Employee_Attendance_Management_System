@@ -43,9 +43,11 @@ public class EmployeeAttendanceManagementSystemApplication {
 			@Override
 			public void run(String... args) throws Exception {
 				Department dep1 = new Department(DepartmentName.IT, "It nodaļa priekš uzņemuma uzturēšanas");
+				Department dep2 = new Department(DepartmentName.Gramatvediba, "Grāmatvedības nodaļa");
+				Department dep3 = new Department(DepartmentName.Personala_nodala, "Personāla nodaļa");
 				Department defaultDepartment = new Department(DepartmentName.Nav_minets, "Departaments nav bijis uzlikts vai tika nomainīts vai dzēsts");
 
-				departRepo.save(dep1);
+				departRepo.saveAll(Arrays.asList(dep1, dep2, dep3, defaultDepartment));
 				
 				Employee emp1 = new Employee("Janis", "Berzins", "123456-12345", "12345678", "janis@gmail.com", 10, dep1, Status.Aktivs, Position.Programmetajs);
 				Employee emp2 = new Employee("Ugis", "Andrums", "123456-12345", "12345679", "Ugis@gmail.com", 10, dep1, Status.Aktivs, Position.DevOps_inzenieris);

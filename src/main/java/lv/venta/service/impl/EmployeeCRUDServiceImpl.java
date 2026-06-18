@@ -48,8 +48,8 @@ public class EmployeeCRUDServiceImpl implements IEmployeeCRUDService {
 			throw new Exception("Employee with id = " + id + " doesnt exist");
 		}
 		Employee employeeForDeleting = employeeRepo.findById(id).get();
-		ArrayList<User> usersTiedToEmployee = userRepo.findByEmployee(employeeForDeleting);
-		userRepo.deleteAll(usersTiedToEmployee);
+		User userTiedToEmployee = userRepo.findByEmployee(employeeForDeleting);
+		userRepo.delete(userTiedToEmployee);;
 		employeeRepo.delete(employeeForDeleting);
 	}
 

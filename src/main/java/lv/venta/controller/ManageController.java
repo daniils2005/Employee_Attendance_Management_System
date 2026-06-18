@@ -1,6 +1,5 @@
 package lv.venta.controller;
 
-import java.io.ObjectInputFilter.Status;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -22,7 +21,9 @@ import lv.venta.model.Vacation;
 import lv.venta.model.enums.DepartmentName;
 import lv.venta.model.enums.Position;
 import lv.venta.model.enums.RequestStatus;
+import lv.venta.model.enums.Status;
 import lv.venta.repo.IAttendanceRepo;
+import lv.venta.repo.IDepartmentRepo;
 import lv.venta.repo.IOvertimeRepo;
 import lv.venta.repo.IVacationRepo;
 
@@ -75,6 +76,9 @@ public class ManageController {
 	
 	@Autowired
 	private IEmployeeRepo employeeRepo;
+	
+	@Autowired
+	private IDepartmentRepo departmentRepo;
 	
     @GetMapping("/manage/attendance")
     public String getAttendanceByEmployee(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
@@ -138,6 +142,7 @@ public class ManageController {
     		 return "error-page";
     	 }
     }
+    
     @PostMapping("/manage/attendance/update-or-delete")
     public String updateAttendanceByEmployee(@RequestParam(required = false) Long eid, @RequestParam(required = false) Long aid, @RequestParam float hoursWorked, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String action, Model model) {
     	 try {
@@ -452,6 +457,32 @@ public class ManageController {
    		 	model.addAttribute("errorMessage", e.getMessage());
    		 	return "error-page";
    	 	}
+    }
+    
+    @PostMapping("/manage/employee/add")
+    public String postEmployees(@RequestParam String name, @RequestParam String surname, @RequestParam String personCode, @RequestParam float hourlyRate, @RequestParam Position position, @RequestParam DepartmentName department, @RequestParam Status status, @RequestParam String email, @RequestParam String number, Model model) { 
+    	 try {
+    		 employeeCRUDService.insertNewEmployee(name, surname, personCode, number, email, hourlyRate, departmentRepo.findByDepartmentName(department), status, position);
+    		 return "redirect:/manage/employee";
+    	 } 
+    	 catch(Exception e) {
+    		 model.addAttribute("errorMessage", e.getMessage());
+    		 return "error-page";
+    	 }
+    }
+    
+    @PostMapping("/manage/employee/update-or-delete")
+    public String updateEmployees(@RequestParam long eid, @RequestParam String name, @RequestParam String surname, @RequestParam float hourlyRate, @RequestParam Position position, @RequestParam DepartmentName department, @RequestParam Status status, @RequestParam String email, @RequestParam String phoneNumber, @RequestParam String action, Model model) {
+    	try {
+    		if("save".equals(action)) {
+    			employeeCRUDService.updateEmployeeById(eid, name, surname, phoneNumber, email, hourlyRate, departmentRepo.findByDepartmentName(department), status, position);
+    		}
+    		return "redirect:/manage/employee";
+    	 } 
+    	 catch(Exception e) {
+    		 model.addAttribute("errorMessage", e.getMessage());
+    		 return "error-page";
+    	 }
     }
 
 }

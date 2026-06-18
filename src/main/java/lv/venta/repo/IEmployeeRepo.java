@@ -1,6 +1,5 @@
 package lv.venta.repo;
 
-import java.io.ObjectInputFilter.Status;
 import java.util.ArrayList;
 
 import org.springframework.data.repository.CrudRepository;
@@ -9,6 +8,7 @@ import lv.venta.model.Department;
 import lv.venta.model.Employee;
 import lv.venta.model.enums.DepartmentName;
 import lv.venta.model.enums.Position;
+import lv.venta.model.enums.Status;
 
 public interface IEmployeeRepo extends CrudRepository<Employee, Long>{
 
