@@ -46,6 +46,10 @@ public class MyController {
 	@Autowired
 	private IEmployeeCRUDService employeeCRUDService;
 	
+	private String dateToday = "dateToday";
+	private String errorPage = "error-page";
+	private String errorMessage = "errorMessage";
+	private String redirectAccount = "redirect:/account";
 	
 	private User getCurrentUser() {
 	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -58,12 +62,12 @@ public class MyController {
         User currentUser = getCurrentUser();
         try {
         	model.addAttribute("attendances", generalService.selectAllAttendancesThisMonthForEmployeeId(currentUser.getEmployee().getEid()));
-        	model.addAttribute("dateToday", LocalDate.now());
+        	model.addAttribute(dateToday, LocalDate.now());
         	model.addAttribute("salary", generalService.calculateSalaryThisMonthForEmployeeId(currentUser.getEmployee().getEid()));
         	return "my-attendance-page";
         } catch(Exception e) {
-        	model.addAttribute("errorMessage", e.getMessage());
-        	return "error-page";
+        	model.addAttribute(errorMessage, e.getMessage());
+        	return errorPage;
         }
     }
     
@@ -74,8 +78,8 @@ public class MyController {
     		 attendanceCRUDService.insertNewAttendance(hoursWorked, currentUser.getEmployee());
     		 return "redirect:/attendance";
     	 } catch(Exception e) {
-    		 model.addAttribute("errorMessage", e.getMessage());
-    		 return "error-page";
+    		 model.addAttribute(errorMessage, e.getMessage());
+    		 return errorPage;
     	 }
     }
     
@@ -84,11 +88,11 @@ public class MyController {
         User currentUser = getCurrentUser();
         try {
         	model.addAttribute("overtimes", generalService.selectAllOvertimesThisMonthForEmployeeId(currentUser.getEmployee().getEid()));
-        	model.addAttribute("dateToday", LocalDate.now());
+        	model.addAttribute(dateToday, LocalDate.now());
         	return "my-overtime-page";
         } catch(Exception e) {
-        	model.addAttribute("errorMessage", e.getMessage());
-        	return "error-page";
+        	model.addAttribute(errorMessage, e.getMessage());
+        	return errorPage;
         }
     }
     
@@ -99,8 +103,8 @@ public class MyController {
     		 overtimeCRUDService.insertNewOvertime(overtimeHours, description, currentUser.getEmployee());
     		 return "redirect:/overtime";
     	 } catch(Exception e) {
-    		 model.addAttribute("errorMessage", e.getMessage());
-    		 return "error-page";
+    		 model.addAttribute(errorMessage, e.getMessage());
+    		 return errorPage;
     	 }
     }
     
@@ -109,11 +113,11 @@ public class MyController {
         User currentUser = getCurrentUser();
         try {
         	model.addAttribute("vacations", generalService.selectAllVacationsForEmployeeId(currentUser.getEmployee().getEid()));
-        	model.addAttribute("dateToday", LocalDate.now());
+        	model.addAttribute(dateToday, LocalDate.now());
         	return "my-vacation-page";
         } catch(Exception e) {
-        	model.addAttribute("errorMessage", e.getMessage());
-        	return "error-page";
+        	model.addAttribute(errorMessage, e.getMessage());
+        	return errorPage;
         }
     }
     
@@ -124,8 +128,8 @@ public class MyController {
     		 vacationCRUDService.insertNewVacation(startDate, endDate, currentUser.getEmployee());
     		 return "redirect:/vacation";
     	 } catch(Exception e) {
-    		 model.addAttribute("errorMessage", e.getMessage());
-    		 return "error-page";
+    		 model.addAttribute(errorMessage, e.getMessage());
+    		 return errorPage;
     	 }
     }
     
@@ -136,8 +140,8 @@ public class MyController {
         	model.addAttribute("user", currentUser);
         	return "my-account-page";
         } catch(Exception e) {
-        	model.addAttribute("errorMessage", e.getMessage());
-        	return "error-page";
+        	model.addAttribute(errorMessage, e.getMessage());
+        	return errorPage;
         }
     }
     
@@ -148,8 +152,8 @@ public class MyController {
     		userCRUDService.updateUserById(currentUser.getUid(), newUsername, currentUser.getPassword(), currentUser.getEmployee(), currentUser.getAuthority());
     		return "redirect:/account";
     	} catch(Exception e) {
-        	model.addAttribute("errorMessage", e.getMessage());
-        	return "error-page";
+        	model.addAttribute(errorMessage, e.getMessage());
+        	return errorPage;
     	}
     }
     
@@ -158,10 +162,10 @@ public class MyController {
     	try {
     		Employee currentEmployee = employeeCRUDService.selectEmployeeById(getCurrentUser().getEmployee().getEid());
     		employeeCRUDService.updateEmployeeById(currentEmployee.getEid(), newName, currentEmployee.getSurname(), currentEmployee.getNumber(), currentEmployee.getEmail(), currentEmployee.getHourlyRate(), currentEmployee.getDepartment(), currentEmployee.getStatus(), currentEmployee.getPosition());
-    		return "redirect:/account";
+    		return redirectAccount;
     	} catch(Exception e) {
-        	model.addAttribute("errorMessage", e.getMessage());
-        	return "error-page";
+        	model.addAttribute(errorMessage, e.getMessage());
+        	return errorPage;
     	}
     }
     
@@ -170,10 +174,10 @@ public class MyController {
     	try {
     		Employee currentEmployee = employeeCRUDService.selectEmployeeById(getCurrentUser().getEmployee().getEid());
     		employeeCRUDService.updateEmployeeById(currentEmployee.getEid(), currentEmployee.getName(), newSurname, currentEmployee.getNumber(), currentEmployee.getEmail(), currentEmployee.getHourlyRate(), currentEmployee.getDepartment(), currentEmployee.getStatus(), currentEmployee.getPosition());
-    		return "redirect:/account";
+    		return redirectAccount;
     	} catch(Exception e) {
-        	model.addAttribute("errorMessage", e.getMessage());
-        	return "error-page";
+        	model.addAttribute(errorMessage, e.getMessage());
+        	return errorPage;
     	}
     }
     
@@ -182,10 +186,10 @@ public class MyController {
     	try {
     		Employee currentEmployee = employeeCRUDService.selectEmployeeById(getCurrentUser().getEmployee().getEid());
     		employeeCRUDService.updateEmployeeById(currentEmployee.getEid(), currentEmployee.getName(), currentEmployee.getSurname(), newNumber, currentEmployee.getEmail(), currentEmployee.getHourlyRate(), currentEmployee.getDepartment(), currentEmployee.getStatus(), currentEmployee.getPosition());
-    		return "redirect:/account";
+    		return redirectAccount;
     	} catch(Exception e) {
-        	model.addAttribute("errorMessage", e.getMessage());
-        	return "error-page";
+        	model.addAttribute(errorMessage, e.getMessage());
+        	return errorPage;
     	}
     }
     
@@ -194,10 +198,10 @@ public class MyController {
     	try {
     		Employee currentEmployee = employeeCRUDService.selectEmployeeById(getCurrentUser().getEmployee().getEid());
     		employeeCRUDService.updateEmployeeById(currentEmployee.getEid(), currentEmployee.getName(), currentEmployee.getSurname(), currentEmployee.getNumber(), newEmail, currentEmployee.getHourlyRate(), currentEmployee.getDepartment(), currentEmployee.getStatus(), currentEmployee.getPosition());
-    		return "redirect:/account";
+    		return redirectAccount;
     	} catch(Exception e) {
-        	model.addAttribute("errorMessage", e.getMessage());
-        	return "error-page";
+        	model.addAttribute(errorMessage, e.getMessage());
+        	return errorPage;
     	}
     }
     
@@ -206,22 +210,22 @@ public class MyController {
     	try { 
     		User currentUser = userCRUDService.selectUserById(getCurrentUser().getUid());
 	    	if(!encoder.matches(currentPassword, currentUser.getPassword())) {
-	    		model.addAttribute("errorMessage", "Current password doesn't match");
-	    		return "error-page";
+	    		model.addAttribute(errorMessage, "Current password doesn't match");
+	    		return errorPage;
 	    	}
 	    	if(!newPassword.equals(confirmPassword)) {
-	    		model.addAttribute("errorMessage", "Confirm password doesn't match new password");
-	    		return "error-page";
+	    		model.addAttribute(errorMessage, "Confirm password doesn't match new password");
+	    		return errorPage;
 	    	}
 	    	if(encoder.matches(newPassword, currentUser.getPassword())) {
-	    	    model.addAttribute("errorMessage", "New password must be different from current password");
-	    	    return "error-page";
+	    	    model.addAttribute(errorMessage, "New password must be different from current password");
+	    	    return errorPage;
 	    	}
 	    	userCRUDService.updateUserById(currentUser.getUid(), currentUser.getUsername(), encoder.encode(newPassword), currentUser.getEmployee(), currentUser.getAuthority());
 	    	return "redirect:/logout";
     	} catch(Exception e) {
-        	model.addAttribute("errorMessage", e.getMessage());
-        	return "error-page";
+        	model.addAttribute(errorMessage, e.getMessage());
+        	return errorPage;
     	}
     }
 }

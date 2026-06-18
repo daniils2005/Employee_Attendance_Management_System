@@ -13,7 +13,7 @@ public interface IDepartmentCRUDService {
 	
 	public abstract void deleteDepartmentById(long id) throws Exception;
 	
-	public abstract void insertNewDepartment(DepartmentName departmentName, String description) throws Exception;
+	public abstract void insertNewDepartment(String departmentName, String description) throws Exception;
 	
-	public abstract void updateDepartmentById(long id, DepartmentName departmentName, String description) throws Exception;
+	public abstract void updateDepartmentById(long id, String departmentName, String description) throws Exception;
 }

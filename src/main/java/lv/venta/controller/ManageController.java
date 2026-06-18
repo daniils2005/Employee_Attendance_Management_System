@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import jakarta.validation.Valid;
 import lv.venta.model.Attendance;
 import lv.venta.model.Department;
 import lv.venta.model.Employee;
 import lv.venta.model.Overtime;
 
 import lv.venta.model.Vacation;
-import lv.venta.model.enums.DepartmentName;
+import lv.venta.model.enums.Position;
 import lv.venta.model.enums.RequestStatus;
+import lv.venta.model.enums.Status;
 import lv.venta.repo.IAttendanceRepo;
 import lv.venta.repo.IDepartmentRepo;
 import lv.venta.repo.IOvertimeRepo;
@@ -68,7 +68,7 @@ public class ManageController {
 	
 	@Autowired
 	private IVacationRepo vacationRepo;
-	
+
 	@Autowired
 	private IUserCRUDService userCRUDService;
 	
@@ -79,10 +79,15 @@ public class ManageController {
 	private IEmployeeRepo employeeRepo;
 	
 	@Autowired
-	private IDepartmentCRUDService departmentCRUDService;
+	private IDepartmentRepo departmentRepo;
 	
 	@Autowired
-	private IDepartmentRepo departmentRepo;
+	private IDepartmentCRUDService departmentCRUDService;
+	
+	private String errorPage = "error-page";
+	private String errorMessage = "errorMessage";
+	private String surnameGlobal = "surname";
+	
     @GetMapping("/manage/attendance")
     public String getAttendanceByEmployee(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
     	try {  
@@ -106,10 +111,10 @@ public class ManageController {
 			else if ("id".equals(sort) && "desc".equals(order)) {
 				 attendances.sort(Comparator.comparing(a -> ((Attendance) a).getEmployee().getEid()).reversed());
 			}
-			else if ("surname".equals(sort) && "asc".equals(order)) {
+			else if (surnameGlobal.equals(sort) && "asc".equals(order)) {
 			    attendances.sort(Comparator.comparing(a -> a.getEmployee().getSurname()));
 			}
-			else if ("surname".equals(sort) && "desc".equals(order)) {
+			else if (surnameGlobal.equals(sort) && "desc".equals(order)) {
 			    attendances.sort(Comparator.comparing(a -> ((Attendance) a).getEmployee().getSurname()).reversed());
 			}
 			else if ("date".equals(sort) && "asc".equals(order)) {
@@ -127,8 +132,8 @@ public class ManageController {
 			return "manage-attendance-page";
     	}   
         catch (Exception e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            return "error-page";
+            model.addAttribute(errorMessage, e.getMessage());
+            return errorPage;
         }
     }
     
@@ -141,10 +146,11 @@ public class ManageController {
     		 return "redirect:/manage/attendance";
     	 } 
     	 catch(Exception e) {
-    		 model.addAttribute("errorMessage", e.getMessage());
-    		 return "error-page";
+    		 model.addAttribute(errorMessage, e.getMessage());
+    		 return errorPage;
     	 }
     }
+    
     @PostMapping("/manage/attendance/update-or-delete")
     public String updateAttendanceByEmployee(@RequestParam(required = false) Long eid, @RequestParam(required = false) Long aid, @RequestParam float hoursWorked, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String action, Model model) {
     	 try {
@@ -159,8 +165,8 @@ public class ManageController {
     		 return "redirect:/manage/attendance";
     	 } 
     	 catch(Exception e) {
-    		 model.addAttribute("errorMessage", e.getMessage());
-    		 return "error-page";
+    		 model.addAttribute(errorMessage, e.getMessage());
+    		 return errorPage;
     	 }
     }
     
@@ -215,8 +221,8 @@ public class ManageController {
     		return "manage-overtime-page";
     	}
     	catch(Exception e) {
-   		 model.addAttribute("errorMessage", e.getMessage());
-   		 return "error-page";
+   		 model.addAttribute(errorMessage, e.getMessage());
+   		 return errorPage;
    	 	}
     }
     
@@ -229,8 +235,8 @@ public class ManageController {
     		 return "redirect:/manage/overtime";
     	 } 
     	 catch(Exception e) {
-    		 model.addAttribute("errorMessage", e.getMessage());
-    		 return "error-page";
+    		 model.addAttribute(errorMessage, e.getMessage());
+    		 return errorPage;
     	 }
     }
 
@@ -248,8 +254,8 @@ public class ManageController {
     		 return "redirect:/manage/overtime";
     	 } 
     	 catch(Exception e) {
-    		 model.addAttribute("errorMessage", e.getMessage());
-    		 return "error-page";
+    		 model.addAttribute(errorMessage, e.getMessage());
+    		 return errorPage;
     	 }
     }
 
@@ -294,19 +300,17 @@ public class ManageController {
  			else if ("status".equals(sort) && "desc".equals(order)) {
  				vacation.sort(Comparator.comparing(Vacation::getStatus,Comparator.nullsLast(Comparator.naturalOrder())).reversed());
  			}
-     		
-     		if(vacationRepo.count() != 0) {
+     
+     		if (vacationRepo.count() != 0) {
      			ArrayList<Vacation> vacationLastVid = vacationRepo.findTopByOrderByVidDesc();
      			model.addAttribute("lastVid", vacationLastVid.get(0).getVid() + 1);
      		}
-
-     		
      		model.addAttribute("vacations", vacation);
-    		 return "manage-vacation-page";
+     		return "manage-vacation-page";
     	 } 
     	 catch(Exception e) {
-    		 model.addAttribute("errorMessage", e.getMessage());
-    		 return "error-page";
+    		 model.addAttribute(errorMessage, e.getMessage());
+    		 return errorPage;
     	 }
     }
     
@@ -319,8 +323,8 @@ public class ManageController {
     		 return "redirect:/manage/vacation";
     	 } 
     	 catch(Exception e) {
-    		 model.addAttribute("errorMessage", e.getMessage());
-    		 return "error-page";
+    		 model.addAttribute(errorMessage, e.getMessage());
+    		 return errorPage;
     	 }
     }
     
@@ -338,8 +342,8 @@ public class ManageController {
     	 return "redirect:/manage/vacation";
     	 }
     	 catch(Exception e) {
-    		 model.addAttribute("errorMessage", e.getMessage());
-    		 return "error-page";
+    		 model.addAttribute(errorMessage, e.getMessage());
+    		 return errorPage;
     	 }
     }
     
@@ -389,8 +393,8 @@ public class ManageController {
     		return "manage-user-page";
     	}
     	catch(Exception e) {
-   		 	model.addAttribute("errorMessage", e.getMessage());
-   		 	return "error-page";
+   		 	model.addAttribute(errorMessage, e.getMessage());
+   		 	return errorPage;
    	 	}
     }
     
@@ -401,8 +405,8 @@ public class ManageController {
     		 return "redirect:/manage/user";
     	 } 
     	 catch(Exception e) {
-    		 model.addAttribute("errorMessage", e.getMessage());
-    		 return "error-page";
+    		 model.addAttribute(errorMessage, e.getMessage());
+    		 return errorPage;
     	 }
     }
     
@@ -427,16 +431,76 @@ public class ManageController {
     		 return "redirect:/manage/user";
     	 } 
     	 catch(Exception e) {
-    		 model.addAttribute("errorMessage", e.getMessage());
-    		 return "error-page";
+    		 model.addAttribute(errorMessage, e.getMessage());
+    		 return errorPage;
     	 }
     }
-    @GetMapping("/manage/department")
-    public String getDepartment(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
+    
+    @GetMapping("/manage/employee")
+    public String getEmployees(@RequestParam(required = false) Long eid, @RequestParam(required = false) String surname, @RequestParam(required = false) Status status, @RequestParam(required = false) Position position, @RequestParam(required = false) String department, Model model) {
+    	try {
+    		ArrayList<Employee> resultEmployees = new ArrayList<Employee>();
+			if(eid != null) {
+				resultEmployees.add(employeeCRUDService.selectEmployeeById(eid));
+			}
+			else if(surname != null) {
+				resultEmployees = employeeRepo.findBySurname(surname);
+			}
+			else if(status != null) {
+				resultEmployees = employeeRepo.findByStatus(status);
+			}
+			else if(position != null) {
+				resultEmployees = employeeRepo.findByPosition(position);
+			}
+			else if(department != null) {
+				resultEmployees = employeeRepo.findByDepartmentDepartmentName(department);
+			} else {
+				resultEmployees = employeeCRUDService.selectAllEmployees();
+			}
+			if(employeeRepo.count() != 0) {
+     			ArrayList<Employee> employeeLastEid = employeeRepo.findTopByOrderByEidDesc();
+     			model.addAttribute("lastEid", employeeLastEid.get(0).getEid() + 1);
+     		}
+			model.addAttribute("employees", resultEmployees);
+    		return "manage-employee-page";
+    	}
+    	catch(Exception e) {
+   		 	model.addAttribute(errorMessage, e.getMessage());
+   		 	return errorPage;
+   	 	}
+    }
+    
+    @PostMapping("/manage/employee/add")
+    public String postEmployees(@RequestParam String name, @RequestParam String surname, @RequestParam String personCode, @RequestParam float hourlyRate, @RequestParam Position position, @RequestParam String department, @RequestParam Status status, @RequestParam String email, @RequestParam String number, Model model) { 
     	 try {
-    		ArrayList<Department> department;
-    		department = departmentCRUDService.selectAllDepartments();
+    		 employeeCRUDService.insertNewEmployee(name, surname, personCode, number, email, hourlyRate, departmentRepo.findByDepartmentName(department), status, position);
+    		 return "redirect:/manage/employee";
+    	 } 
+    	 catch(Exception e) {
+    		 model.addAttribute(errorMessage, e.getMessage());
+    		 return errorPage;
+    	 }
+    }
+    
+    @PostMapping("/manage/employee/update-or-delete")
+    public String updateEmployees(@RequestParam long eid, @RequestParam String name, @RequestParam String surname, @RequestParam float hourlyRate, @RequestParam Position position, @RequestParam String department, @RequestParam Status status, @RequestParam String email, @RequestParam String phoneNumber, @RequestParam String action, Model model) {
+    	try {
+    		if("save".equals(action)) {
+    			employeeCRUDService.updateEmployeeById(eid, name, surname, phoneNumber, email, hourlyRate, departmentRepo.findByDepartmentName(department), status, position);
+    		}
+    		return "redirect:/manage/employee";
+    	 } 
+    	 catch(Exception e) {
+    		 model.addAttribute(errorMessage, e.getMessage());
+    		 return errorPage;
+    	 }
+    }
 
+	@GetMapping("/manage/department")
+	public String getDepartment(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
+		 try {
+			ArrayList<Department> department;
+			department = departmentCRUDService.selectAllDepartments();
      		if ("did".equals(sort) && "asc".equals(order)) {
      			department.sort(Comparator.comparing(a -> a.getDid())); 
  			}
@@ -461,24 +525,25 @@ public class ManageController {
      		return "manage-department-page";
     	 } 
     	 catch(Exception e) {
-    		 model.addAttribute("errorMessage", e.getMessage());
-    		 return "error-page";
+    		 model.addAttribute(errorMessage, e.getMessage());
+    		 return errorPage;
     	 }
     }
+	
     @PostMapping("/manage/department/add")
-    public String addDepartment(@RequestParam DepartmentName departmentName, @RequestParam String description, Model model) { 
+    public String addDepartment(@RequestParam String addDepartmentName, @RequestParam String description, Model model) { 
     	 try {
-    		 departmentCRUDService.insertNewDepartment(departmentName, description);
+    		 departmentCRUDService.insertNewDepartment(addDepartmentName, description);
     		 return "redirect:/manage/department";
     	 } 
     	 catch(Exception e) {
-    		 model.addAttribute("errorMessage", e.getMessage());
-    		 return "error-page";
+    		 model.addAttribute(errorMessage, e.getMessage());
+    		 return errorPage;
     	 }
     }
  
     @PostMapping("/manage/department/update-or-delete")
-    public String updateDepartment(@RequestParam String action, @RequestParam Long did, @RequestParam DepartmentName departmentName, @RequestParam String description, Model model) {
+    public String updateDepartment(@RequestParam String action, @RequestParam Long did, @RequestParam String departmentName, @RequestParam String description, Model model) {
     	 try {
     		 if ("save".equals(action)) {
     			departmentCRUDService.updateDepartmentById(did, departmentName, description);
@@ -489,8 +554,8 @@ public class ManageController {
     	 return "redirect:/manage/department";
     	 }
     	 catch(Exception e) {
-    		 model.addAttribute("errorMessage", e.getMessage());
-    		 return "error-page";
+    		 model.addAttribute(errorMessage, e.getMessage());
+    		 return errorPage;
     	 }
     }
 }

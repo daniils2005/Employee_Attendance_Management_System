@@ -10,9 +10,9 @@ import lv.venta.model.enums.DepartmentName;
 
 public interface IDepartmentRepo extends CrudRepository<Department, Long>{
 
-	boolean existsByDepartmentName(DepartmentName departmentName);
+	boolean existsByDepartmentName(String departmentName);
 
-	Department findByDepartmentName(DepartmentName navMinēts);
+	Department findByDepartmentName(String string);
 
 	ArrayList<Department> findTopByOrderByDidDesc();
 

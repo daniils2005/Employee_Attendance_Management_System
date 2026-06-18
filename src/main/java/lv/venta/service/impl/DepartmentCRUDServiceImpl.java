@@ -49,7 +49,7 @@ public class DepartmentCRUDServiceImpl implements IDepartmentCRUDService {
 		}
 		Department departmentForDeleting = departmentRepo.findById(id).get();
 		ArrayList<Employee> employeesFromDepartment = employeeRepo.findByDepartment(departmentForDeleting);
-		Department defaultDepartment = departmentRepo.findByDepartmentName(DepartmentName.Nav_minets);
+		Department defaultDepartment = departmentRepo.findByDepartmentName("Nav_minets");
 		for(var employee : employeesFromDepartment) {
 			employee.setDepartment(defaultDepartment);
 		}
@@ -58,7 +58,7 @@ public class DepartmentCRUDServiceImpl implements IDepartmentCRUDService {
 	}
 
 	@Override
-	public void insertNewDepartment(DepartmentName departmentName, String description) throws Exception {
+	public void insertNewDepartment(String departmentName, String description) throws Exception {
 		if(departmentName == null || description == null) {
 			throw new Exception("One or more input arguments are invalid");
 		}
@@ -70,7 +70,7 @@ public class DepartmentCRUDServiceImpl implements IDepartmentCRUDService {
 	}
 
 	@Override
-	public void updateDepartmentById(long id, DepartmentName departmentName, String description) throws Exception {
+	public void updateDepartmentById(long id, String departmentName, String description) throws Exception {
 		if(id <= 0 || departmentName == null || description == null) {
 			throw new Exception("One or more input arguments are invalid");
 		}

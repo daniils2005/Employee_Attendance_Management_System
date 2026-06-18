@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -35,10 +36,10 @@ public class Department {
 	@Column(name = "did")
 	private long did;
 	
-	@Enumerated(EnumType.STRING)
 	@NotNull
+	@NotEmpty
 	@Column(name = "department_name")
-	private DepartmentName departmentName;
+	private String departmentName;
 	
 	@Size(max = 100)
 	private String description;
@@ -47,7 +48,7 @@ public class Department {
 	@ToString.Exclude
 	private Collection<Employee> employees = new ArrayList<Employee>();
 	
-	public Department(DepartmentName newDepartmentName, String newDescription) {
+	public Department(String newDepartmentName, String newDescription) {
 		setDepartmentName(newDepartmentName);
 		setDescription(newDescription);
 	}

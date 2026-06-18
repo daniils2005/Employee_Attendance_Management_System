@@ -30,11 +30,19 @@ public class SecurityConfig {
 	
 	@Bean
 	public SecurityFilterChain configureEndpoints(HttpSecurity http) {
+		String admin = "ADMIN";
+		String user = "USER";
 		http.authorizeHttpRequests(
 				auth->auth
-				.requestMatchers("/home").hasAnyAuthority("ADMIN", "USER")
-				.requestMatchers("/manage/**").hasAnyAuthority("ADMIN")
-				.anyRequest().permitAll()
+				.requestMatchers("/home").hasAnyAuthority(admin, user)
+				.requestMatchers("/attendance").hasAnyAuthority(admin, user)
+				.requestMatchers("/overtime").hasAnyAuthority(admin, user)
+				.requestMatchers("/vacation").hasAnyAuthority(admin, user)
+				.requestMatchers("/account").hasAnyAuthority(admin, user)
+				.requestMatchers("/account/**").hasAnyAuthority(admin, user)
+				.requestMatchers("/manage/**").hasAnyAuthority(admin)
+				.requestMatchers("/css/**").permitAll()
+				
 		);
 		
 		http.formLogin(auth->auth.permitAll());
