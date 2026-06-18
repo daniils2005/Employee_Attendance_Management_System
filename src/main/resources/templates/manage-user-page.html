@@ -62,15 +62,15 @@
 				<td style="border: 1px solid black;"></td>
 				<td style="border: 1px solid black;">				
 					<select name="authority">
-						<option value="eid">ADMIN</option>
-				        <option value="username">USER</option>
+						<option value="ADMIN">ADMIN</option>
+				        <option value="USER">USER</option>
 					</select>
 				</td>
                 <td style="border: 1px solid black;"><button type="submit">Add</button></td>
             </form>
         </tr>
         <tr th:each="user : ${users}">
-            <form th:action="@{/manage/user/update-and-delete}" method="post">
+            <form th:action="@{/manage/user/update-or-delete}" method="post">
 				<td style="border: 1px solid black;"><input type="hidden" name="uid" th:value="${user.uid}" th:text="${user.uid}"></td>
 				<td style="border: 1px solid black;"><input type="number" name="eid" th:value="${user.employee.eid}"></td>
 				<td style="border: 1px solid black;"><input type="text" name="username" th:value="${user.username}"></td>
@@ -80,8 +80,8 @@
 				<td style="border: 1px solid black;"><input type="text" name="phoneNumber" th:value="${user.employee.number}"></td>
 				<td style="border: 1px solid black;">			
 					<select name="authority">
-						<option value="admin" th:selected="${user.authority.title == 'ADMIN'}">ADMIN</option>
-				        <option value="user" th:selected="${user.authority.title == 'USER'}">USER</option>
+						<option value="ADMIN" th:selected="${user.authority.title == 'ADMIN'}">ADMIN</option>
+				        <option value="USER" th:selected="${user.authority.title == 'USER'}">USER</option>
 					</select>
 				</td>
                 <td style="border: 1px solid black;"><button type="submit" name="action" value="save">Save</button><button type="submit" name="action" value="delete">Delete</button></td>

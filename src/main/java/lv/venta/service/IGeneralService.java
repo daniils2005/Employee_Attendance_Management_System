@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import lv.venta.model.Attendance;
+import lv.venta.model.Authority;
 import lv.venta.model.Overtime;
 import lv.venta.model.User;
 import lv.venta.model.Vacation;
@@ -33,5 +34,7 @@ public interface IGeneralService {
 	public abstract ArrayList<Overtime> selectAllOvertimeByEmployeeIdAndDateMonth(long id, LocalDate timeCheck) throws Exception;
 	
 	public abstract User selectUserByUsername(String username) throws Exception;
+	
+	public abstract Authority selectAuthorityByTitle(String authorityTitle) throws Exception;
 	
 }

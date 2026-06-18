@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,7 @@ import lv.venta.model.Employee;
 import lv.venta.model.Overtime;
 import lv.venta.model.User;
 import lv.venta.model.enums.RequestStatus;
+import lv.venta.repo.IEmployeeRepo;
 import lv.venta.repo.IUserRepo;
 import lv.venta.service.IAttendanceCRUDService;
 import lv.venta.service.IEmployeeCRUDService;
@@ -26,6 +29,8 @@ import lv.venta.service.IUserCRUDService;
 @Controller
 public class ManageController {
 
+	PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	
 	@Autowired
 	private IGeneralService generalService;
 	
@@ -43,6 +48,9 @@ public class ManageController {
 	
 	@Autowired
 	private IUserRepo userRepo;
+	
+	@Autowired
+	private IEmployeeRepo employeeRepo;
 	
     @GetMapping("/manage/attendance")
     public String getAttendanceByEmployee(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
@@ -178,11 +186,11 @@ public class ManageController {
     }
     
     @GetMapping("/manage/user")
-    public String getUsers(@RequestParam(required = false) Long id, @RequestParam(required = false) String username, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
+    public String getUsers(@RequestParam(required = false) Long userId, @RequestParam(required = false) String username, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
     	try {
     		ArrayList<User> resultUsers = new ArrayList<User>();
-			if (id != null) {
-				resultUsers.add(userCRUDService.selectUserById(id));
+			if (userId != null) {
+				resultUsers.add(userCRUDService.selectUserById(userId));
 			}
 			else if (username != null) {
 				resultUsers.add(generalService.selectUserByUsername(username));
@@ -224,6 +232,44 @@ public class ManageController {
    		 	model.addAttribute("errorMessage", e.getMessage());
    		 	return "error-page";
    	 	}
+    }
+    
+    @PostMapping("/manage/user/add")
+    public String postUsers(@RequestParam long eid, @RequestParam String username, @RequestParam String authority, Model model) { 
+    	 try {
+    		 userCRUDService.insertNewUser(username, encoder.encode("parole"), employeeCRUDService.selectEmployeeById(eid), generalService.selectAuthorityByTitle(authority));
+    		 return "redirect:/manage/user";
+    	 } 
+    	 catch(Exception e) {
+    		 model.addAttribute("errorMessage", e.getMessage());
+    		 return "error-page";
+    	 }
+    }
+    
+    @PostMapping("/manage/user/update-or-delete")
+    public String updateUsers(@RequestParam String action, @RequestParam long uid, @RequestParam long eid, @RequestParam String username, @RequestParam String employeeName, @RequestParam String employeeSurname, @RequestParam String email, @RequestParam String phoneNumber, @RequestParam String authority, Model model) {
+    	 try {
+    		if ("save".equals(action)) {
+    			User user = userCRUDService.selectUserById(uid);
+    			Employee employee = employeeCRUDService.selectEmployeeById(eid);
+    			if(user.getEmployee().getEid() == eid) {
+    				employeeCRUDService.updateEmployeeById(eid, employeeName, employeeSurname, phoneNumber, email, employee.getHourlyRate(), employee.getDepartment(), employee.getStatus(), employee.getPosition());
+    			}
+    			userCRUDService.updateUserById(uid, username, user.getPassword(), employee, generalService.selectAuthorityByTitle(authority));
+    		 }
+    		 else {
+     			User user = userCRUDService.selectUserById(uid);
+    			Employee employee = user.getEmployee();
+    			employee.setUser(null);
+    			employeeRepo.save(employee);
+    			userCRUDService.deleteUserById(uid);
+    		 }
+    		 return "redirect:/manage/user";
+    	 } 
+    	 catch(Exception e) {
+    		 model.addAttribute("errorMessage", e.getMessage());
+    		 return "error-page";
+    	 }
     }
     
 }
