@@ -456,7 +456,10 @@ public class ManageController {
 			} else {
 				resultEmployees = employeeCRUDService.selectAllEmployees();
 			}
-			model.addAttribute("lastEid", employeeRepo.count() + 1);
+			if(employeeRepo.count() != 0) {
+     			ArrayList<Employee> employeeLastEid = employeeRepo.findTopByOrderByEidDesc();
+     			model.addAttribute("lastEid", employeeLastEid.get(0).getEid() + 1);
+     		}
 			model.addAttribute("employees", resultEmployees);
     		return "manage-employee-page";
     	}

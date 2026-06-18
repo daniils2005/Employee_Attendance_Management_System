@@ -24,4 +24,6 @@ public interface IEmployeeRepo extends CrudRepository<Employee, Long>{
 
 	ArrayList<Employee> findByDepartmentDepartmentName(DepartmentName department);
 
+	ArrayList<Employee> findTopByOrderByEidDesc();
+
 }
