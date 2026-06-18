@@ -1,5 +1,6 @@
 package lv.venta.controller;
 
+import java.io.ObjectInputFilter.Status;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -18,6 +19,8 @@ import lv.venta.model.Employee;
 import lv.venta.model.Overtime;
 
 import lv.venta.model.Vacation;
+import lv.venta.model.enums.DepartmentName;
+import lv.venta.model.enums.Position;
 import lv.venta.model.enums.RequestStatus;
 import lv.venta.repo.IAttendanceRepo;
 import lv.venta.repo.IOvertimeRepo;
@@ -72,7 +75,6 @@ public class ManageController {
 	
 	@Autowired
 	private IEmployeeRepo employeeRepo;
-
 	
     @GetMapping("/manage/attendance")
     public String getAttendanceByEmployee(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
@@ -419,6 +421,37 @@ public class ManageController {
     		 model.addAttribute("errorMessage", e.getMessage());
     		 return "error-page";
     	 }
+    }
+    
+    @GetMapping("/manage/employee")
+    public String getEmployees(@RequestParam(required = false) Long eid, @RequestParam(required = false) String surname, @RequestParam(required = false) Status status, @RequestParam(required = false) Position position, @RequestParam(required = false) DepartmentName department, Model model) {
+    	try {
+    		ArrayList<Employee> resultEmployees = new ArrayList<Employee>();
+			if(eid != null) {
+				resultEmployees.add(employeeCRUDService.selectEmployeeById(eid));
+			}
+			else if(surname != null) {
+				resultEmployees = employeeRepo.findBySurname(surname);
+			}
+			else if(status != null) {
+				resultEmployees = employeeRepo.findByStatus(status);
+			}
+			else if(position != null) {
+				resultEmployees = employeeRepo.findByPosition(position);
+			}
+			else if(department != null) {
+				resultEmployees = employeeRepo.findByDepartmentDepartmentName(department);
+			} else {
+				resultEmployees = employeeCRUDService.selectAllEmployees();
+			}
+			model.addAttribute("lastEid", employeeRepo.count() + 1);
+			model.addAttribute("employees", resultEmployees);
+    		return "manage-employee-page";
+    	}
+    	catch(Exception e) {
+   		 	model.addAttribute("errorMessage", e.getMessage());
+   		 	return "error-page";
+   	 	}
     }
 
 }
