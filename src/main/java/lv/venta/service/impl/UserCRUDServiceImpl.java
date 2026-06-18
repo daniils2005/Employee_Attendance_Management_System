@@ -19,9 +19,6 @@ public class UserCRUDServiceImpl implements IUserCRUDService {
 	
 	@Override
 	public ArrayList<User> selectAllUsers() throws Exception {
-		if(userRepo.count() == 0) {
-			throw new Exception("User table is empty");
-		}
 		ArrayList<User> result = (ArrayList<User>)userRepo.findAll();
 		return result;
 	}

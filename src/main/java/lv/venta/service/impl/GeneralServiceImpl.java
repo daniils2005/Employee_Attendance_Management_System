@@ -2,16 +2,19 @@ package lv.venta.service.impl;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lv.venta.model.Attendance;
+import lv.venta.model.Authority;
 import lv.venta.model.Overtime;
+import lv.venta.model.User;
 import lv.venta.model.Vacation;
 import lv.venta.repo.IAttendanceRepo;
+import lv.venta.repo.IAuthorityRepo;
 import lv.venta.repo.IOvertimeRepo;
+import lv.venta.repo.IUserRepo;
 import lv.venta.repo.IVacationRepo;
 import lv.venta.service.IAttendanceCRUDService;
 import lv.venta.service.IEmployeeCRUDService;
@@ -38,6 +41,12 @@ public class GeneralServiceImpl implements IGeneralService {
 	
 	@Autowired 
 	private IAttendanceCRUDService attendanceCRUDService;
+	
+	@Autowired
+	private IUserRepo userRepo;
+	
+	@Autowired
+	private IAuthorityRepo authorityRepo;
 	
 	@Override
 	public ArrayList<Attendance> selectAllAttendancesForEmployeeId(long eid) throws Exception {
@@ -193,8 +202,13 @@ public class GeneralServiceImpl implements IGeneralService {
 		return allOvertimeByDate;
 	}
 	
-
+	public User selectUserByUsername(String username) throws Exception {
+		User resultUser = userRepo.findByUsername(username);
+		return resultUser;
+	}
 	
-	
+	public Authority selectAuthorityByTitle(String authorityTitle) throws Exception {
+		return authorityRepo.findByTitle(authorityTitle);
+	}
 	
 }
