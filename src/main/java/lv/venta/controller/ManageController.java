@@ -84,10 +84,12 @@ public class ManageController {
 	@Autowired
 	private IDepartmentCRUDService departmentCRUDService;
 	
+
 	private String errorPage = "error-page";
 	private String errorMessage = "errorMessage";
 	private String surnameGlobal = "surname";
 	
+
     @GetMapping("/manage/attendance")
     public String getAttendanceByEmployee(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
     	try {  
@@ -437,9 +439,11 @@ public class ManageController {
     }
     
     @GetMapping("/manage/employee")
+
     public String getEmployees(@RequestParam(required = false) Long eid, @RequestParam(required = false) String surname, @RequestParam(required = false) Status status, @RequestParam(required = false) Position position, @RequestParam(required = false) String department, Model model) {
     	try {
     		ArrayList<Employee> resultEmployees = new ArrayList<Employee>();
+    		ArrayList<Department> resultDepartment = departmentCRUDService.selectAllDepartments();
 			if(eid != null) {
 				resultEmployees.add(employeeCRUDService.selectEmployeeById(eid));
 			}

@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Home Page</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 	<body>
 	    <h1>Employee Attendance Management System</h1>
@@ -31,7 +32,7 @@
 		<a th:href="@{/manage/department}">
 		    <button>Manage department</button>
 		</a>
-		<a th:href="@{TODO}">
+		<a th:href="@{/manage/employee}">
 		    <button>Manage employees</button>
 		</a>
 		<a th:href="@{/manage/user}">

@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Manage Department</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body>
@@ -37,15 +38,11 @@
         <tr>
             <form th:action="@{/manage/department/add}" method="post">
 				<td style="border: 1px solid black;"th:text="${lastDid}"></td>
-<<<<<<< Updated upstream
 				<td style="border: 1px solid black;"><select name="departmentName" required>
 		             <option value="IT">IT</option>
 		             <option value="Gramatvediba">Gramatvediba</option>
-		             <option value="Personāla_nodaļa">Personāla_nodaļa</option>
+		             <option value="Personala_nodala">Personala_nodala</option>
 		             <option value="Nav_minets">Nav_minets</option></select></td>
-=======
-				<td style="border: 1px solid black;"><input type="text" name="addDepartmentName" required></td>
->>>>>>> Stashed changes
 				<td style="border: 1px solid black;"><input type="text" name="description"></td>
                	<td style="border: 1px solid black;"><button type="submit">Add</button></td>
             </form>

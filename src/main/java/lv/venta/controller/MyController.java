@@ -7,12 +7,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lv.venta.helper.MyUserDetails;
 import lv.venta.model.Employee;
 import lv.venta.model.User;
@@ -206,7 +209,7 @@ public class MyController {
     }
     
     @PostMapping("/account/change-password")
-    public String postAccountChangePassword(@RequestParam String currentPassword, @RequestParam String newPassword, @RequestParam String confirmPassword, Model model) {
+    public String postAccountChangePassword(@RequestParam String currentPassword, @RequestParam String newPassword, @RequestParam String confirmPassword, HttpServletRequest request, HttpServletResponse response, Model model) {
     	try { 
     		User currentUser = userCRUDService.selectUserById(getCurrentUser().getUid());
 	    	if(!encoder.matches(currentPassword, currentUser.getPassword())) {
@@ -222,7 +225,13 @@ public class MyController {
 	    	    return errorPage;
 	    	}
 	    	userCRUDService.updateUserById(currentUser.getUid(), currentUser.getUsername(), encoder.encode(newPassword), currentUser.getEmployee(), currentUser.getAuthority());
-	    	return "redirect:/logout";
+	    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    	new SecurityContextLogoutHandler().logout(
+	    	        request,
+	    	        response,
+	    	        auth
+	    	);
+	    	return "redirect:/login?logout";
     	} catch(Exception e) {
         	model.addAttribute(errorMessage, e.getMessage());
         	return errorPage;

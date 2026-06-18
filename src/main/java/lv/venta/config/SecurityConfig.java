@@ -41,11 +41,22 @@ public class SecurityConfig {
 				.requestMatchers("/account").hasAnyAuthority(admin, user)
 				.requestMatchers("/account/**").hasAnyAuthority(admin, user)
 				.requestMatchers("/manage/**").hasAnyAuthority(admin)
-				.requestMatchers("/css/**").permitAll()
-				
+				.requestMatchers("/css/**").permitAll()	
 		);
 		
 		http.formLogin(auth->auth.permitAll());
+	    http.logout(logout -> logout
+	            .logoutUrl("/logout")
+	            .logoutSuccessUrl("/login?logout")
+	            .invalidateHttpSession(true)
+	            .clearAuthentication(true)
+	    );
+		
+	    http.formLogin(login -> login
+	    	    .defaultSuccessUrl("/home", true)
+	    	    .permitAll()
+	    );
+	    
 		return http.build();
 	}
 }
