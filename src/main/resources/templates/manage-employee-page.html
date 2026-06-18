@@ -45,10 +45,10 @@
 		<label>Search by department:</label>
 		<select name="department">
 			<option value="">Any</option>
-		    <option value="IT">IT</option>
-		    <option value="Gramatvediba">Gramatvediba</option>
-			<option value="Personala_nodala">Personala_nodala</option>
-			<option value="Nav_minets">Nav_minets</option>
+			<option th:each="department : ${departments}"
+			        th:value="${department.departmentName}"
+			        th:text="${department.departmentName}">
+			</option>
 		</select>
 	    <button type="submit">Search</button>
 	</form>
@@ -125,10 +125,11 @@
 				</td>
 				<td style="border: 1px solid black;">
 					<select name="department">
-					    <option value="IT" th:selected="${employee.department.departmentName == T(lv.venta.model.enums.DepartmentName).IT}">IT</option>
-					    <option value="Gramatvediba" th:selected="${employee.department.departmentName == T(lv.venta.model.enums.DepartmentName).Gramatvediba}">Gramatvediba</option>
-						<option value="Personala_nodala" th:selected="${employee.department.departmentName == T(lv.venta.model.enums.DepartmentName).Personala_nodala}">Personala_nodala</option>
-						<option value="Nav_minets" th:selected="${employee.department.departmentName == T(lv.venta.model.enums.DepartmentName).Nav_minets}">Nav_minets</option>
+						<option th:each="department : ${departments}"
+						        th:value="${department.departmentName}"
+						        th:text="${department.departmentName}"
+								th:selected="${employee.department.departmentName == department.departmentName}">
+						</option>
 					</select>
 				</td>
 				<td style="border: 1px solid black;">

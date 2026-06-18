@@ -43,6 +43,19 @@ public class SecurityConfig {
 		);
 		
 		http.formLogin(auth->auth.permitAll());
+		
+	    http.logout(logout -> logout
+	            .logoutUrl("/logout")
+	            .logoutSuccessUrl("/login?logout")
+	            .invalidateHttpSession(true)
+	            .clearAuthentication(true)
+	    );
+		
+	    http.formLogin(login -> login
+	    	    .defaultSuccessUrl("/home", true)
+	    	    .permitAll()
+	    );
+	    
 		return http.build();
 	}
 }
