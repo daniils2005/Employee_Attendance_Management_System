@@ -28,4 +28,6 @@ public interface IVacationRepo extends CrudRepository<Vacation, Long>{
 
 	ArrayList<Vacation> findByVidAndStartDate(Long id, LocalDate date);
 
+	ArrayList<Vacation> findByEmployeeEidAndStartDate(Long id, LocalDate date);
+
 }

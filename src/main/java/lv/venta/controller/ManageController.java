@@ -266,10 +266,10 @@ public class ManageController {
     	 try {
     		ArrayList<Vacation> vacation;
      		if (id != null && date != null) {
-     			vacation = vacationRepo.findByVidAndStartDate(id, date);
+     			vacation = vacationRepo.findByEmployeeEidAndStartDate(id, date);
  			}
  			else if (id != null) {
- 				vacation = vacationRepo.findByVid(id);
+ 				vacation = vacationRepo.findByEmployeeEid(id);
  			}
  			else if (date != null) {
  				vacation = vacationRepo.findByStartDate(date);

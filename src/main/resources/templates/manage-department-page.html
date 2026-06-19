@@ -84,7 +84,10 @@
 					<td style="border: 1px solid black;"><input type="hidden" name="did" th:value="${department.did}"><span th:text="${department.did}"></span></td>
 					<td style="border: 1px solid black;"><input type="text" name="departmentName" th:value="${department.departmentName}"></td>
 	                <td style="border: 1px solid black;"><input type="text" name="description" th:value="${department.description}"></td>
-	                <td style="border: 1px solid black;"><button type="submit" name="action" value="save">Save</button><button type="submit"name="action"value="delete">Delete</button></td>
+					<td style="border: 1px solid black;">
+					    <button type="submit" name="action" value="save">Save</button>
+					    <button th:if="${department.departmentName != 'Nav_minets'}"type="submit" name="action" value="delete">Delete</button>
+					</td>
 	            </form>
 	        </tr>
 	    </table>
