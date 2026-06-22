@@ -272,7 +272,7 @@ public class ManageController {
  				vacation = vacationRepo.findByEmployeeEid(id);
  			}
  			else if (date != null) {
- 				vacation = vacationRepo.findByStartDate(date);
+ 				vacation = vacationRepo.findByStartDateLessThanEqualAndEndDateGreaterThanEqual(date, date);
  			}
  			else {
  				vacation =  vacationCRUDService.selectAllVacations();
