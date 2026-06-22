@@ -113,8 +113,8 @@
 		<h2>Change Password</h2>
 		<form th:action="@{/account/change-password}" method="post">
 		    <input type="password" name="currentPassword" placeholder="Current password" required>
-		    <input type="password" name="newPassword" placeholder="New password" required>
-		    <input type="password" name="confirmPassword" placeholder="Confirm new password" required>
+		    <input type="password" name="newPassword" placeholder="New password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^#()_\-+=])[A-Za-z\d@$!%*?&^#()_\-+=]{8,}$" title="Password must be at least 8 characters long and contain an uppercase letter, a lowercase letter, a number, and a special character.">
+		    <input type="password" name="confirmPassword" placeholder="Confirm new password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^#()_\-+=])[A-Za-z\d@$!%*?&^#()_\-+=]{8,}$" title="Password must be at least 8 characters long and contain an uppercase letter, a lowercase letter, a number, and a special character.">
 		    <button type="submit">Update Password</button>
 		</form>
 	</body>
