@@ -55,7 +55,7 @@
 		<h2>Reset password for user</h2>
 		<form th:action="@{/manage/user/reset-password}" method="post">
 			<input type="number" name="uid" placeholder="Enter user ID" min="1" required>
-			<input type="password" name="newPassword" placeholder="Enter new password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^#()_\-+=])[A-Za-z\d@$!%*?&^#()_\-+=]{8,}$" title="Password must be at least 8 characters long and contain an uppercase letter, a lowercase letter, a number, and a special character.">
+			<input type="password" name="newPassword" placeholder="Enter new password" required pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}" title="Password must be at least 8 characters long and contain an uppercase letter, a lowercase letter, a number, and a special character.">
 			<button type="submit">Reset</button>
 		</form>
 	    <h2>Search Users</h2>

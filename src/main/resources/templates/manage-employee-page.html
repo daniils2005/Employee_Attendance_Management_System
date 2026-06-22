@@ -54,7 +54,7 @@
 	    <h1>Manage Employees</h1>
 	    <h2>Search Employees</h2>
 	    <form th:action="@{/manage/employee}" method="get">
-	        <input type="number" name="eid" placeholder="Enter employee ID" min="1">
+	        <input type="number" name="eid" placeholder="Enter employee ID" min="1" max="9223372036854775807">
 	        <input type="text" name="surname" placeholder="Enter surname" pattern="^[A-Z][a-zA-Z]{1,29}$" title="Surname must start with a capital letter and contain only letters (2–30 characters).">
 	        <button type="submit">Search</button>
 	        <a th:href="@{/manage/employee}"><button type="button">Reset</button></a>

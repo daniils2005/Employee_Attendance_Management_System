@@ -70,9 +70,6 @@ public class EmployeeCRUDServiceImpl implements IEmployeeCRUDService {
 
 	@Override
 	public void updateEmployeeById(long id, String newName, String newSurname, String newNumber, String newEmail, double newHourlyRate, Department newDepartment, Status newStatus, Position newPosition) throws Exception {
-		if(newName == null || newSurname == null || newStatus == null || !newName.matches(nameRegex) || !newSurname.matches(nameRegex) || newNumber == null || !newNumber.matches("^[0-9]{8}$") || newEmail == null || !newEmail.matches(emailRegex) || newHourlyRate < 0 || newPosition == null || newDepartment == null) {
-			throw new Exception("One or more input arguments are invalid");
-		}
 		if(!employeeRepo.existsById(id)) {
 			throw new Exception("Employee with id = " + id + " doesn't exist");
 		}
