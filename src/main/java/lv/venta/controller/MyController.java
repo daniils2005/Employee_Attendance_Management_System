@@ -226,11 +226,7 @@ public class MyController {
 	    	}
 	    	userCRUDService.updateUserById(currentUser.getUid(), currentUser.getUsername(), encoder.encode(newPassword), currentUser.getEmployee(), currentUser.getAuthority());
 	    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    	new SecurityContextLogoutHandler().logout(
-	    	        request,
-	    	        response,
-	    	        auth
-	    	);
+	    	new SecurityContextLogoutHandler().logout(request, response, auth);
 	    	return "redirect:/login?logout";
     	} catch(Exception e) {
         	model.addAttribute(errorMessage, e.getMessage());

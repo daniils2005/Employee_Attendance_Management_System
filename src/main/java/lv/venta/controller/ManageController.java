@@ -84,12 +84,10 @@ public class ManageController {
 	@Autowired
 	private IDepartmentCRUDService departmentCRUDService;
 	
-
 	private String errorPage = "error-page";
 	private String errorMessage = "errorMessage";
 	private String surnameGlobal = "surname";
 	
-
     @GetMapping("/manage/attendance")
     public String getAttendanceByEmployee(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
     	try {  
@@ -438,8 +436,19 @@ public class ManageController {
     	 }
     }
     
+    @PostMapping("/manage/user/reset-password")
+    public String postUserResetPassword(@RequestParam long uid, @RequestParam String newPassword, Model model) {
+    	try {
+    		User userForUpdating = userCRUDService.selectUserById(uid);
+	    	userCRUDService.updateUserById(userForUpdating.getUid(), userForUpdating.getUsername(), encoder.encode(newPassword), userForUpdating.getEmployee(), userForUpdating.getAuthority());
+	    	return "redirect:/manage/user";
+    	} catch(Exception e) {
+    		model.addAttribute("errorMessage", e.getMessage());
+    		return errorPage;
+    	}
+    }
+    
     @GetMapping("/manage/employee")
-
     public String getEmployees(@RequestParam(required = false) Long eid, @RequestParam(required = false) String surname, @RequestParam(required = false) Status status, @RequestParam(required = false) Position position, @RequestParam(required = false) String department, Model model) {
     	try {
     		ArrayList<Employee> resultEmployees = new ArrayList<Employee>();
@@ -562,4 +571,5 @@ public class ManageController {
     		 return errorPage;
     	 }
     }
+    
 }
