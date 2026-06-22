@@ -17,9 +17,8 @@ import lv.venta.model.Attendance;
 import lv.venta.model.Department;
 import lv.venta.model.Employee;
 import lv.venta.model.Overtime;
-
+import lv.venta.model.Position;
 import lv.venta.model.Vacation;
-import lv.venta.model.enums.Position;
 import lv.venta.model.enums.RequestStatus;
 import lv.venta.model.enums.Status;
 import lv.venta.repo.IAttendanceRepo;

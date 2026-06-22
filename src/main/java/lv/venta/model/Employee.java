@@ -17,13 +17,13 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lv.venta.model.enums.Position;
 import lv.venta.model.enums.Status;
 
 @Table(name = "employee_table")
@@ -50,9 +50,9 @@ public class Employee extends Person{
 	@Column(name = "status")
 	private Status status;
 	
-	@Enumerated(EnumType.STRING)
-	@NotNull
-	@Column(name = "position")
+
+	@ManyToOne
+	@JoinColumn(name = "poid")
 	private Position position;
 	
 	@ManyToOne

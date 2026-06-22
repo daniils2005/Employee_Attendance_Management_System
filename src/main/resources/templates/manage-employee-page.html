@@ -71,14 +71,13 @@
 				<option value="Dekrets">Dekrets</option>
 		    </select>
 		    <label>Search by position:</label>
-		    <select name="position">
+		   <select name="position">
 				<option value="">Any</option>
-		        <option value="Programmetajs">Programmetajs</option>
-		        <option value="Testetajs">Testetajs</option>
-				<option value="Sistemu_arhitekts">Sistemu_arhitekts</option>
-				<option value="DevOps_inzenieris">DevOps_inzenieris</option>
-				<option value="Datu_analitikis">Datu_analitikis</option>
-		    </select>
+				<option th:each="position : ${positions}"
+				        th:value="${position.positionName}"
+				        th:text="${position.positionName}">
+				</option>
+			</select>
 			<label>Search by department:</label>
 			<select name="department">
 				<option value="">Any</option>

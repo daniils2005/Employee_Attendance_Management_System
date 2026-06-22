@@ -15,15 +15,16 @@ import lv.venta.model.Authority;
 import lv.venta.model.Department;
 import lv.venta.model.Employee;
 import lv.venta.model.Overtime;
+import lv.venta.model.Position;
 import lv.venta.model.User;
 import lv.venta.model.Vacation;
-import lv.venta.model.enums.Position;
 import lv.venta.model.enums.Status;
 import lv.venta.repo.IAttendanceRepo;
 import lv.venta.repo.IAuthorityRepo;
 import lv.venta.repo.IDepartmentRepo;
 import lv.venta.repo.IEmployeeRepo;
 import lv.venta.repo.IOvertimeRepo;
+import lv.venta.repo.IPositionRepo;
 import lv.venta.repo.IUserRepo;
 import lv.venta.repo.IVacationRepo;
 
@@ -35,7 +36,7 @@ public class EmployeeAttendanceManagementSystemApplication {
 	}
 	
 	@Bean
-	public CommandLineRunner testRepo(IAttendanceRepo attendRepo, IDepartmentRepo departRepo, IEmployeeRepo empRepo, IOvertimeRepo overRepo, IUserRepo userRepo, IVacationRepo vacationRepo, IAuthorityRepo authorityRepo) {
+	public CommandLineRunner testRepo(IAttendanceRepo attendRepo, IDepartmentRepo departRepo, IEmployeeRepo empRepo, IOvertimeRepo overRepo, IUserRepo userRepo, IVacationRepo vacationRepo, IAuthorityRepo authorityRepo, IPositionRepo positionRepo) {
 		
 		return new CommandLineRunner() {
 			
@@ -46,19 +47,25 @@ public class EmployeeAttendanceManagementSystemApplication {
 				Department dep1 = new Department("IT", "It nodaļa priekš uzņemuma uzturēšanas");
 				Department dep2 = new Department("Gramatvediba", "Grāmatvedības nodaļa");
 				Department dep3 = new Department("Personala_nodala", "Personāla nodaļa");
+				Position pos1 = new Position("IT darb", "It nodaļa priekš uzņemuma uzturēšanas sektors");
+				Position pos2 = new Position("Gramatvediba darb", "Grāmatvedības nodaļas sektors");
+				Position pos3 = new Position("Personala_nodala darb", "Personāla nodaļas sektors");
+				Position defaultPosition = new Position("Nav_minets", "Nezimanama nodaļa");
+				
 				departRepo.saveAll(Arrays.asList(dep1, dep2, dep3, defaultDepartment));
+				positionRepo.saveAll(Arrays.asList(pos1, pos2, pos3, defaultPosition));
 				departRepo.save(dep1);
 
-				Employee emp1 = new Employee("Janis", "Berzins", "123456-12345", "12345678","janis@gmail.com", 10, dep1, Status.Aktivs, Position.Programmetajs);
-				Employee emp2 = new Employee("Ugis", "Andrums", "223456-12345", "12345679", "ugis@gmail.com", 12, dep1, Status.Aktivs, Position.DevOps_inzenieris);
-				Employee emp3 = new Employee("Anna", "Kalnina", "323456-12345", "12345680", "anna@gmail.com", 11, dep2, Status.Aktivs, Position.Testetajs);
-				Employee emp4 = new Employee("Peteris", "Ozols", "423456-12345", "12345681", "peteris@gmail.com", 14, dep1, Status.Aktivs, Position.Programmetajs);
-				Employee emp5 = new Employee("Liga", "Liepa", "523456-12345", "12345682", "liga@gmail.com", 13, dep3, Status.Aktivs, Position.DevOps_inzenieris);
-				Employee emp6 = new Employee("Roberts", "Krasts", "623456-12345", "12345683", "roberts@gmail.com", 15, dep1, Status.Aktivs, Position.DevOps_inzenieris);
-				Employee emp7 = new Employee("Elina", "Briede", "723456-12345", "12345684", "elina@gmail.com", 9, dep2, Status.Aktivs, Position.Sistemu_arhitekts);
-				Employee emp8 = new Employee("Martins", "Egle", "823456-12345", "12345685", "martins@gmail.com", 10, dep3, Status.Aktivs, Position.Datu_analitikis);
-				Employee emp9 = new Employee("Kristaps", "Vilks", "923456-12345", "12345686", "kristaps@gmail.com", 16, dep1, Status.Neaktivs, Position.Programmetajs);
-				Employee emp10 = new Employee("Laura", "Ziedina", "023456-12345", "12345687", "laura@gmail.com", 11, dep2, Status.Aktivs, Position.Programmetajs);
+				Employee emp1 = new Employee("Janis", "Berzins", "123456-12345", "12345678","janis@gmail.com", 10, dep1, Status.Aktivs, pos1);
+				Employee emp2 = new Employee("Ugis", "Andrums", "223456-12345", "12345679", "ugis@gmail.com", 12, dep1, Status.Aktivs, pos1);
+				Employee emp3 = new Employee("Anna", "Kalnina", "323456-12345", "12345680", "anna@gmail.com", 11, dep2, Status.Aktivs, pos2);
+				Employee emp4 = new Employee("Peteris", "Ozols", "423456-12345", "12345681", "peteris@gmail.com", 14, dep1, Status.Aktivs, pos2);
+				Employee emp5 = new Employee("Liga", "Liepa", "523456-12345", "12345682", "liga@gmail.com", 13, dep3, Status.Aktivs, pos2);
+				Employee emp6 = new Employee("Roberts", "Krasts", "623456-12345", "12345683", "roberts@gmail.com", 15, dep1, Status.Aktivs, pos3);
+				Employee emp7 = new Employee("Elina", "Briede", "723456-12345", "12345684", "elina@gmail.com", 9, dep2, Status.Aktivs, pos3);
+				Employee emp8 = new Employee("Martins", "Egle", "823456-12345", "12345685", "martins@gmail.com", 10, dep3, Status.Aktivs, pos3);
+				Employee emp9 = new Employee("Kristaps", "Vilks", "923456-12345", "12345686", "kristaps@gmail.com", 16, dep1, Status.Neaktivs, pos2);
+				Employee emp10 = new Employee("Laura", "Ziedina", "023456-12345", "12345687", "laura@gmail.com", 11, dep2, Status.Aktivs, pos1);
 				empRepo.saveAll(Arrays.asList(emp1, emp2, emp3, emp4, emp5, emp6, emp7, emp8, emp9, emp10));
 				
 				Authority auth1 = new Authority("ADMIN");
