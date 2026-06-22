@@ -39,7 +39,7 @@ public class Person {
 	
 	@NotNull
 	@NotEmpty
-	@Pattern(regexp = "[0-9]{8}")
+	@Pattern(regexp = "^(\\+371|371)?[1-9]\\d{7}$")
 	@Column(name = "number")
 	private String number;
 	

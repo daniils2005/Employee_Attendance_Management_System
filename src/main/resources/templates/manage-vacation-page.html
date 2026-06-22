@@ -54,7 +54,7 @@
 	    <h1>Manage Vacation</h1>
 	    <h2>Search Vacation</h2>
 	    <form th:action="@{/manage/vacation}" method="get">
-	        <input type="number" name="id" placeholder="Enter Employee ID">
+	        <input type="number" name="id" placeholder="Enter Employee ID" min="1">
 	        <input type="date" name="date">
 	        <button type="submit">Search</button>
 	        <a th:href="@{/manage/vacation}"><button type="button">Reset</button></a>
@@ -90,7 +90,7 @@
 	        <tr>
 	            <form th:action="@{/manage/vacation/add}" method="post">
 	                <td style="border: 1px solid black;" th:text="${lastVid}"></td>
-	                <td style="border: 1px solid black;"><input type="number" min="0" name="eid" required></td>
+	                <td style="border: 1px solid black;"><input type="number" min="1" name="eid" required></td>
 					<td style="border: 1px solid black;"></td>
 	                <td style="border: 1px solid black;"></td>
 	                <td style="border: 1px solid black;"><input type="date" name="startDate" required></td>

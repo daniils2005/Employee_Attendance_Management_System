@@ -75,7 +75,7 @@
 	            <form th:action="@{/manage/department/add}" method="post">
 					<td style="border: 1px solid black;"th:text="${lastDid}"></td>
 					<td style="border: 1px solid black;"><input type="text" name="addDepartmentName" required>
-					<td style="border: 1px solid black;"><input type="text" name="description"></td>
+					<td style="border: 1px solid black;"><input type="text" name="description" maxlength="100"></td>
 	               	<td style="border: 1px solid black;"><button type="submit">Add</button></td>
 	            </form>
 	        </tr>

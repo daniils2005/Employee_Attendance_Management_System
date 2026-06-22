@@ -35,7 +35,7 @@ public class User {
 	@NotNull
 	@NotEmpty
 	@Column(name = "username")
-	@Pattern(regexp = "^.{3,}$")
+	@Pattern(regexp = "^[A-Za-z0-9_]{3,}$")
 	private String username;
 	
 	@NotNull

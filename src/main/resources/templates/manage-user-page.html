@@ -90,8 +90,8 @@
 	        <tr>
 	            <form th:action="@{/manage/user/add}" method="post">
 	                <td style="border: 1px solid black;" th:text="${lastUid}"></td>
-	                <td style="border: 1px solid black;"><input type="number" min="0" name="eid" required></td>
-					<td style="border: 1px solid black;"><input type="text" name="username" required></td>
+	                <td style="border: 1px solid black;"><input type="number" min="1" name="eid" required></td>
+					<td style="border: 1px solid black;"><input type="text" name="username" required pattern="^[A-Za-z0-9_]{3,}$" title="Username must be at least 3 characters long and contain only letters, numbers, and underscores."></td>
 	                <td style="border: 1px solid black;"></td>
 					<td style="border: 1px solid black;"></td>
 	                <td style="border: 1px solid black;"></td>
@@ -108,12 +108,12 @@
 	        <tr th:each="user : ${users}">
 	            <form th:action="@{/manage/user/update-or-delete}" method="post">
 					<td style="border: 1px solid black;"><input type="hidden" name="uid" th:value="${user.uid}" th:text="${user.uid}"></td>
-					<td style="border: 1px solid black;"><input type="number" name="eid" th:value="${user.employee.eid}"></td>
-					<td style="border: 1px solid black;"><input type="text" name="username" th:value="${user.username}"></td>
-					<td style="border: 1px solid black;"><input type="text" name="employeeName" th:value="${user.employee.name}"></td>
-					<td style="border: 1px solid black;"><input type="text" name="employeeSurname" th:value="${user.employee.surname}"></td>
-					<td style="border: 1px solid black;"><input type="text" name="email" th:value="${user.employee.email}"></td>
-					<td style="border: 1px solid black;"><input type="text" name="phoneNumber" th:value="${user.employee.number}"></td>
+					<td style="border: 1px solid black;"><input type="number" name="eid" th:value="${user.employee.eid}" min="1"></td>
+					<td style="border: 1px solid black;"><input type="text" name="username" th:value="${user.username}" pattern="^[A-Za-z0-9_]{3,}$" title="Username must be at least 3 characters long and contain only letters, numbers, and underscores."></td>
+					<td style="border: 1px solid black;"><input type="text" name="employeeName" th:value="${user.employee.name}" pattern="^[A-Z][a-zA-Z]{1,29}$" title="Name must start with a capital letter and contain only letters (2–30 characters)."></td>
+					<td style="border: 1px solid black;"><input type="text" name="employeeSurname" th:value="${user.employee.surname}" pattern="^[A-Z][a-zA-Z]{1,29}$" title="Surname must start with a capital letter and contain only letters (2–30 characters)."></td>
+					<td style="border: 1px solid black;"><input type="text" name="email" th:value="${user.employee.email}" pattern="^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$" title="Email is invalid."></td>
+					<td style="border: 1px solid black;"><input type="text" name="phoneNumber" th:value="${user.employee.number}" pattern="^(\+371|371)?[2-9]\d{7}$" title="The phone number must be an 8 digit Latvian number."></td>
 					<td style="border: 1px solid black;">			
 						<select name="authority">
 							<option value="ADMIN" th:selected="${user.authority.title == 'ADMIN'}">ADMIN</option>
