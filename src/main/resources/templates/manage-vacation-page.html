@@ -54,7 +54,7 @@
 	    <h1>Manage Vacation</h1>
 	    <h2>Search Vacation</h2>
 	    <form th:action="@{/manage/vacation}" method="get">
-	        <input type="number" name="id" placeholder="Enter Employee ID" min="1">
+	        <input type="number" name="id" placeholder="Enter Employee ID" min="1" max="9007199254740991">
 	        <input type="date" name="date">
 	        <button type="submit">Search</button>
 	        <a th:href="@{/manage/vacation}"><button type="button">Reset</button></a>
@@ -90,7 +90,7 @@
 	        <tr>
 	            <form th:action="@{/manage/vacation/add}" method="post">
 	                <td style="border: 1px solid black;" th:text="${lastVid}"></td>
-	                <td style="border: 1px solid black;"><input type="number" min="1" name="eid" required></td>
+	                <td style="border: 1px solid black;"><input type="number" min="1" max="9223372036854775807" name="eid" required></td>
 					<td style="border: 1px solid black;"></td>
 	                <td style="border: 1px solid black;"></td>
 	                <td style="border: 1px solid black;"><input type="date" name="startDate" required></td>
@@ -106,11 +106,11 @@
 	        <tr th:each="vacation : ${vacations}">
 	            <form th:action="@{/manage/vacation/update-or-delete}" method="post">
 	                <td style="border: 1px solid black;"><input type="hidden" name="vid" th:value="${vacation.vid}" th:text="${vacation.vid}"></td>
-	                <td style="border: 1px solid black;"><input type="number" min="0" name="eid" th:value="${vacation.employee.eid}"></td>
+	                <td style="border: 1px solid black;"><input type="number" min="1" name="eid" th:value="${vacation.employee.eid}" max="9007199254740991" required></td>
 	                <td style="border: 1px solid black;" th:text="${vacation.employee.name}"></td>
 	                <td style="border: 1px solid black;" th:text="${vacation.employee.surname}"></td>
-	                <td style="border: 1px solid black;"><input type="date" name="startDate" th:value="${vacation.startDate}"></td>
-	                <td style="border: 1px solid black;"><input type="date" name="endDate" th:value="${vacation.endDate}"></td>
+	                <td style="border: 1px solid black;"><input type="date" name="startDate" th:value="${vacation.startDate}" required></td>
+	                <td style="border: 1px solid black;"><input type="date" name="endDate" th:value="${vacation.endDate}" required></td>
 	                <td style="border: 1px solid black;"><input type="checkbox" th:checked="${vacation.active}" disabled></td>
 	                <td style="border: 1px solid black;"><select name="status">
 			             <option value="IZSKATISANA" th:selected="${vacation.status == T(lv.venta.model.enums.RequestStatus).IZSKATISANA}">IZSKATISANA</option>

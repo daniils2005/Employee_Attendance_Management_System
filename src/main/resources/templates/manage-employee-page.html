@@ -54,7 +54,7 @@
 	    <h1>Manage Employees</h1>
 	    <h2>Search Employees</h2>
 	    <form th:action="@{/manage/employee}" method="get">
-	        <input type="number" name="eid" placeholder="Enter employee ID" min="1">
+	        <input type="number" name="eid" placeholder="Enter employee ID" min="1" max="9223372036854775807">
 	        <input type="text" name="surname" placeholder="Enter surname" pattern="^[A-Z][a-zA-Z]{1,29}$" title="Surname must start with a capital letter and contain only letters (2–30 characters).">
 	        <button type="submit">Search</button>
 	        <a th:href="@{/manage/employee}"><button type="button">Reset</button></a>
@@ -134,7 +134,7 @@
 							<option value="Dekrets">Dekrets</option>
 						</select>
 					</td>
-					<td style="border: 1px solid black;"><input type="text" name="email" required pattern="^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$" title="Email is invalid."></td>
+					<td style="border: 1px solid black;"><input type="email" name="email" required title="Email is invalid."></td>
 					<td style="border: 1px solid black;"><input type="text" name="number" required pattern="^(\+371|371)?[2-9]\d{7}$" title="The phone number must be an 8 digit Latvian number."></td>
 	                <td style="border: 1px solid black;"><button type="submit">Add</button></td>
 	            </form>
@@ -173,8 +173,8 @@
 							<option value="Dekrets" th:selected="${employee.status == T(lv.venta.model.enums.Status).Dekrets}">Dekrets</option>
 						</select>
 					</td>
-					<td style="border: 1px solid black;"><input type="text" name="email" th:value="${employee.email}" pattern="^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$" title="Email is invalid."></td>
-					<td style="border: 1px solid black;"><input type="text" name="phoneNumber" th:value="${employee.number}" pattern="^(\+371|371)?[2-9]\d{7}$" title="The phone number must be an 8 digit Latvian number."></td>
+					<td style="border: 1px solid black;"><input type="email" name="email" th:value="${employee.email}" title="Email is invalid." required></td>
+					<td style="border: 1px solid black;"><input type="text" name="phoneNumber" th:value="${employee.number}" pattern="^(\+371|371)?[2-9]\d{7}$" title="The phone number must be an 8 digit Latvian number." required></td>
 	                <td style="border: 1px solid black;"><button type="submit" name="action" value="save">Save</button></td>
 				</form>
 	        </tr>

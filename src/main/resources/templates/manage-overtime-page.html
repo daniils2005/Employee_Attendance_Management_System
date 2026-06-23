@@ -54,7 +54,7 @@
 	    <h1>Manage Overtime</h1>
 	    <h2>Search Overtime</h2>
 	    <form th:action="@{/manage/overtime}" method="get">
-	        <input type="number" name="id" placeholder="Enter Employee ID" min="1">
+	        <input type="number" name="id" placeholder="Enter Employee ID" min="1" max="9007199254740991">
 	        <input type="date" name="date">
 	        <button type="submit">Search</button>
 	        <a th:href="@{/manage/overtime}"><button type="button">Reset</button></a>
@@ -89,7 +89,7 @@
 	        <tr>
 	            <form th:action="@{/manage/overtime/add}" method="post">
 					<td style="border: 1px solid black;"th:text="${lastOid}"></td>
-					<td style="border: 1px solid black;"><input type="number" min="1" name="eid" required></td>
+					<td style="border: 1px solid black;"><input type="number" min="1" max="9223372036854775807" name="eid" required></td>
 					<td style="border: 1px solid black;"></td>
 					<td style="border: 1px solid black;"></td>
 					<td style="border: 1px solid black;"><input type="date" name="date" required></td>
@@ -106,12 +106,12 @@
 	        <tr th:each="overtime : ${overtimes}">
 	            <form th:action="@{/manage/overtime/update-or-delete}" method="post">  
 	                <td style="border: 1px solid black;"><input type="hidden" name="oid" th:value="${overtime.oid}"><span th:text="${overtime.oid}"></span></td>
-	                <td style="border: 1px solid black;"><input type="number" min="0" name="eid" th:value="${overtime.employee.eid}"></td>
+	                <td style="border: 1px solid black;"><input type="number" min="0" name="eid" th:value="${overtime.employee.eid}" required></td>
 	                <td style="border: 1px solid black;" th:text="${overtime.employee.name}"></td>
 	                <td style="border: 1px solid black;" th:text="${overtime.employee.surname}"></td>
-	                <td style="border: 1px solid black;"><input type="date"name="date" th:value="${overtime.date}"></td>
-	                <td style="border: 1px solid black;"><input type="number"min="0"max="24"step="0.5"name="overtimeHours"th:value="${overtime.overtimeHours}"></td>
-	                <td style="border: 1px solid black;"><input type="number" min="0" max="24" step="0.01" name="overtimeRate"th:value="${overtime.overtimeRate}"></td>
+	                <td style="border: 1px solid black;"><input type="date"name="date" th:value="${overtime.date}" required></td>
+	                <td style="border: 1px solid black;"><input type="number"min="0"max="24"step="0.5"name="overtimeHours"th:value="${overtime.overtimeHours}" required></td>
+	                <td style="border: 1px solid black;"><input type="number" min="0" max="24" step="0.01" name="overtimeRate"th:value="${overtime.overtimeRate}" required></td>
 	                <td style="border: 1px solid black;"><input type="text" name="description" th:value="${overtime.description}"></td>
 	                <td style="border: 1px solid black;"><select name="status">
 			             <option value="IZSKATISANA" th:selected="${overtime.status == T(lv.venta.model.enums.RequestStatus).IZSKATISANA}">IZSKATISANA</option>

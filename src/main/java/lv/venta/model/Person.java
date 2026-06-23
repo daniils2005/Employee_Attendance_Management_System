@@ -3,6 +3,7 @@ package lv.venta.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -43,9 +44,9 @@ public class Person {
 	@Column(name = "number")
 	private String number;
 	
+	@Email
 	@NotNull
 	@NotEmpty
-	@Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
 	@Column(name = "email")
 	private String email;
 	

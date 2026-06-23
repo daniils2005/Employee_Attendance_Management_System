@@ -57,21 +57,21 @@
 	        <tr style="border: 1px solid black;">
 				<form th:action="@{/account/change-username}" method="post">
 				    <td style="border: 1px solid black;">Username</td>
-				    <td style="border: 1px solid black;"><input type="text" name="newUsername" th:value="${user.username}" pattern="^[A-Za-z0-9_]{3,}$" title="Username must be at least 3 characters long and contain only letters, numbers, and underscores."></td>
+				    <td style="border: 1px solid black;"><input type="text" name="newUsername" th:value="${user.username}" pattern="^[A-Za-z0-9_]{3,}$" title="Username must be at least 3 characters long and contain only letters, numbers, and underscores." required></td>
 				    <td style="border: 1px solid black;"><button type="submit">Save</button></td>
 				</form>
 			</tr>
 			<tr style="border: 1px solid black;">
 				<form th:action="@{/account/change-name}" method="post">
 				    <td style="border: 1px solid black;">Name</td>
-				    <td style="border: 1px solid black;"><input type="text" name="newName" th:value="${user.employee.name}" pattern="^[A-Z][a-zA-Z]{1,29}$" title="Name must start with a capital letter and contain only letters (2–30 characters)."></td>
+				    <td style="border: 1px solid black;"><input type="text" name="newName" th:value="${user.employee.name}" pattern="^[A-Z][a-zA-Z]{1,29}$" title="Name must start with a capital letter and contain only letters (2–30 characters)." required></td>
 				    <td style="border: 1px solid black;"><button type="submit">Save</button></td>
 				</form>
 			</tr>
 			<tr style="border: 1px solid black;">
 				<form th:action="@{/account/change-surname}" method="post">
 				    <td style="border: 1px solid black;">Surname</td>
-				    <td style="border: 1px solid black;"><input type="text" name="newSurname" th:value="${user.employee.surname}" pattern="^[A-Z][a-zA-Z]{1,29}$" title="Surname must start with a capital letter and contain only letters (2–30 characters)."></td>
+				    <td style="border: 1px solid black;"><input type="text" name="newSurname" th:value="${user.employee.surname}" pattern="^[A-Z][a-zA-Z]{1,29}$" title="Surname must start with a capital letter and contain only letters (2–30 characters)." required></td>
 				    <td style="border: 1px solid black;"><button type="submit">Save</button></td>
 				</form>
 			</tr>
@@ -82,14 +82,14 @@
 			<tr style="border: 1px solid black;">
 				<form th:action="@{/account/change-number}" method="post">
 				    <td style="border: 1px solid black;">Number</td>
-				    <td style="border: 1px solid black;"><input type="tel" name="newNumber" th:value="${user.employee.number}" pattern="^(\+371|371)?[2-9]\d{7}$" title="The phone number must be an 8 digit Latvian number."></td>
+				    <td style="border: 1px solid black;"><input type="tel" name="newNumber" th:value="${user.employee.number}" pattern="^(\+371|371)?[2-9]\d{7}$" title="The phone number must be an 8 digit Latvian number." required></td>
 				    <td style="border: 1px solid black;"><button type="submit">Save</button></td>
 				</form>
 			</tr>
 			<tr style="border: 1px solid black;">
 				<form th:action="@{/account/change-email}" method="post">
 				    <td style="border: 1px solid black;">Email</td>
-				    <td style="border: 1px solid black;"><input type="email" name="newEmail" th:value="${user.employee.email}" pattern="^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$" title="Email is invalid."></td>
+				    <td style="border: 1px solid black;"><input type="email" name="newEmail" th:value="${user.employee.email}" pattern="^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$" title="Email must be valid" required></td>
 				    <td style="border: 1px solid black;"><button type="submit">Save</button></td>
 				</form>
 			</tr>
@@ -120,8 +120,8 @@
 		<h2>Change Password</h2>
 		<form th:action="@{/account/change-password}" method="post">
 		    <input type="password" name="currentPassword" placeholder="Current password" required>
-		    <input type="password" name="newPassword" placeholder="New password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^#()_\-+=])[A-Za-z\d@$!%*?&^#()_\-+=]{8,}$" title="Password must be at least 8 characters long and contain an uppercase letter, a lowercase letter, a number, and a special character.">
-		    <input type="password" name="confirmPassword" placeholder="Confirm new password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^#()_\-+=])[A-Za-z\d@$!%*?&^#()_\-+=]{8,}$" title="Password must be at least 8 characters long and contain an uppercase letter, a lowercase letter, a number, and a special character.">
+		    <input type="password" name="newPassword" placeholder="New password" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}" title="Password must be at least 8 characters long and contain an uppercase letter, a lowercase letter, a number, and a special character." required>
+		    <input type="password" name="confirmPassword" placeholder="Confirm new password" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}" title="Password must be at least 8 characters long and contain an uppercase letter, a lowercase letter, a number, and a special character." required>
 		    <button type="submit">Update Password</button>
 		</form>
 	</body>
