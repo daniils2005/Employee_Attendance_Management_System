@@ -93,6 +93,15 @@ public class VacationCRUDServiceImpl implements IVacationCRUDService {
 		if(vacationRepo.existsOverlappingVacation(newEmployee, newStartDate, newEndDate)) {
 			return;
 		}
+		if(newStartDate.isAfter(LocalDate.now().plusYears(2).plusMonths(1))) {
+			return;
+		}
+		if(newStartDate.isBefore(LocalDate.now().minusYears(1).minusMonths(1))) {
+			return;
+		}
+		if(newEndDate.isAfter(newStartDate.plusDays(29))){
+			return;
+		}
 		Vacation newVacation = new Vacation(newStartDate, newEndDate, newEmployee);
 		newVacation.setStatus(status);
 		newVacation.setActive();
@@ -110,6 +119,15 @@ public class VacationCRUDServiceImpl implements IVacationCRUDService {
 			return;
 		}
 		if(vacationRepo.existsOverlappingVacationForUpdate(id, newEmployee, newStartDate, newEndDate)) {
+			return;
+		}
+		if(newStartDate.isAfter(LocalDate.now().plusYears(2).plusMonths(1))) {
+			return;
+		}
+		if(newStartDate.isBefore(LocalDate.now().minusYears(1).minusMonths(1))) {
+			return;
+		}
+		if(newEndDate.isAfter(newStartDate.plusDays(29))){
 			return;
 		}
 		Vacation vacationForUpdating = vacationRepo.findById(id).get();

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import lv.venta.model.Department;
 import lv.venta.model.Employee;
-import lv.venta.model.enums.Position;
+import lv.venta.model.Position;
 import lv.venta.model.enums.Status;
 
 public interface IEmployeeCRUDService {

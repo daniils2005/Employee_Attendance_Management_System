@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lv.venta.helper.MyUserDetails;
 import lv.venta.model.Employee;
 import lv.venta.model.User;
+import lv.venta.model.enums.Status;
 import lv.venta.service.IAttendanceCRUDService;
 import lv.venta.service.IEmployeeCRUDService;
 import lv.venta.service.IGeneralService;
@@ -228,6 +229,17 @@ public class MyController {
 	    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	    	new SecurityContextLogoutHandler().logout(request, response, auth);
 	    	return "redirect:/login?logout";
+    	} catch(Exception e) {
+        	model.addAttribute(errorMessage, e.getMessage());
+        	return errorPage;
+    	}
+    }
+    @PostMapping("/account/change-status")
+    public String postAccountChangeStatus(@RequestParam Status newStatus, Model model) {
+    	try {
+    		Employee currentEmployee = employeeCRUDService.selectEmployeeById(getCurrentUser().getEmployee().getEid());
+    		employeeCRUDService.updateEmployeeById(currentEmployee.getEid(), currentEmployee.getName(), currentEmployee.getSurname(), currentEmployee.getNumber(), currentEmployee.getEmail(), currentEmployee.getHourlyRate(), currentEmployee.getDepartment(), newStatus, currentEmployee.getPosition());
+    		return redirectAccount;
     	} catch(Exception e) {
         	model.addAttribute(errorMessage, e.getMessage());
         	return errorPage;

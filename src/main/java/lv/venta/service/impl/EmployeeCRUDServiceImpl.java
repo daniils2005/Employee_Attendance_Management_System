@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lv.venta.model.Department;
 import lv.venta.model.Employee;
+import lv.venta.model.Position;
 import lv.venta.model.User;
-import lv.venta.model.enums.Position;
 import lv.venta.model.enums.Status;
 import lv.venta.repo.IEmployeeRepo;
 import lv.venta.repo.IUserRepo;

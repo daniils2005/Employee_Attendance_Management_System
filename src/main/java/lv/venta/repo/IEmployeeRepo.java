@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import lv.venta.model.Department;
 import lv.venta.model.Employee;
-import lv.venta.model.enums.Position;
+import lv.venta.model.Position;
 import lv.venta.model.enums.Status;
 
 public interface IEmployeeRepo extends CrudRepository<Employee, Long>{
@@ -25,5 +25,7 @@ public interface IEmployeeRepo extends CrudRepository<Employee, Long>{
 
 
 	ArrayList<Employee> findTopByOrderByEidDesc();
+
+	//ArrayList<Employee> findByPosition(Position positionForDeleting);
 
 }

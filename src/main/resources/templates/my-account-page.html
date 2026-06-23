@@ -95,11 +95,18 @@
 			</tr>
 			<tr style="border: 1px solid black;">
 				<td style="border: 1px solid black;">Position</td>
-				<td style="border: 1px solid black;" th:text="${user.employee.position}"></td>
+				<td style="border: 1px solid black;" th:text="${user.employee.position.name}"></td>
 			</tr>
 			<tr style="border: 1px solid black;">
-				<td style="border: 1px solid black;">Status</td>
-				<td style="border: 1px solid black;" th:text="${user.employee.status}"></td>
+				<form th:action="@{/account/change-status}" method="post">
+					<td style="border: 1px solid black;">Status</td>
+					<td style="border: 1px solid black;"><select name="newStatus">
+						<option value="Aktivs" th:selected="${user.employee.status == T(lv.venta.model.enums.Status).Aktivs}">Aktivs</option>
+						<option value="Atvalinajums" th:selected="${user.employee.status == T(lv.venta.model.enums.Status).Atvalinajums}">Atvalinajums</option>
+						<option value="Dekrets" th:selected="${user.employee.status == T(lv.venta.model.enums.Status).Dekrets}">Dekrets</option>
+						<option value="Slims" th:selected="${user.employee.status == T(lv.venta.model.enums.Status).Slims}">Slims</option></select></td>
+	                <td style="border: 1px solid black;"><button type="submit" name="action" value="save">Save</button></td>
+				</form>
 			</tr>
 			<tr style="border: 1px solid black;">
 				<td style="border: 1px solid black;">Hourly rate</td>
