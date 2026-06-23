@@ -56,7 +56,7 @@
 	    <h2>Search Attendance</h2>
 	
 	    <form th:action="@{/manage/attendance}" method="get">
-	        <input type="number" name="id" placeholder="Enter Employee ID" min=1 max="9223372036854775807">
+	        <input type="number" name="id" placeholder="Enter Employee ID" min=1 max="9007199254740991">
 	        <input type="date" name="date">
 	        <button type="submit">Search</button>
 	        <a th:href="@{/manage/attendance}"><button type="button">Reset</button></a>
@@ -104,11 +104,11 @@
 	        <tr th:each="attendance : ${attendances}">
 	            <form th:action="@{/manage/attendance/update-or-delete}" method="post">
 	                <td style="border: 1px solid black;"><input type="hidden" name="aid" th:value="${attendance.aid}" th:text="${attendance.aid}"></td>
-	                <td style="border: 1px solid black;"><input type="number" min="0" name="eid" th:value="${attendance.employee.eid}"></td>
+	                <td style="border: 1px solid black;"><input type="number" min="0" name="eid" th:value="${attendance.employee.eid}" required></td>
 	                <td style="border: 1px solid black;" th:text="${attendance.employee.name}"></td>
 	                <td style="border: 1px solid black;" th:text="${attendance.employee.surname}"></td>
-	                <td style="border: 1px solid black;"><input type="date" name="date" th:value="${attendance.workDate}"></td>
-	                <td style="border: 1px solid black;"><input type="number" min="0" max="24" step="0.5" name="hoursWorked" th:value="${attendance.hoursWorked}"></td>
+	                <td style="border: 1px solid black;"><input type="date" name="date" th:value="${attendance.workDate}" required></td>
+	                <td style="border: 1px solid black;"><input type="number" min="0" max="24" step="0.5" name="hoursWorked" th:value="${attendance.hoursWorked}" required></td>
 	                <td style="border: 1px solid black;"><button type="submit" name="action" value="save">Save</button><button type="submit" name="action" value="delete">Delete</button></td>
 				</form>
 	        </tr>
