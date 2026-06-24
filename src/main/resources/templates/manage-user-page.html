@@ -63,8 +63,8 @@
 		</form>
 	    <h2>Search Users</h2>
 	    <form th:action="@{/manage/user}" method="get">
-	        <input type="number" name="uid" placeholder="Enter User ID" min="1" max="9007199254740991" required>
-	        <input type="text" name="username" placeholder="Enter username" required>
+	        <input type="number" name="uid" placeholder="Enter User ID" min="1" max="9007199254740991">
+	        <input type="text" name="username" placeholder="Enter username">
 	        <button type="submit">Search</button>
 	        <a th:href="@{/manage/user}"><button type="button">Reset</button></a>
 	    </form>
@@ -84,6 +84,7 @@
 	        </select>
 	        <button type="submit">Sort</button>
 	    </form>
+		<p th:if="${error}" th:text="${error}" style="color: red"></p>
 	    <table style="width: 100%; border-collapse: collapse;">
 	        <tr>
 	            <th style="border: 1px solid black;">User id</th>

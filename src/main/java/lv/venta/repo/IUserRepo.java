@@ -17,4 +17,8 @@ public interface IUserRepo extends CrudRepository<User, Long>{
 
 	ArrayList<User> findTopByOrderByUidDesc();
 
+	int countByAuthorityTitle(String authority);
+
+	boolean existsByEmployeeEid(long eid);
+
 }

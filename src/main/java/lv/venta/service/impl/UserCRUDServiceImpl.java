@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import lv.venta.model.Authority;
 import lv.venta.model.Employee;
 import lv.venta.model.User;
+import lv.venta.repo.IEmployeeRepo;
 import lv.venta.repo.IUserRepo;
 import lv.venta.service.IUserCRUDService;
 
@@ -54,6 +55,9 @@ public class UserCRUDServiceImpl implements IUserCRUDService {
 		if(userRepo.existsByUsername(newUsername)) {
 			throw new Exception("User with username " + newUsername + " already exists");
 		}
+		if(userRepo.existsByEmployeeEid(newEmployee.getEid())) {
+			throw new Exception("User for employee id=" + newEmployee.getEid() + " already exists");
+		}
 		User newUser = new User(newUsername, newPassword, newEmployee, newAuthority);
 		userRepo.save(newUser);
 	}
@@ -65,6 +69,9 @@ public class UserCRUDServiceImpl implements IUserCRUDService {
 		}
 		if(!userRepo.existsById(id)) {
 			throw new Exception("User with id = " + id + " doesn't exist");
+		}
+		if(userRepo.existsByEmployeeEid(newEmployee.getEid())) {
+			throw new Exception("User for employee id=" + newEmployee.getEid() + " already exists");
 		}
 		User userForUpdating = userRepo.findById(id).get();
 		if(!userForUpdating.getUsername().equals(newUsername)) {

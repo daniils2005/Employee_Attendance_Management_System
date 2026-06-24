@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import lv.venta.repo.IAuthorityRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lv.venta.model.Attendance;
 import lv.venta.model.Department;
@@ -90,6 +92,9 @@ public class ManageController {
 	
 	@Autowired
 	private IPositionRepo positionRepo;
+	
+	@Autowired
+	private IAuthorityRepo authorityRepo;
 	
 	private String errorPage = "error-page";
 	private String errorMessage = "errorMessage";
@@ -355,7 +360,7 @@ public class ManageController {
     }
     
     @GetMapping("/manage/user")
-    public String getUsers(@RequestParam(required = false) Long uid, @RequestParam(required = false) String username, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
+    public String getUsers(@RequestParam(required = false) Long uid, @RequestParam(required = false) String username, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model, RedirectAttributes redirectAttributes) {
     	try {
     		ArrayList<User> resultUsers = new ArrayList<User>();
 			if (uid != null) {
@@ -400,27 +405,35 @@ public class ManageController {
     		return "manage-user-page";
     	}
     	catch(Exception e) {
-   		 	model.addAttribute(errorMessage, e.getMessage());
-   		 	return errorPage;
+   		 	redirectAttributes.addFlashAttribute("error", e.getMessage());
+  			return "redirect:/manage/user";
    	 	}
     }
     
     @PostMapping("/manage/user/add")
-    public String postUsers(@RequestParam long eid, @RequestParam String username, @RequestParam String authority, Model model) { 
+    public String postUsers(@RequestParam long eid, @RequestParam String username, @RequestParam String authority, Model model, RedirectAttributes redirectAttributes) { 
     	 try {
+    		 if(authority.equals("ADMIN") && userRepo.countByAuthorityTitle(authority) >= 3) {
+    			 redirectAttributes.addFlashAttribute("error", "There can't be more than 3 ADMIN users.");
+    			 return "redirect:/manage/user";
+    		 }
     		 userCRUDService.insertNewUser(username, encoder.encode("parole"), employeeCRUDService.selectEmployeeById(eid), generalService.selectAuthorityByTitle(authority));
     		 return "redirect:/manage/user";
     	 } 
     	 catch(Exception e) {
-    		 model.addAttribute(errorMessage, e.getMessage());
-    		 return errorPage;
+    		 redirectAttributes.addFlashAttribute("error", e.getMessage());
+   			 return "redirect:/manage/user";
     	 }
     }
     
     @PostMapping("/manage/user/update-or-delete")
-    public String updateUsers(@RequestParam String action, @RequestParam long uid, @RequestParam long eid, @RequestParam String username, @RequestParam String employeeName, @RequestParam String employeeSurname, @RequestParam String email, @RequestParam String phoneNumber, @RequestParam String authority, Model model) {
+    public String updateUsers(@RequestParam String action, @RequestParam long uid, @RequestParam long eid, @RequestParam String username, @RequestParam String employeeName, @RequestParam String employeeSurname, @RequestParam String email, @RequestParam String phoneNumber, @RequestParam String authority, Model model, RedirectAttributes redirectAttributes) {
     	 try {
     		if ("save".equals(action)) {
+    			if(authority.equals("ADMIN") && userRepo.countByAuthorityTitle(authority) >= 3) {
+       			 redirectAttributes.addFlashAttribute("error", "There can't be more than 3 ADMIN users.");
+       			 return "redirect:/manage/user";
+    			}
     			User user = userCRUDService.selectUserById(uid);
     			Employee employee = employeeCRUDService.selectEmployeeById(eid);
     			if(user.getEmployee().getEid() == eid) {
@@ -438,20 +451,20 @@ public class ManageController {
     		 return "redirect:/manage/user";
     	 } 
     	 catch(Exception e) {
-    		 model.addAttribute(errorMessage, e.getMessage());
-    		 return errorPage;
+    		 redirectAttributes.addFlashAttribute("error", e.getMessage());
+   			 return "redirect:/manage/user";
     	 }
     }
     
     @PostMapping("/manage/user/reset-password")
-    public String postUserResetPassword(@RequestParam long uid, @RequestParam String newPassword, Model model) {
+    public String postUserResetPassword(@RequestParam long uid, @RequestParam String newPassword, Model model, RedirectAttributes redirectAttributes) {
     	try {
     		User userForUpdating = userCRUDService.selectUserById(uid);
 	    	userCRUDService.updateUserById(userForUpdating.getUid(), userForUpdating.getUsername(), encoder.encode(newPassword), userForUpdating.getEmployee(), userForUpdating.getAuthority());
 	    	return "redirect:/manage/user";
     	} catch(Exception e) {
-    		model.addAttribute("errorMessage", e.getMessage());
-    		return errorPage;
+   		 	redirectAttributes.addFlashAttribute("error", e.getMessage());
+  			return "redirect:/manage/user";
     	}
     }
     

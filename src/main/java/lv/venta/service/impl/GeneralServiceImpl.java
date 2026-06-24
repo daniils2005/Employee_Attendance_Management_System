@@ -201,6 +201,9 @@ public class GeneralServiceImpl implements IGeneralService {
 	}
 	
 	public User selectUserByUsername(String username) throws Exception { 
+		if(!userRepo.existsByUsername(username)) {
+			throw new Exception("User with username " + username + " doesn't exist");
+		}
 		return userRepo.findByUsername(username);
 	}
 	
