@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import lv.venta.model.Attendance;
 import lv.venta.model.Authority;
+import lv.venta.model.Employee;
 import lv.venta.model.Overtime;
 import lv.venta.model.User;
 import lv.venta.model.Vacation;
@@ -37,4 +38,7 @@ public interface IGeneralService {
 	
 	public abstract Authority selectAuthorityByTitle(String authorityTitle) throws Exception;
 	
+	public abstract ArrayList<Vacation> findByEmployeeEidAndStartDate(long id, LocalDate date) throws Exception;
+	
+	public abstract ArrayList<Employee> findEmployeesBySurname(String surname) throws Exception;
 }

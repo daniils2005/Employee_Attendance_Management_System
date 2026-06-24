@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 
 import lv.venta.model.Attendance;
 import lv.venta.model.Authority;
+import lv.venta.model.Employee;
 import lv.venta.model.Overtime;
 import lv.venta.model.User;
 import lv.venta.model.Vacation;
 import lv.venta.repo.IAttendanceRepo;
 import lv.venta.repo.IAuthorityRepo;
+import lv.venta.repo.IEmployeeRepo;
 import lv.venta.repo.IOvertimeRepo;
 import lv.venta.repo.IUserRepo;
 import lv.venta.repo.IVacationRepo;
@@ -48,6 +50,9 @@ public class GeneralServiceImpl implements IGeneralService {
 	@Autowired
 	private IAuthorityRepo authorityRepo;
 	
+	@Autowired
+	private IEmployeeRepo employeeRepo;
+	
 	@Override
 	public ArrayList<Attendance> selectAllAttendancesForEmployeeId(long eid) throws Exception {
 		if(attendanceRepo.count() == 0) {
@@ -77,11 +82,11 @@ public class GeneralServiceImpl implements IGeneralService {
 
 	@Override
 	public ArrayList<Overtime> selectAllOvertimesForEmployeeId(long eid) throws Exception {
-		if(overtimeRepo.count() == 0) {
-			throw new Exception("Overtime table is empty");
-		}
 		if(eid <= 0) {
 			throw new Exception("id cant be negative or equal to 0");
+		}
+		if(!employeeRepo.existsById(eid)) {
+			throw new Exception("Employee with id=" + eid + " doesn't exist");
 		}
 		
 		return overtimeRepo.findByEmployeeEid(eid);
@@ -94,6 +99,9 @@ public class GeneralServiceImpl implements IGeneralService {
 		}
 		if(eid <= 0) {
 			throw new Exception("id cant be negative or equal to 0");
+		}
+		if(!employeeRepo.existsById(eid)) {
+			throw new Exception("Employee with id=" + eid + " doesn't exist");
 		}
 		return vacationRepo.findByEmployeeEid(eid);
 	}
@@ -189,7 +197,7 @@ public class GeneralServiceImpl implements IGeneralService {
 		return result;
 	}
 	
-	public ArrayList<Overtime> selectAllOvertimeByEmployeeIdAndDateMonth(long id, LocalDate timeCheck) throws Exception{
+	public ArrayList<Overtime> selectAllOvertimeByEmployeeIdAndDateMonth(long id, LocalDate timeCheck) throws Exception {
 		ArrayList<Overtime> allOvertimeById = selectAllOvertimesForEmployeeId(id);
 		ArrayList<Overtime> allOvertimeByDate = new ArrayList<Overtime>();
 		for (int i = 0; i < allOvertimeById.size(); i++) {
@@ -209,6 +217,20 @@ public class GeneralServiceImpl implements IGeneralService {
 	
 	public Authority selectAuthorityByTitle(String authorityTitle) throws Exception {
 		return authorityRepo.findByTitle(authorityTitle);
+	}
+	
+	public ArrayList<Vacation> findByEmployeeEidAndStartDate(long id, LocalDate date) throws Exception {
+		if(!employeeRepo.existsById(id)) {
+			throw new Exception("Employee with id=" + id + " doesn't exist");
+		}
+		return findByEmployeeEidAndStartDate(id, date);
+	}
+	
+	public ArrayList<Employee> findEmployeesBySurname(String surname) throws Exception {
+		if(!employeeRepo.existsBySurname(surname)) {
+			throw new Exception("Employee with surname \"" + surname + "\"" + " doesn't exist");
+		}
+		return employeeRepo.findBySurname(surname);
 	}
 	
 }

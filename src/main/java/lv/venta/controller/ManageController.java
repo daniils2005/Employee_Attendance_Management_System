@@ -101,7 +101,7 @@ public class ManageController {
 	private String surnameGlobal = "surname";
 	
     @GetMapping("/manage/attendance")
-    public String getAttendanceByEmployee(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
+    public String getAttendanceByEmployee(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model, RedirectAttributes redirectAttributes) {
     	try {  
     		ArrayList<Attendance> attendances;
 			if (id != null && date != null ) {
@@ -144,46 +144,45 @@ public class ManageController {
 			return "manage-attendance-page";
     	}   
         catch (Exception e) {
-            model.addAttribute(errorMessage, e.getMessage());
-            return errorPage;
+   		 	redirectAttributes.addFlashAttribute("error", e.getMessage());
+  			return "redirect:/manage/attendance";
         }
     }
     
     @PostMapping("/manage/attendance/add")
-    public String addAttendanceByEmployee(@RequestParam(required = false) Long eid, @RequestParam float hoursWorked, @RequestParam(required = false) LocalDate date, Model model) {
-    	 
-    	 try {
-    		 Employee employee = employeeCRUDService.selectEmployeeById(eid);
-    		 attendanceCRUDService.insertNewAttendanceWithDate(hoursWorked, employee, date);
-    		 return "redirect:/manage/attendance";
-    	 } 
-    	 catch(Exception e) {
-    		 model.addAttribute(errorMessage, e.getMessage());
-    		 return errorPage;
-    	 }
+    public String addAttendanceByEmployee(@RequestParam(required = false) Long eid, @RequestParam float hoursWorked, @RequestParam(required = false) LocalDate date, Model model, RedirectAttributes redirectAttributes) {
+    	try {
+    		Employee employee = employeeCRUDService.selectEmployeeById(eid);
+    		attendanceCRUDService.insertNewAttendanceWithDate(hoursWorked, employee, date);
+    		return "redirect:/manage/attendance";
+    	} 
+    	catch(Exception e) {
+   		 	redirectAttributes.addFlashAttribute("error", e.getMessage());
+  			return "redirect:/manage/attendance";
+    	}
     }
     
     @PostMapping("/manage/attendance/update-or-delete")
-    public String updateAttendanceByEmployee(@RequestParam(required = false) Long eid, @RequestParam(required = false) Long aid, @RequestParam float hoursWorked, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String action, Model model) {
-    	 try {
-    		 if ("save".equals(action)) {
+    public String updateAttendanceByEmployee(@RequestParam(required = false) Long eid, @RequestParam(required = false) Long aid, @RequestParam float hoursWorked, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String action, Model model, RedirectAttributes redirectAttributes) {
+    	try {
+    		if ("save".equals(action)) {
     			Employee employee = employeeCRUDService.selectEmployeeById(eid);
     			attendanceCRUDService.updateAttendanceByIdWithDate(aid, hoursWorked, employee, date);
-    		 }
-    		 else {
-    			 attendanceCRUDService.deleteAttendanceById(aid);
-    		 }
+    		}
+    		else {
+    			attendanceCRUDService.deleteAttendanceById(aid);
+    		}
     		 
-    		 return "redirect:/manage/attendance";
-    	 } 
-    	 catch(Exception e) {
-    		 model.addAttribute(errorMessage, e.getMessage());
-    		 return errorPage;
-    	 }
+    		return "redirect:/manage/attendance";
+    	} 
+    	catch(Exception e) {
+    		redirectAttributes.addFlashAttribute("error", e.getMessage());
+      		return "redirect:/manage/attendance";
+    	}
     }
     
     @GetMapping("/manage/overtime")
-    public String getOvertimeByEmployees(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
+    public String getOvertimeByEmployees(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model, RedirectAttributes redirectAttributes) {
     	try {
     		ArrayList<Overtime> overtime;
     		if (id != null && date != null) {
@@ -228,59 +227,56 @@ public class ManageController {
     			model.addAttribute("lastOid", overtimeLastOid.get(0).getOid() + 1);
     		}
 
-    		
     		model.addAttribute("overtimes", overtime);
     		return "manage-overtime-page";
     	}
     	catch(Exception e) {
-   		 model.addAttribute(errorMessage, e.getMessage());
-   		 return errorPage;
+   		 	redirectAttributes.addFlashAttribute("error", e.getMessage());
+  			return "redirect:/manage/overtime";
    	 	}
     }
     
     @PostMapping("/manage/overtime/add")
-    public String addOvertimeByEmployees(@RequestParam(required = false) Long eid, @RequestParam float overtimeHours, @RequestParam float overtimeRate, @RequestParam(required = false) String description, @RequestParam(required = false) LocalDate date, @RequestParam RequestStatus status, Model model) { 
-    	 try {
-    		 Employee employee = employeeCRUDService.selectEmployeeById(eid);
-    		 overtimeCRUDService.insertNewOvertimeWithDateAndStatusAndOvertimeRate(overtimeHours, description ,employee, date, status, overtimeRate);
-    		 
-    		 return "redirect:/manage/overtime";
-    	 } 
-    	 catch(Exception e) {
-    		 model.addAttribute(errorMessage, e.getMessage());
-    		 return errorPage;
-    	 }
+    public String addOvertimeByEmployees(@RequestParam(required = false) Long eid, @RequestParam float overtimeHours, @RequestParam float overtimeRate, @RequestParam(required = false) String description, @RequestParam(required = false) LocalDate date, @RequestParam RequestStatus status, Model model, RedirectAttributes redirectAttributes) { 
+    	try {
+    		Employee employee = employeeCRUDService.selectEmployeeById(eid);
+    		overtimeCRUDService.insertNewOvertimeWithDateAndStatusAndOvertimeRate(overtimeHours, description ,employee, date, status, overtimeRate);
+    		return "redirect:/manage/overtime";
+    	} 
+    	catch(Exception e) {
+    		redirectAttributes.addFlashAttribute("error", e.getMessage());
+    		return "redirect:/manage/overtime";
+    	}
     }
 
     @PostMapping("/manage/overtime/update-or-delete")
-    public String updateOvertimeByEmployees(@RequestParam(required = false) Long eid, @RequestParam(required = false) Long oid, @RequestParam Float overtimeHours, @RequestParam(required = false) Float overtimeRate, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String description, @RequestParam(required = false) String action, @RequestParam(required = false) RequestStatus status, Model model) {
-    	 try {
-    		 if ("save".equals(action)) {
+    public String updateOvertimeByEmployees(@RequestParam(required = false) Long eid, @RequestParam(required = false) Long oid, @RequestParam Float overtimeHours, @RequestParam(required = false) Float overtimeRate, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String description, @RequestParam(required = false) String action, @RequestParam(required = false) RequestStatus status, Model model, RedirectAttributes redirectAttributes) {
+    	try {
+    		if ("save".equals(action)) {
     			Employee employee = employeeCRUDService.selectEmployeeById(eid);
     			overtimeCRUDService.updateOvertimeById(oid, overtimeHours, overtimeRate, description, employee, status, date);
-    		 }
-    		 else {
-    			 overtimeCRUDService.deleteOvertimeById(oid);
-    		 }
-    		 
-    		 return "redirect:/manage/overtime";
-    	 } 
-    	 catch(Exception e) {
-    		 model.addAttribute(errorMessage, e.getMessage());
-    		 return errorPage;
-    	 }
+    		}
+    		else {
+    			overtimeCRUDService.deleteOvertimeById(oid);
+    		} 
+    		return "redirect:/manage/overtime";
+    	} 
+    	catch(Exception e) {
+   		 	redirectAttributes.addFlashAttribute("error", e.getMessage());
+  			return "redirect:/manage/overtime";
+    	}
     }
 
     @GetMapping("/manage/vacation")
-    public String getVacationByEmpoyees(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
-    	 try {
+    public String getVacationByEmpoyees(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model, RedirectAttributes redirectAttributes) {
+    	try {
     		ArrayList<Vacation> vacation;
      		if (id != null && date != null) {
-     			vacation = vacationRepo.findByEmployeeEidAndStartDate(id, date);
+     			vacation = generalService.findByEmployeeEidAndStartDate(id, date);
  			}
- 			else if (id != null) {
- 				vacation = vacationRepo.findByEmployeeEid(id);
- 			}
+     		else if (id != null) {
+ 				vacation = generalService.selectAllVacationsForEmployeeId(id);
+     		}
  			else if (date != null) {
  				vacation = vacationRepo.findByStartDateLessThanEqualAndEndDateGreaterThanEqual(date, date);
  			}
@@ -319,44 +315,43 @@ public class ManageController {
      		}
      		model.addAttribute("vacations", vacation);
      		return "manage-vacation-page";
-    	 } 
-    	 catch(Exception e) {
-    		 model.addAttribute(errorMessage, e.getMessage());
-    		 return errorPage;
-    	 }
-    }
+    	} 
+    	catch(Exception e) {
+     		redirectAttributes.addFlashAttribute("error", e.getMessage());
+     		return "redirect:/manage/vacation";
+    	}
+   }
     
     @PostMapping("/manage/vacation/add")
-    public String addVacationByEmpoyees(@RequestParam(required = false) Long eid, @RequestParam(required = false) LocalDate startDate, @RequestParam(required = false) LocalDate endDate, @RequestParam RequestStatus status, Model model) { 
-    	 try {
-    		 Employee employee = employeeCRUDService.selectEmployeeById(eid);
-    		 vacationCRUDService.insertNewVacation(startDate, endDate ,employee, status);
-    		 
-    		 return "redirect:/manage/vacation";
-    	 } 
-    	 catch(Exception e) {
-    		 model.addAttribute(errorMessage, e.getMessage());
-    		 return errorPage;
-    	 }
-    }
+    public String addVacationByEmpoyees(@RequestParam(required = false) Long eid, @RequestParam(required = false) LocalDate startDate, @RequestParam(required = false) LocalDate endDate, @RequestParam RequestStatus status, Model model, RedirectAttributes redirectAttributes) { 
+    	try {
+    		Employee employee = employeeCRUDService.selectEmployeeById(eid);
+    		vacationCRUDService.insertNewVacation(startDate, endDate ,employee, status);
+    		return "redirect:/manage/vacation";
+    	} 
+    	catch(Exception e) {
+    		redirectAttributes.addFlashAttribute("error", e.getMessage());
+      		return "redirect:/manage/vacation";
+    	}
+   }
     
-    @PostMapping("/manage/vacation/update-or-delete")
-    public String updateVacationByEmpoyees(@RequestParam(required = false) Long eid, @RequestParam(required = false) Long vid, @RequestParam(required = false) LocalDate startDate, @RequestParam(required = false) LocalDate endDate, @RequestParam RequestStatus status, @RequestParam(required = false) String action, Model model) {
-    	 try {
-    		 if ("save".equals(action)) {
+   @PostMapping("/manage/vacation/update-or-delete")
+   public String updateVacationByEmpoyees(@RequestParam(required = false) Long eid, @RequestParam(required = false) Long vid, @RequestParam(required = false) LocalDate startDate, @RequestParam(required = false) LocalDate endDate, @RequestParam RequestStatus status, @RequestParam(required = false) String action, Model model, RedirectAttributes redirectAttributes) {
+    	try {
+    		if ("save".equals(action)) {
     			Employee employee = employeeCRUDService.selectEmployeeById(eid);
     			//long id, LocalDate newStartDate, LocalDate newEndDate, Employee newEmployee, boolean isActive, RequestStatus status
     			vacationCRUDService.updateVacationById(vid, startDate, endDate, employee, status);
-    		 }
-    		 else {
-    			 vacationCRUDService.deleteVacationById(vid);
-    		 }
-    	 return "redirect:/manage/vacation";
-    	 }
-    	 catch(Exception e) {
-    		 model.addAttribute(errorMessage, e.getMessage());
-    		 return errorPage;
-    	 }
+    		}
+    		else {
+    			vacationCRUDService.deleteVacationById(vid);
+    		}
+    	return "redirect:/manage/vacation";
+    	}
+    	catch(Exception e) {
+    		redirectAttributes.addFlashAttribute("error", e.getMessage());
+      		return "redirect:/manage/vacation";
+    	}
     }
     
     @GetMapping("/manage/user")
@@ -469,7 +464,7 @@ public class ManageController {
     }
     
     @GetMapping("/manage/employee")
-    public String getEmployees(@RequestParam(required = false) Long eid, @RequestParam(required = false) String surname, @RequestParam(required = false) Status status, @RequestParam(required = false) Position position, @RequestParam(required = false) String department, Model model) {
+    public String getEmployees(@RequestParam(required = false) Long eid, @RequestParam(required = false) String surname, @RequestParam(required = false) Status status, @RequestParam(required = false) String position, @RequestParam(required = false) String department, Model model, RedirectAttributes redirectAttributes) {
     	try {
     		ArrayList<Employee> resultEmployees = new ArrayList<Employee>();
     		ArrayList<Department> resultDepartment = departmentCRUDService.selectAllDepartments();
@@ -478,13 +473,13 @@ public class ManageController {
 				resultEmployees.add(employeeCRUDService.selectEmployeeById(eid));
 			}
 			else if(surname != null) {
-				resultEmployees = employeeRepo.findBySurname(surname);
+				resultEmployees = generalService.findEmployeesBySurname(surname);
 			}
 			else if(status != null) {
 				resultEmployees = employeeRepo.findByStatus(status);
 			}
 			else if(position != null) {
-				resultEmployees = employeeRepo.findByPosition(position);
+				resultEmployees = employeeRepo.findByPositionName(position);
 			}
 			else if(department != null) {
 				resultEmployees = employeeRepo.findByDepartmentDepartmentName(department);
@@ -501,39 +496,39 @@ public class ManageController {
     		return "manage-employee-page";
     	}
     	catch(Exception e) {
-   		 	model.addAttribute(errorMessage, e.getMessage());
-   		 	return errorPage;
+   		 	redirectAttributes.addFlashAttribute("error", e.getMessage());
+  			return "redirect:/manage/employee";
    	 	}
     }
     
     @PostMapping("/manage/employee/add")
-    public String postEmployees(@RequestParam String name, @RequestParam String surname, @RequestParam String personCode, @RequestParam float hourlyRate, @RequestParam String position, @RequestParam String department, @RequestParam Status status, @RequestParam String email, @RequestParam String number, Model model) { 
-    	 try {
-    		 employeeCRUDService.insertNewEmployee(name, surname, personCode, number, email, hourlyRate, departmentRepo.findByDepartmentName(department), status, positionRepo.findByName(position));
-    		 return "redirect:/manage/employee";
-    	 } 
-    	 catch(Exception e) {
-    		 model.addAttribute(errorMessage, e.getMessage());
-    		 return errorPage;
-    	 }
+    public String postEmployees(@RequestParam String name, @RequestParam String surname, @RequestParam String personCode, @RequestParam float hourlyRate, @RequestParam String position, @RequestParam String department, @RequestParam Status status, @RequestParam String email, @RequestParam String number, Model model, RedirectAttributes redirectAttributes) { 
+    	try {
+    		employeeCRUDService.insertNewEmployee(name, surname, personCode, number, email, hourlyRate, departmentRepo.findByDepartmentName(department), status, positionRepo.findByName(position));
+    		return "redirect:/manage/employee";
+    	} 
+    	catch(Exception e) {
+    		redirectAttributes.addFlashAttribute("error", e.getMessage());
+      		return "redirect:/manage/employee";
+    	}
     }
     
     @PostMapping("/manage/employee/update-or-delete")
-    public String updateEmployees(@RequestParam long eid, @RequestParam String name, @RequestParam String surname, @RequestParam float hourlyRate, @RequestParam String position, @RequestParam String department, @RequestParam Status status, @RequestParam String email, @RequestParam String phoneNumber, @RequestParam String action, Model model) {
+    public String updateEmployees(@RequestParam long eid, @RequestParam String name, @RequestParam String surname, @RequestParam float hourlyRate, @RequestParam String position, @RequestParam String department, @RequestParam Status status, @RequestParam String email, @RequestParam String phoneNumber, @RequestParam String action, Model model, RedirectAttributes redirectAttributes) {
     	try {
     		if("save".equals(action)) {
     			employeeCRUDService.updateEmployeeById(eid, name, surname, phoneNumber, email, hourlyRate, departmentRepo.findByDepartmentName(department), status, positionRepo.findByName(position));
     		}
-    		return "redirect:/manage/employee";
-    	 } 
-    	 catch(Exception e) {
-    		 model.addAttribute(errorMessage, e.getMessage());
-    		 return errorPage;
-    	 }
+    	return "redirect:/manage/employee";
+    	} 
+    	catch(Exception e) {
+    		redirectAttributes.addFlashAttribute("error", e.getMessage());
+      		return "redirect:/manage/employee";
+    	}
     }
 
 	@GetMapping("/manage/department")
-	public String getDepartment(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model) {
+	public String getDepartment(@RequestParam(required = false) Long id, @RequestParam(required = false) LocalDate date, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model, RedirectAttributes redirectAttributes) {
 		 try {
 			ArrayList<Department> department;
 			department = departmentCRUDService.selectAllDepartments();

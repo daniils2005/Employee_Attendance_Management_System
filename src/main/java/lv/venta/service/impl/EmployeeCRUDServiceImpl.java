@@ -37,6 +37,9 @@ public class EmployeeCRUDServiceImpl implements IEmployeeCRUDService {
 		if(id <= 0) {
 			throw new Exception("id cant be negative or equal to 0");
 		}
+		if(!employeeRepo.existsById(id)) {
+			throw new Exception("Employee with id=" + id + " doesn't exist");
+		}
 		return employeeRepo.findById(id).get();
 	}
 
@@ -47,7 +50,7 @@ public class EmployeeCRUDServiceImpl implements IEmployeeCRUDService {
 			throw new Exception("id cant be negative or equal to 0");
 		}
 		if(!employeeRepo.existsById(id)) {
-			throw new Exception("Employee with id = " + id + " doesnt exist");
+			throw new Exception("Employee with id=" + id + " doesn't exist");
 		}
 		Employee employeeForDeleting = employeeRepo.findById(id).get();
 		User userTiedToEmployee = userRepo.findByEmployee(employeeForDeleting);
@@ -70,7 +73,7 @@ public class EmployeeCRUDServiceImpl implements IEmployeeCRUDService {
 	@Override
 	public void updateEmployeeById(long id, String newName, String newSurname, String newNumber, String newEmail, double newHourlyRate, Department newDepartment, Status newStatus, Position newPosition) throws Exception {
 		if(!employeeRepo.existsById(id)) {
-			throw new Exception("Employee with id = " + id + " doesn't exist");
+			throw new Exception("Employee with id=" + id + " doesn't exist");
 		}
 		Employee employeeForUpdating = employeeRepo.findById(id).get();
 		employeeForUpdating.setName(newName);

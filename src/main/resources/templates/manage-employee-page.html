@@ -91,6 +91,7 @@
 			</select>
 		    <button type="submit">Search</button>
 		</form>
+		<p th:if="${error}" th:text="${error}" style="color: red"></p>
 	    <table style="width: 100%; border-collapse: collapse;">
 	        <tr>
 	            <th style="border: 1px solid black;">Employee id</th>
@@ -176,7 +177,7 @@
 							<option value="Dekrets" th:selected="${employee.status == T(lv.venta.model.enums.Status).Dekrets}">Dekrets</option>
 						</select>
 					</td>
-					<td style="border: 1px solid black;"><input type="email" name="email" th:value="${employee.email}" title="Email is invalid." required></td>
+					<td style="border: 1px solid black;"><input type="email" name="email" th:value="${employee.email}" title="Email must be valid." required></td>
 					<td style="border: 1px solid black;"><input type="text" name="phoneNumber" th:value="${employee.number}" pattern="^(\+371|371)?[2-9]\d{7}$" title="The phone number must be an 8 digit Latvian number." required></td>
 	                <td style="border: 1px solid black;"><button type="submit" name="action" value="save">Save</button></td>
 				</form>

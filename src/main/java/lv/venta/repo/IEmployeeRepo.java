@@ -26,6 +26,10 @@ public interface IEmployeeRepo extends CrudRepository<Employee, Long>{
 
 	ArrayList<Employee> findTopByOrderByEidDesc();
 
+	ArrayList<Employee> findByPositionName(String position);
+
+	boolean existsBySurname(String surname);
+
 	//ArrayList<Employee> findByPosition(Position positionForDeleting);
 
 }

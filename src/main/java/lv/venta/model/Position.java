@@ -37,11 +37,8 @@ public class Position {
 	@Column(name = "name")
 	private String name;
 	
-	@NotNull
-	@NotEmpty
 	@Column(name = "description")
 	private String description;
-	
 	
 	@OneToMany(mappedBy = "position")
 	@ToString.Exclude

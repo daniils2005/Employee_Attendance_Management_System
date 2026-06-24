@@ -78,6 +78,7 @@
 	        </select>
 	        <button type="submit">Sort</button>
 	    </form>
+		<p th:if="${error}" th:text="${error}" style="color: red"></p>
 	    <table style="width: 100%; border-collapse: collapse;">
 	        <tr>
 	            <th style="border: 1px solid black;">Vacation id</th>

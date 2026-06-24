@@ -82,7 +82,8 @@
 	        </select>
 	        <button type="submit">Sort</button>
 	    </form>
-	
+		
+		<p th:if="${error}" th:text="${error}" style="color: red"></p>
 	    <table style="width: 100%; border-collapse: collapse;">
 	        <tr>
 	            <th style="border: 1px solid black;">Attendance id</th>
@@ -96,7 +97,7 @@
 	        <tr>
 	            <form th:action="@{/manage/attendance/add}" method="post">
 	                <td style="border: 1px solid black;" th:text="${lastAid}"></td>
-	                <td style="border: 1px solid black;"><input type="number" min="1" max="9223372036854775807" name="eid" required></td>
+	                <td style="border: 1px solid black;"><input type="number" min="1" max="9007199254740991" name="eid" required></td>
 					<td style="border: 1px solid black;"></td>
 	                <td style="border: 1px solid black;"></td>
 	                <td style="border: 1px solid black;"><input type="date" name="date" required></td>
@@ -107,7 +108,7 @@
 	        <tr th:each="attendance : ${attendances}">
 	            <form th:action="@{/manage/attendance/update-or-delete}" method="post">
 	                <td style="border: 1px solid black;"><input type="hidden" name="aid" th:value="${attendance.aid}" th:text="${attendance.aid}"></td>
-	                <td style="border: 1px solid black;"><input type="number" min="0" name="eid" th:value="${attendance.employee.eid}" required></td>
+	                <td style="border: 1px solid black;"><input type="number" min="0" name="eid" th:value="${attendance.employee.eid}" required max="9007199254740991"></td>
 	                <td style="border: 1px solid black;" th:text="${attendance.employee.name}"></td>
 	                <td style="border: 1px solid black;" th:text="${attendance.employee.surname}"></td>
 	                <td style="border: 1px solid black;"><input type="date" name="date" th:value="${attendance.workDate}" required></td>

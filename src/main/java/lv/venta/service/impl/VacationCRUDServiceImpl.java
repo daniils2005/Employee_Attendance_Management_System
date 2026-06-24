@@ -83,24 +83,24 @@ public class VacationCRUDServiceImpl implements IVacationCRUDService {
 		vacationRepo.save(vacationForUpdating);
 	}
 	
-	public void insertNewVacation(LocalDate newStartDate, LocalDate newEndDate, Employee newEmployee, RequestStatus status) throws Exception{
+	public void insertNewVacation(LocalDate newStartDate, LocalDate newEndDate, Employee newEmployee, RequestStatus status) throws Exception {
 		if(newStartDate == null || newEndDate == null || newEmployee == null) {
-			return;
+			throw new Exception("Vacation dates can't be null");
 		}
 		if(newStartDate.isAfter(newEndDate)) {
-			return;
+			throw new Exception("Vacation start date can't be after end date");
 		}
 		if(vacationRepo.existsOverlappingVacation(newEmployee, newStartDate, newEndDate)) {
-			return;
+			throw new Exception("There is already an overlapping vacation during time period(" + newStartDate + "-" + newEndDate + ")");
 		}
-		if(newStartDate.isAfter(LocalDate.now().plusYears(2).plusMonths(1))) {
-			return;
+		if(newStartDate.isAfter(LocalDate.now().plusYears(2))) {
+			throw new Exception("Can't register a vacation more than 2 years in advance");
 		}
-		if(newStartDate.isBefore(LocalDate.now().minusYears(1).minusMonths(1))) {
-			return;
+		if(newStartDate.isBefore(LocalDate.now().minusYears(2))) {
+			throw new Exception("Can't register a vacation more than 2 years after");
 		}
-		if(newEndDate.isAfter(newStartDate.plusDays(29))){
-			return;
+		if(newEndDate.isAfter(newStartDate.plusDays(28))){
+			throw new Exception("Vacation can't last longer than 28 calendar days");
 		}
 		Vacation newVacation = new Vacation(newStartDate, newEndDate, newEmployee);
 		newVacation.setStatus(status);
@@ -110,25 +110,25 @@ public class VacationCRUDServiceImpl implements IVacationCRUDService {
 	
 	public void updateVacationById(long id, LocalDate newStartDate, LocalDate newEndDate, Employee newEmployee, RequestStatus status) throws Exception{
 		if(id <= 0 || newStartDate == null || newEndDate == null || newEmployee == null) {
-			return;
+			throw new Exception("Vacation dates can't be null");
 		}
 		if(!vacationRepo.existsById(id)) {
-			return;
+			throw new Exception("Vacation with id=" + id + " doesn't exist");
 		}
 		if(newStartDate.isAfter(newEndDate)) {
-			return;
+			throw new Exception("Vacation start date can't be after end date");
 		}
 		if(vacationRepo.existsOverlappingVacationForUpdate(id, newEmployee, newStartDate, newEndDate)) {
-			return;
+			throw new Exception("There is already an overlapping vacation during time period(" + newStartDate + "-" + newEndDate + ")");
 		}
 		if(newStartDate.isAfter(LocalDate.now().plusYears(2).plusMonths(1))) {
-			return;
+			throw new Exception("Can't register a vacation more than 2 years in advance");
 		}
 		if(newStartDate.isBefore(LocalDate.now().minusYears(1).minusMonths(1))) {
-			return;
+			throw new Exception("Can't register a vacation more than 2 years after");
 		}
 		if(newEndDate.isAfter(newStartDate.plusDays(29))){
-			return;
+			throw new Exception("Vacation can't last longer than 28 calendar days");
 		}
 		Vacation vacationForUpdating = vacationRepo.findById(id).get();
 		vacationForUpdating.setStartDate(newStartDate);

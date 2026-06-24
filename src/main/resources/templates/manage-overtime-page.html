@@ -76,6 +76,7 @@
 	            <option value="desc">Descending</option></select>
 	        <button type="submit">Sort</button>
 	    </form>
+		<p th:if="${error}" th:text="${error}" style="color: red"></p>
 	    <table style="width: 100%; border-collapse: collapse;">
 	        <tr>
 				<th style="border: 1px solid black;">Overtime id</th>
@@ -92,7 +93,7 @@
 	        <tr>
 	            <form th:action="@{/manage/overtime/add}" method="post">
 					<td style="border: 1px solid black;"th:text="${lastOid}"></td>
-					<td style="border: 1px solid black;"><input type="number" min="1" max="9223372036854775807" name="eid" required></td>
+					<td style="border: 1px solid black;"><input type="number" min="1" max="9007199254740991" name="eid" required></td>
 					<td style="border: 1px solid black;"></td>
 					<td style="border: 1px solid black;"></td>
 					<td style="border: 1px solid black;"><input type="date" name="date" required></td>
