@@ -13,12 +13,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lv.venta.helper.MyUserDetails;
 import lv.venta.model.Employee;
 import lv.venta.model.User;
+import lv.venta.model.enums.RequestStatus;
 import lv.venta.model.enums.Status;
 import lv.venta.service.IAttendanceCRUDService;
 import lv.venta.service.IEmployeeCRUDService;
@@ -76,14 +78,14 @@ public class MyController {
     }
     
     @PostMapping("/attendance")
-    public String postMyAttendancePage(@RequestParam float hoursWorked, Model model) {
+    public String postMyAttendancePage(@RequestParam float hoursWorked, Model model, RedirectAttributes redirectAttributes) {
     	 User currentUser = getCurrentUser();
     	 try {
-    		 attendanceCRUDService.insertNewAttendance(hoursWorked, currentUser.getEmployee());
-    		 return "redirect:/attendance";
+    		attendanceCRUDService.insertNewAttendance(hoursWorked, currentUser.getEmployee());
+    		return "redirect:/attendance";
     	 } catch(Exception e) {
-    		 model.addAttribute(errorMessage, e.getMessage());
-    		 return errorPage;
+     		redirectAttributes.addFlashAttribute("error", e.getMessage());
+      		return "redirect:/attendance";
     	 }
     }
     
@@ -101,20 +103,20 @@ public class MyController {
     }
     
     @PostMapping("/overtime")
-    public String postMyOvertimePage(@RequestParam float overtimeHours, @RequestParam String description, Model model) {
+    public String postMyOvertimePage(@RequestParam float overtimeHours, @RequestParam String description, Model model, RedirectAttributes redirectAttributes) {
     	 User currentUser = getCurrentUser();
     	 try {
     		 overtimeCRUDService.insertNewOvertime(overtimeHours, description, currentUser.getEmployee());
     		 return "redirect:/overtime";
     	 } catch(Exception e) {
-    		 model.addAttribute(errorMessage, e.getMessage());
-    		 return errorPage;
+    		 redirectAttributes.addFlashAttribute("error", e.getMessage());
+    		 return "redirect:/overtime";
     	 }
     }
     
     @GetMapping("/vacation")
     public String getMyVacationPage(Model model) {
-        User currentUser = getCurrentUser();
+    	User currentUser = getCurrentUser();
         try {
         	model.addAttribute("vacations", generalService.selectAllVacationsForEmployeeId(currentUser.getEmployee().getEid()));
         	model.addAttribute(dateToday, LocalDate.now());
@@ -126,15 +128,15 @@ public class MyController {
     }
     
     @PostMapping("/vacation")
-    public String postMyVacationPage(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate, Model model) {
-    	 User currentUser = getCurrentUser();
-    	 try {
-    		 vacationCRUDService.insertNewVacation(startDate, endDate, currentUser.getEmployee());
-    		 return "redirect:/vacation";
-    	 } catch(Exception e) {
-    		 model.addAttribute(errorMessage, e.getMessage());
-    		 return errorPage;
-    	 }
+    public String postMyVacationPage(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate, Model model, RedirectAttributes redirectAttributes) {
+    	User currentUser = getCurrentUser();
+    	try {
+    		vacationCRUDService.insertNewVacation(startDate, endDate, currentUser.getEmployee(), RequestStatus.IZSKATISANA);
+    		return "redirect:/vacation";
+    	} catch(Exception e) {
+    		redirectAttributes.addFlashAttribute("error", e.getMessage());
+      		return "redirect:/vacation";
+    	}
     }
     
     @GetMapping("/account")
@@ -150,14 +152,14 @@ public class MyController {
     }
     
     @PostMapping("/account/change-username")
-    public String postAccountChangeUsername(@RequestParam String newUsername, Model model) {
+    public String postAccountChangeUsername(@RequestParam String newUsername, Model model, RedirectAttributes redirectAttributes) {
     	try {
     		User currentUser = userCRUDService.selectUserById(getCurrentUser().getUid());
     		userCRUDService.updateUserById(currentUser.getUid(), newUsername, currentUser.getPassword(), currentUser.getEmployee(), currentUser.getAuthority());
     		return "redirect:/account";
     	} catch(Exception e) {
-        	model.addAttribute(errorMessage, e.getMessage());
-        	return errorPage;
+   		 	redirectAttributes.addFlashAttribute("error", e.getMessage());
+  			return "redirect:/account";
     	}
     }
     
@@ -210,28 +212,28 @@ public class MyController {
     }
     
     @PostMapping("/account/change-password")
-    public String postAccountChangePassword(@RequestParam String currentPassword, @RequestParam String newPassword, @RequestParam String confirmPassword, HttpServletRequest request, HttpServletResponse response, Model model) {
+    public String postAccountChangePassword(@RequestParam String currentPassword, @RequestParam String newPassword, @RequestParam String confirmPassword, HttpServletRequest request, HttpServletResponse response, Model model, RedirectAttributes redirectAttributes) {
     	try { 
     		User currentUser = userCRUDService.selectUserById(getCurrentUser().getUid());
 	    	if(!encoder.matches(currentPassword, currentUser.getPassword())) {
-	    		model.addAttribute(errorMessage, "Current password doesn't match");
-	    		return errorPage;
+	   		 	redirectAttributes.addFlashAttribute("passwordError", "Current password is incorrect");
+	  			return "redirect:/account";
 	    	}
 	    	if(!newPassword.equals(confirmPassword)) {
-	    		model.addAttribute(errorMessage, "Confirm password doesn't match new password");
-	    		return errorPage;
+	   		 	redirectAttributes.addFlashAttribute("passwordError", "Confirm password doesn't match the new password");
+	  			return "redirect:/account";
 	    	}
 	    	if(encoder.matches(newPassword, currentUser.getPassword())) {
-	    	    model.addAttribute(errorMessage, "New password must be different from current password");
-	    	    return errorPage;
+	   		 	redirectAttributes.addFlashAttribute("passwordError", "New password must be different from current password");
+	  			return "redirect:/account";
 	    	}
 	    	userCRUDService.updateUserById(currentUser.getUid(), currentUser.getUsername(), encoder.encode(newPassword), currentUser.getEmployee(), currentUser.getAuthority());
 	    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	    	new SecurityContextLogoutHandler().logout(request, response, auth);
 	    	return "redirect:/login?logout";
     	} catch(Exception e) {
-        	model.addAttribute(errorMessage, e.getMessage());
-        	return errorPage;
+   		 	redirectAttributes.addFlashAttribute("error", e.getMessage());
+  			return "redirect:/account";
     	}
     }
     @PostMapping("/account/change-status")

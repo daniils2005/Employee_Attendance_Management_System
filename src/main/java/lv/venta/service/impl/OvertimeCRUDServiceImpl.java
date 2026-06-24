@@ -54,7 +54,7 @@ public class OvertimeCRUDServiceImpl implements IOvertimeCRUDService {
 		}
 		LocalDate date = LocalDate.now();
 		if(overtimeRepo.existsByEmployeeAndDate(newEmployee, date)) {
-			throw new Exception("Overtime for employee with id=" + newEmployee.getEid() + " has already been registered for today(" + date + ")");
+			throw new Exception("You have already registered an overtime today(" + LocalDate.now() + ")");
 		}
 		Overtime newOvertime = new Overtime(newOvertimeHours, newDescription, newEmployee);
 		overtimeRepo.save(newOvertime);
@@ -95,8 +95,9 @@ public class OvertimeCRUDServiceImpl implements IOvertimeCRUDService {
 		if(newOvertimeHours < 0 || newDescription == null || newEmployee == null) {
 			throw new Exception("One or more input arguments are invalid");
 		}
-		
-
+		if(overtimeRepo.existsByEmployeeAndDate(newEmployee, date)) {
+			throw new Exception("Overtime for employee with id=" + newEmployee.getEid() + " has already been registered for today(" + date + ")");
+		}
 		Overtime newOvertime = new Overtime(newOvertimeHours, newDescription, newEmployee);
 		if(date == null) {
 			newOvertime.setDate(LocalDate.now());
@@ -107,7 +108,6 @@ public class OvertimeCRUDServiceImpl implements IOvertimeCRUDService {
 		newOvertime.setStatus(status);
 		newOvertime.setOvertimeRate(overtimeRate);
 		overtimeRepo.save(newOvertime);
-		
 	}
 	
 }

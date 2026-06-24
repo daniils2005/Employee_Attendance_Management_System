@@ -18,6 +18,5 @@ public interface IVacationCRUDService {
 	public abstract void insertNewVacation(LocalDate newStartDate, LocalDate newEndDate, Employee newEmployee) throws Exception;
 	public abstract void insertNewVacation(LocalDate newStartDate, LocalDate newEndDate, Employee newEmployee, RequestStatus status) throws Exception;
 	
-	public abstract void updateVacationById(long id, LocalDate newStartDate, LocalDate newEndDate, Employee newEmployee) throws Exception;
 	public abstract void updateVacationById(long id, LocalDate newStartDate, LocalDate newEndDate, Employee newEmployee, RequestStatus status) throws Exception;
 }

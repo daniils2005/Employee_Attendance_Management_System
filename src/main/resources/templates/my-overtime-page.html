@@ -56,6 +56,7 @@
 		</div>
 		
 	    <h1>My overtime this month</h1>
+		<p th:if="${error}" th:text="${error}" style="color: red"></p>
 	    <table style="width: 100%; border-collapse: collapse;">
 	        <tr>
 	            <th style="border: 1px solid black;">Date</th>

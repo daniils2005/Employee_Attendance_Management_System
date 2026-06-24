@@ -8,6 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import lv.venta.model.Attendance;
+import lv.venta.model.Employee;
 
 public interface IAttendanceRepo extends CrudRepository<Attendance, Long> {
 
@@ -23,4 +24,7 @@ public interface IAttendanceRepo extends CrudRepository<Attendance, Long> {
 	ArrayList<Attendance> findAllByOrderByEmployee_NameAsc();
 
 	ArrayList<Attendance> findTopByOrderByAidDesc();
+
+	ArrayList<Attendance> findAllByEmployeeEidAndWorkDate(long eid, LocalDate now);
+
 }

@@ -57,6 +57,14 @@ public class AttendanceCRUDServiceImpl implements IAttendanceCRUDService {
 		if(!employeeRepo.existsByPersonCode(employee.getPersonCode())) {
 			throw new Exception("Can't register an attendance for employee that doesn't exist");
 		}
+		float sum = hoursWorked;
+		ArrayList<Attendance> attendancesTodayForEmployee = attendanceRepo.findAllByEmployeeEidAndWorkDate(employee.getEid(), LocalDate.now());
+		for(var attendance : attendancesTodayForEmployee) {
+			sum += attendance.getHoursWorked();
+			if(sum > 8) {
+				throw new Exception("Sum of hours for attendances today(" + LocalDate.now() + ") cannot exceed 8 hours");
+			}
+		}
 		Attendance newAttendance = new Attendance(hoursWorked, employee);
 		attendanceRepo.save(newAttendance);
 	}
@@ -68,6 +76,14 @@ public class AttendanceCRUDServiceImpl implements IAttendanceCRUDService {
 		}
 		if(!employeeRepo.existsByPersonCode(employee.getPersonCode())) {
 			throw new Exception("Can't register an attendance for employee that doesn't exist");
+		}
+		float sum = hoursWorked;
+		ArrayList<Attendance> attendancesTodayForEmployee = attendanceRepo.findAllByEmployeeEidAndWorkDate(employee.getEid(), LocalDate.now());
+		for(var attendance : attendancesTodayForEmployee) {
+			sum += attendance.getHoursWorked();
+			if(sum > 8) {
+				throw new Exception("Sum of hours for attendances today(" + LocalDate.now() + ") cannot exceed 8 hours");
+			}
 		}
 		Attendance newAttendance = new Attendance(hoursWorked, employee);
 		if(date == null) {

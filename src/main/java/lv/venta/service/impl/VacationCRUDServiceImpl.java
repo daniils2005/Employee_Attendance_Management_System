@@ -61,37 +61,16 @@ public class VacationCRUDServiceImpl implements IVacationCRUDService {
 		Vacation newVacation = new Vacation(newStartDate, newEndDate, newEmployee);
 		vacationRepo.save(newVacation);
 	}
-
-	@Override
-	public void updateVacationById(long id, LocalDate newStartDate, LocalDate newEndDate, Employee newEmployee) throws Exception {
-		if(id <= 0 || newStartDate == null || newEndDate == null || newEmployee == null) {
-			throw new Exception("One or more input arguments are invalid");
-		}
-		if(!vacationRepo.existsById(id)) {
-			throw new Exception("Vacation with id = " + id + " doesn't exist");
-		}
-		if(newStartDate.isAfter(newEndDate)) {
-			throw new Exception("Vacation start date can't be after the end date");
-		}
-		if(vacationRepo.existsOverlappingVacationForUpdate(id, newEmployee, newStartDate, newEndDate)) {
-			throw new Exception("Another vacation in time period of " + newStartDate + "-" + newEndDate + " already exists");
-		}
-		Vacation vacationForUpdating = vacationRepo.findById(id).get();
-		vacationForUpdating.setStartDate(newStartDate);
-		vacationForUpdating.setEndDate(newEndDate);
-		vacationForUpdating.setEmployee(newEmployee);
-		vacationRepo.save(vacationForUpdating);
-	}
 	
 	public void insertNewVacation(LocalDate newStartDate, LocalDate newEndDate, Employee newEmployee, RequestStatus status) throws Exception {
 		if(newStartDate == null || newEndDate == null || newEmployee == null) {
 			throw new Exception("Vacation dates can't be null");
 		}
 		if(newStartDate.isAfter(newEndDate)) {
-			throw new Exception("Vacation start date can't be after end date");
+			throw new Exception("Vacation start date can't be after the end date");
 		}
 		if(vacationRepo.existsOverlappingVacation(newEmployee, newStartDate, newEndDate)) {
-			throw new Exception("There is already an overlapping vacation during time period(" + newStartDate + "-" + newEndDate + ")");
+			throw new Exception("There is already an overlapping vacation during time period(" + newStartDate + ")-(" + newEndDate + ")");
 		}
 		if(newStartDate.isAfter(LocalDate.now().plusYears(2))) {
 			throw new Exception("Can't register a vacation more than 2 years in advance");
@@ -116,10 +95,10 @@ public class VacationCRUDServiceImpl implements IVacationCRUDService {
 			throw new Exception("Vacation with id=" + id + " doesn't exist");
 		}
 		if(newStartDate.isAfter(newEndDate)) {
-			throw new Exception("Vacation start date can't be after end date");
+			throw new Exception("Vacation start date can't be after the end date");
 		}
 		if(vacationRepo.existsOverlappingVacationForUpdate(id, newEmployee, newStartDate, newEndDate)) {
-			throw new Exception("There is already an overlapping vacation during time period(" + newStartDate + "-" + newEndDate + ")");
+			throw new Exception("There is already an overlapping vacation during time period(" + newStartDate + ")-(" + newEndDate + ")");
 		}
 		if(newStartDate.isAfter(LocalDate.now().plusYears(2).plusMonths(1))) {
 			throw new Exception("Can't register a vacation more than 2 years in advance");
