@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Manage Department</title>
+    <title>Manage Position</title>
 	<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 	<body>
@@ -54,13 +54,13 @@
 		    </a>
 			<hr>
 		</div>
-	    <h1>Manage Department</h1>
-	    <h2>Department</h2>
-	    <form th:action="@{/manage/department}" method="get">
+	    <h1>Manage Position</h1>
+	    <h2>Position</h2>
+	    <form th:action="@{/manage/position}" method="get">
 	        <label>Sort by:</label>
 	        <select name="sort">
-	        	<option value="did">Department ID</option>
-	            <option value="departmentName">Department name</option>
+	        	<option value="pid">Position ID</option>
+	            <option value="positionName">Position name</option>
 	        </select>
 	        <label>Order:</label><select name="order">
 	            <option value="asc">Ascending</option>
@@ -69,27 +69,27 @@
 	    </form>
 	    <table style="width: 100%; border-collapse: collapse;">
 	        <tr>
-				<th style="border: 1px solid black;">Department id</th>
-				<th style="border: 1px solid black;">Department name</th>
-				<th style="border: 1px solid black;">Department description</th>
+				<th style="border: 1px solid black;">Position id</th>
+				<th style="border: 1px solid black;">Position name</th>
+				<th style="border: 1px solid black;">Position description</th>
 				<th style="border: 1px solid black;">Action</th>
 	        </tr>
 	        <tr>
-	            <form th:action="@{/manage/department/add}" method="post">
-					<td style="border: 1px solid black;"th:text="${lastDid}"></td>
-					<td style="border: 1px solid black;"><input type="text" name="addDepartmentName" required>
+	            <form th:action="@{/manage/position/add}" method="post">
+					<td style="border: 1px solid black;"th:text="${lastPid}"></td>
+					<td style="border: 1px solid black;"><input type="text" name="addPositionName" required>
 					<td style="border: 1px solid black;"><input type="text" name="description" maxlength="100"></td>
 	               	<td style="border: 1px solid black;"><button type="submit">Add</button></td>
 	            </form>
 	        </tr>
-	        <tr th:each="department : ${departments}">
-	            <form th:action="@{/manage/department/update-or-delete}" method="post">
-					<td style="border: 1px solid black;"><input type="hidden" name="did" th:value="${department.did}"><span th:text="${department.did}"></span></td>
-					<td style="border: 1px solid black;"><input type="text" name="departmentName" th:value="${department.departmentName}"></td>
-	                <td style="border: 1px solid black;"><input type="text" name="description" th:value="${department.description}"></td>
+	        <tr th:each="position : ${positions}">
+	            <form th:action="@{/manage/position/update-or-delete}" method="post">
+					<td style="border: 1px solid black;"><input type="hidden" name="pid" th:value="${position.pid}"><span th:text="${position.pid}"></span></td>
+					<td style="border: 1px solid black;"><input type="text" name="positionName" th:value="${position.name}" required></td>
+	                <td style="border: 1px solid black;"><input type="text" name="description" th:value="${position.description}"></td>
 					<td style="border: 1px solid black;">
 					    <button type="submit" name="action" value="save">Save</button>
-					    <button th:if="${department.departmentName != 'Nav_minets'}"type="submit" name="action" value="delete">Delete</button>
+					    <button th:if="${position.name != 'Nav_minets'}"type="submit" name="action" value="delete">Delete</button>
 					</td>
 	            </form>
 	        </tr>

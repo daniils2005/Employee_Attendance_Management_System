@@ -27,10 +27,10 @@ import lombok.ToString;
 public class Position {
 	
 	@Setter(value = AccessLevel.NONE)
-	@Column(name= "poid")
+	@Column(name= "pid")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long poid;
+	private long pid;
 	
 	@NotNull
 	@NotEmpty
