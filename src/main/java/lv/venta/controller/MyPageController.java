@@ -30,7 +30,7 @@ import lv.venta.service.IUserCRUDService;
 import lv.venta.service.IVacationCRUDService;
 
 @Controller
-public class MyController {
+public class MyPageController {
 
 	PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	
