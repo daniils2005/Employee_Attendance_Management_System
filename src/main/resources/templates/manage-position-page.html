@@ -62,32 +62,34 @@
 	        	<option value="pid">Position ID</option>
 	            <option value="positionName">Position name</option>
 	        </select>
-	        <label>Order:</label><select name="order">
+	        <label>Order:</label>
+			<select name="order">
 	            <option value="asc">Ascending</option>
-	            <option value="desc">Descending</option></select>
+	            <option value="desc">Descending</option>
+			</select>
 	        <button type="submit">Sort</button>
 	    </form>
-	    <table style="width: 100%; border-collapse: collapse;">
+	    <table>
 	        <tr>
-				<th style="border: 1px solid black;">Position id</th>
-				<th style="border: 1px solid black;">Position name</th>
-				<th style="border: 1px solid black;">Position description</th>
-				<th style="border: 1px solid black;">Action</th>
+				<th>Position id</th>
+				<th>Position name</th>
+				<th>Position description</th>
+				<th>Action</th>
 	        </tr>
 	        <tr>
 	            <form th:action="@{/manage/position/add}" method="post">
-					<td style="border: 1px solid black;"th:text="${lastPid}"></td>
-					<td style="border: 1px solid black;"><input type="text" name="addPositionName" required>
-					<td style="border: 1px solid black;"><input type="text" name="description" maxlength="100"></td>
-	               	<td style="border: 1px solid black;"><button type="submit">Add</button></td>
+					<td th:text="${lastPid}"></td>
+					<td><input type="text" name="addPositionName" required>
+					<td><input type="text" name="description" maxlength="100"></td>
+	               	<td><button type="submit">Add</button></td>
 	            </form>
 	        </tr>
 	        <tr th:each="position : ${positions}">
 	            <form th:action="@{/manage/position/update-or-delete}" method="post">
-					<td style="border: 1px solid black;"><input type="hidden" name="pid" th:value="${position.pid}"><span th:text="${position.pid}"></span></td>
-					<td style="border: 1px solid black;"><input type="text" name="positionName" th:value="${position.name}" required></td>
-	                <td style="border: 1px solid black;"><input type="text" name="description" th:value="${position.description}"></td>
-					<td style="border: 1px solid black;">
+					<td><input type="hidden" name="pid" th:value="${position.pid}"><span th:text="${position.pid}"></span></td>
+					<td><input type="text" name="positionName" th:value="${position.name}" required></td>
+	                <td><input type="text" name="description" th:value="${position.description}"></td>
+					<td>
 					    <button type="submit" name="action" value="save">Save</button>
 					    <button th:if="${position.name != 'Nav_minets'}"type="submit" name="action" value="delete">Delete</button>
 					</td>

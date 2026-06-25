@@ -92,28 +92,28 @@
 		    <button type="submit">Search</button>
 		</form>
 		<p th:if="${error}" th:text="${error}" style="color: red"></p>
-	    <table style="width: 100%; border-collapse: collapse;">
+	    <table>
 	        <tr>
-	            <th style="border: 1px solid black;">Employee id</th>
-				<th style="border: 1px solid black;">Employee name</th>
-				<th style="border: 1px solid black;">Employee surname</th>
-				<th style="border: 1px solid black;">Person code</th>
-				<th style="border: 1px solid black;">Hourly rate</th>
-				<th style="border: 1px solid black;">Position</th>
-				<th style="border: 1px solid black;">Department</th>
-				<th style="border: 1px solid black;">Status</th>
-				<th style="border: 1px solid black;">Email</th>
-				<th style="border: 1px solid black;">Phone number</th>
-				<th style="border: 1px solid black;">Action</th>
+	            <th>Employee id</th>
+				<th>Employee name</th>
+				<th>Employee surname</th>
+				<th>Person code</th>
+				<th>Hourly rate</th>
+				<th>Position</th>
+				<th>Department</th>
+				<th>Status</th>
+				<th>Email</th>
+				<th>Phone number</th>
+				<th>Action</th>
 	        </tr>
 	        <tr>
 	            <form th:action="@{/manage/employee/add}" method="post">
-	                <td style="border: 1px solid black;" th:text="${lastEid}"></td>
-					<td style="border: 1px solid black;"><input type="text" name="name" required pattern="^[A-Z][a-zA-Z]{1,29}$" title="Name must start with a capital letter and contain only letters (2–30 characters)."></td>
-	                <td style="border: 1px solid black;"><input type="text" name="surname" required pattern="^[A-Z][a-zA-Z]{1,29}$" title="Surname must start with a capital letter and contain only letters (2–30 characters)."></td>
-					<td style="border: 1px solid black;"><input type="text" name="personCode" required pattern="^[0-9]{6}-[0-9]{5}$" title="Person code must correspond to Latvian code syntax"></td>
-	                <td style="border: 1px solid black;"><input type="number" min="5" max="100000" step="0.01" name="hourlyRate" required></td>
-					<td style="border: 1px solid black;">				
+	                <td th:text="${lastEid}"></td>
+					<td><input type="text" name="name" required pattern="^[A-Z][a-zA-Z]{1,29}$" title="Name must start with a capital letter and contain only letters (2–30 characters)."></td>
+	                <td><input type="text" name="surname" required pattern="^[A-Z][a-zA-Z]{1,29}$" title="Surname must start with a capital letter and contain only letters (2–30 characters)."></td>
+					<td><input type="text" name="personCode" required pattern="^[0-9]{6}-[0-9]{5}$" title="Person code must correspond to Latvian code syntax"></td>
+	                <td><input type="number" min="5" max="100000" step="0.01" name="hourlyRate" required></td>
+					<td>				
 						<select name="position">
 							<option th:each="position : ${positions}"
 							        th:value="${position.name}"
@@ -121,7 +121,7 @@
 							</option>
 						</select>
 					</td>
-					<td style="border: 1px solid black;">				
+					<td>				
 						<select name="department">
 							<option th:each="department : ${departments}"
 							        th:value="${department.departmentName}"
@@ -129,7 +129,7 @@
 							</option>
 						</select>
 					</td>
-					<td style="border: 1px solid black;">		
+					<td>		
 						<select name="status" required>
 							<option value="Aktivs">Aktivs</option>
 							<option value="Neaktivs">Neaktivs</option>
@@ -138,19 +138,19 @@
 							<option value="Dekrets">Dekrets</option>
 						</select>
 					</td>
-					<td style="border: 1px solid black;"><input type="email" name="email" required title="Email is invalid."></td>
-					<td style="border: 1px solid black;"><input type="text" name="number" required pattern="^(\+371|371)?[2-9]\d{7}$" title="The phone number must be an 8 digit Latvian number."></td>
-	                <td style="border: 1px solid black;"><button type="submit">Add</button></td>
+					<td><input type="email" name="email" required title="Email is invalid."></td>
+					<td><input type="text" name="number" required pattern="^(\+371|371)?[2-9]\d{7}$" title="The phone number must be an 8 digit Latvian number."></td>
+	                <td><button type="submit">Add</button></td>
 	            </form>
 	        </tr>
 	        <tr th:each="employee : ${employees}">
 	            <form th:action="@{/manage/employee/update-or-delete}" method="post">
-					<td style="border: 1px solid black;"><span th:text="${employee.eid}"></span><input type="hidden" name="eid" th:value="${employee.eid}"></td>
-					<td style="border: 1px solid black;"><input type="text" name="name" th:value="${employee.name}" pattern="^[A-Z][a-zA-Z]{1,29}$" title="Name must start with a capital letter and contain only letters (2–30 characters)."></td>
-					<td style="border: 1px solid black;"><input type="text" name="surname" th:value="${employee.surname}" pattern="^[A-Z][a-zA-Z]{1,29}$" title="Surname must start with a capital letter and contain only letters (2–30 characters)."></td>
-					<td style="border: 1px solid black;" th:text="${employee.personCode}"></td>
-					<td style="border: 1px solid black;"><input type="number" min="5" max="100000" step="0.01" name="hourlyRate" th:value="${employee.hourlyRate}"></td>
-					<td style="border: 1px solid black;">
+					<td><span th:text="${employee.eid}"></span><input type="hidden" name="eid" th:value="${employee.eid}"></td>
+					<td><input type="text" name="name" th:value="${employee.name}" pattern="^[A-Z][a-zA-Z]{1,29}$" title="Name must start with a capital letter and contain only letters (2–30 characters)."></td>
+					<td><input type="text" name="surname" th:value="${employee.surname}" pattern="^[A-Z][a-zA-Z]{1,29}$" title="Surname must start with a capital letter and contain only letters (2–30 characters)."></td>
+					<td th:text="${employee.personCode}"></td>
+					<td><input type="number" min="5" max="100000" step="0.01" name="hourlyRate" th:value="${employee.hourlyRate}"></td>
+					<td>
 						<select name="position">
 							<option th:each="position : ${positions}"
 							        th:value="${position.name}"
@@ -159,7 +159,7 @@
 							</option>
 						</select>
 					</td>
-					<td style="border: 1px solid black;">
+					<td>
 						<select name="department">
 							<option th:each="department : ${departments}"
 							        th:value="${department.departmentName}"
@@ -168,7 +168,7 @@
 							</option>
 						</select>
 					</td>
-					<td style="border: 1px solid black;">
+					<td>
 						<select name="status">
 							<option value="Aktivs" th:selected="${employee.status == T(lv.venta.model.enums.Status).Aktivs}">Aktivs</option>
 							<option value="Neaktivs" th:selected="${employee.status == T(lv.venta.model.enums.Status).Neaktivs}">Neaktivs</option>
@@ -177,9 +177,9 @@
 							<option value="Dekrets" th:selected="${employee.status == T(lv.venta.model.enums.Status).Dekrets}">Dekrets</option>
 						</select>
 					</td>
-					<td style="border: 1px solid black;"><input type="email" name="email" th:value="${employee.email}" title="Email must be valid." required></td>
-					<td style="border: 1px solid black;"><input type="text" name="phoneNumber" th:value="${employee.number}" pattern="^(\+371|371)?[2-9]\d{7}$" title="The phone number must be an 8 digit Latvian number." required></td>
-	                <td style="border: 1px solid black;"><button type="submit" name="action" value="save">Save</button></td>
+					<td><input type="email" name="email" th:value="${employee.email}" title="Email must be valid." required></td>
+					<td><input type="text" name="phoneNumber" th:value="${employee.number}" pattern="^(\+371|371)?[2-9]\d{7}$" title="The phone number must be an 8 digit Latvian number." required></td>
+	                <td><button type="submit" name="action" value="save">Save</button></td>
 				</form>
 	        </tr>
 	    </table>

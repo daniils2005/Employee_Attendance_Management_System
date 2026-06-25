@@ -54,19 +54,15 @@
 		    </a>
 			<hr>
 		</div>
-	
 	    <h1>Manage Attendance</h1>
 	    <h2>Search Attendance</h2>
-	
 	    <form th:action="@{/manage/attendance}" method="get">
 	        <input type="number" name="id" placeholder="Enter Employee ID" min=1 max="9007199254740991">
 	        <input type="date" name="date">
 	        <button type="submit">Search</button>
 	        <a th:href="@{/manage/attendance}"><button type="button">Reset</button></a>
 	    </form>
-	
 	    <h2>Attendance</h2>
-	
 	    <form th:action="@{/manage/attendance}" method="get">
 	        <label>Sort by:</label>
 	        <select name="sort">
@@ -74,7 +70,6 @@
 	            <option value="surname">Employee surname</option>
 	            <option value="date">Date</option>
 	        </select>
-	
 	        <label>Order:</label>
 	        <select name="order">
 	            <option value="asc">Ascending</option>
@@ -82,38 +77,37 @@
 	        </select>
 	        <button type="submit">Sort</button>
 	    </form>
-		
 		<p th:if="${error}" th:text="${error}" style="color: red"></p>
-	    <table style="width: 100%; border-collapse: collapse;">
+	    <table>
 	        <tr>
-	            <th style="border: 1px solid black;">Attendance id</th>
-	            <th style="border: 1px solid black;">Employee id</th>
-	            <th style="border: 1px solid black;">Employee name</th>
-	            <th style="border: 1px solid black;">Employee surname</th>
-	            <th style="border: 1px solid black;">Date</th>
-	            <th style="border: 1px solid black;">Hours worked</th>
-	            <th style="border: 1px solid black;">Action</th>
+	            <th>Attendance id</th>
+	            <th>Employee id</th>
+	            <th>Employee name</th>
+	            <th>Employee surname</th>
+	            <th>Date</th>
+	            <th>Hours worked</th>
+	            <th>Action</th>
 	        </tr>
 	        <tr>
 	            <form th:action="@{/manage/attendance/add}" method="post">
-	                <td style="border: 1px solid black;" th:text="${lastAid}"></td>
-	                <td style="border: 1px solid black;"><input type="number" min="1" max="9007199254740991" name="eid" required></td>
-					<td style="border: 1px solid black;"></td>
-	                <td style="border: 1px solid black;"></td>
-	                <td style="border: 1px solid black;"><input type="date" name="date" required></td>
-	                <td style="border: 1px solid black;"><input type="number" min="0.5" max="8" step="0.5" name="hoursWorked" required></td>
-	                <td style="border: 1px solid black;"><button type="submit">Add</button></td>
+	                <td th:text="${lastAid}"></td>
+	                <td><input type="number" min="1" max="9007199254740991" name="eid" required></td>
+					<td></td>
+	                <td></td>
+	                <td><input type="date" name="date" required></td>
+	                <td><input type="number" min="0.5" max="8" step="0.5" name="hoursWorked" required></td>
+	                <td><button type="submit">Add</button></td>
 	            </form>
 	        </tr>
 	        <tr th:each="attendance : ${attendances}">
 	            <form th:action="@{/manage/attendance/update-or-delete}" method="post">
-	                <td style="border: 1px solid black;"><input type="hidden" name="aid" th:value="${attendance.aid}" th:text="${attendance.aid}"></td>
-	                <td style="border: 1px solid black;"><input type="number" min="0" name="eid" th:value="${attendance.employee.eid}" required max="9007199254740991"></td>
-	                <td style="border: 1px solid black;" th:text="${attendance.employee.name}"></td>
-	                <td style="border: 1px solid black;" th:text="${attendance.employee.surname}"></td>
-	                <td style="border: 1px solid black;"><input type="date" name="date" th:value="${attendance.workDate}" required></td>
-	                <td style="border: 1px solid black;"><input type="number" min="0" max="24" step="0.5" name="hoursWorked" th:value="${attendance.hoursWorked}" required></td>
-	                <td style="border: 1px solid black;"><button type="submit" name="action" value="save">Save</button><button type="submit" name="action" value="delete">Delete</button></td>
+	                <td><input type="hidden" name="aid" th:value="${attendance.aid}" th:text="${attendance.aid}"></td>
+	                <td><input type="number" min="0" name="eid" th:value="${attendance.employee.eid}" required max="9007199254740991"></td>
+	                <td th:text="${attendance.employee.name}"></td>
+	                <td th:text="${attendance.employee.surname}"></td>
+	                <td><input type="date" name="date" th:value="${attendance.workDate}" required></td>
+	                <td><input type="number" min="0" max="24" step="0.5" name="hoursWorked" th:value="${attendance.hoursWorked}" required></td>
+	                <td><button type="submit" name="action" value="save">Save</button><button type="submit" name="action" value="delete">Delete</button></td>
 				</form>
 	        </tr>
 	    </table>

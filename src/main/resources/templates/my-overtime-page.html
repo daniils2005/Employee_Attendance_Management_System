@@ -54,56 +54,34 @@
 		    </a>
 			<hr>
 		</div>
-		
 	    <h1>My overtime this month</h1>
 		<p th:if="${error}" th:text="${error}" style="color: red"></p>
-	    <table style="width: 100%; border-collapse: collapse;">
+	    <table>
 	        <tr>
-	            <th style="border: 1px solid black;">Date</th>
-	            <th style="border: 1px solid black;">Overtime hours</th>
-				<th style="border: 1px solid black;">Overtime rate</th>
-				<th style="border: 1px solid black;">Description</th>
-				<th style="border: 1px solid black;">Status</th>
-				<th style="border: 1px solid black;">Action</th>
+	            <th>Date</th>
+	            <th>Overtime hours</th>
+				<th>Overtime rate</th>
+				<th>Description</th>
+				<th>Status</th>
+				<th>Action</th>
 	        </tr>
 	        <tr>
 	            <form th:action="@{/overtime}" method="post">
-	                <td style="border: 1px solid black;"
-	                    th:text="${dateToday}">
-	                </td>
-	                <td style="border: 1px solid black;">
-	                    <input type="number" step="0.5" min="0.5" max="6" name="overtimeHours" required>
-	                </td>
-					<td style="border: 1px solid black;">
-						Not assigned
-					</td>
-					<td style="border: 1px solid black;">
-					    <input type="text" maxlength="100" name="description">
-					</td>
-					<td style="border: 1px solid black;">
-						IZSKATISANA
-					</td>
-	                <td style="border: 1px solid black;">
-	                    <button type="submit">Add</button>
-	                </td>
+	                <td th:text="${dateToday}"></td>
+	                <td><input type="number" step="0.5" min="0.5" max="6" name="overtimeHours" required></td>
+					<td>Not assigned</td>
+					<td><input type="text" maxlength="100" name="description"></td>
+					<td>IZSKATISANA</td>
+	                <td><button type="submit">Add</button></td>
 	            </form>
 	        </tr>
-	        <tr style="border: 1px solid black;" th:each="overtime : ${overtimes}">
-				<td style="border: 1px solid black;"
-					th:text="${overtime.date}">
-				</td>
-	            <td style="border: 1px solid black;"
-	                th:text="${overtime.overtimeHours}">
-	            </td>
-	            <td style="border: 1px solid black;"
-	                th:text="${overtime.overtimeRate != null ? overtime.overtimeRate : 'Not assigned'}">
-	            </td>
-				<td style="border: 1px solid black;"
-				    th:text="${overtime.description}">
-				</td>
-				<td style="border: 1px solid black;"
-					th:text="${overtime.status}">
-				</td>
+	        <tr th:each="overtime : ${overtimes}">
+				<td th:text="${overtime.date}"></td>
+	            <td th:text="${overtime.overtimeHours}"></td>
+	            <td th:text="${overtime.overtimeRate != null ? overtime.overtimeRate : 'Not assigned'}"></td>
+				<td th:text="${overtime.description}"></td>
+				<td th:text="${overtime.status}"></td>
+				<td></td>
 	        </tr>
 	    </table>
 	</body>

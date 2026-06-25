@@ -70,9 +70,6 @@ public class GeneralServiceImpl implements IGeneralService {
 
 	@Override
 	public ArrayList<Attendance> selectAllAttendancesForToday() throws Exception {
-		if(attendanceRepo.count() == 0) {
-			throw new Exception("Attendance table is empty");
-		}
 		ArrayList<Attendance> result = attendanceRepo.findByWorkDate(LocalDate.now());
 		if(result.isEmpty()) {
 			throw new Exception("There are no records of attendance for today");
@@ -112,9 +109,6 @@ public class GeneralServiceImpl implements IGeneralService {
 
 	@Override
 	public ArrayList<Attendance> selectAllAttendancesThisMonthForEmployeeId(long eid) throws Exception {
-		if(attendanceRepo.count() == 0) {
-			throw new Exception("Attendance table is empty");
-		}
 		if(eid <= 0) {
 			throw new Exception("id cant be negative or equal to 0");
 		}
@@ -124,9 +118,6 @@ public class GeneralServiceImpl implements IGeneralService {
 
 	@Override
 	public ArrayList<Overtime> selectAllOvertimesThisMonthForEmployeeId(long eid) throws Exception {
-		if(overtimeRepo.count() == 0) {
-			throw new Exception("Overtime table is empty");
-		}
 		if(eid <= 0) {
 			throw new Exception("id cant be negative or equal to 0");
 		}
@@ -137,9 +128,6 @@ public class GeneralServiceImpl implements IGeneralService {
 
 	@Override
 	public float calculateSalaryThisMonthForEmployeeId(long eid) throws Exception {
-		if(attendanceRepo.count() == 0) {
-			throw new Exception("Unable to calculate - attendance table is empty");
-		}
 		float result = 0;
 		double employeeHourlyRate = employeeService.selectEmployeeById(eid).getHourlyRate();
 		ArrayList<Overtime> overtimeList = new ArrayList<Overtime>();

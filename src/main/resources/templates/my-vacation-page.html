@@ -54,50 +54,31 @@
 		    </a>
 			<hr>
 		</div>
-		
 	    <h1>My vacations</h1>
 		<p th:if="${error}" th:text="${error}" style="color: red"></p>
-	    <table style="width: 100%; border-collapse: collapse;">
+	    <table>
 	        <tr>
-	            <th style="border: 1px solid black;">Start date</th>
-	            <th style="border: 1px solid black;">End date</th>
-				<th style="border: 1px solid black;">Active</th>
-				<th style="border: 1px solid black;">Status</th>
-				<th style="border: 1px solid black;">Action</th>
+	            <th>Start date</th>
+	            <th>End date</th>
+				<th>Active</th>
+				<th>Status</th>
+				<th>Action</th>
 	        </tr>
 	        <tr>
 	            <form th:action="@{/vacation}" method="post">
-					<td style="border: 1px solid black;">
-					    <input type="date" name="startDate" required>
-					</td>
-
-					<td style="border: 1px solid black;">
-					    <input type="date" name="endDate" required>
-					</td>
-					<td style="border: 1px solid black;">
-						false
-					</td>
-					<td style="border: 1px solid black;">
-						IZSKATISANA
-					</td>
-	                <td style="border: 1px solid black;">
-	                    <button type="submit">Add</button>
-	                </td>
+					<td><input type="date" name="startDate" required></td>
+					<td><input type="date" name="endDate" required></td>
+					<td>false</td>
+					<td>IZSKATISANA</td>
+	                <td><button type="submit">Add</button></td>
 	            </form>
 	        </tr>
-	        <tr style="border: 1px solid black;" th:each="vacation : ${vacations}">
-				<td style="border: 1px solid black;"
-					th:text="${vacation.startDate}">
-				</td>
-	            <td style="border: 1px solid black;"
-	                th:text="${vacation.endDate}">
-	            </td>
-	            <td style="border: 1px solid black;"
-	                th:text="${vacation.isActive}">
-	            </td>
-				<td style="border: 1px solid black;"
-				    th:text="${vacation.status}">
-				</td>
+	        <tr th:each="vacation : ${vacations}">
+				<td th:text="${vacation.startDate}"></td>
+	            <td th:text="${vacation.endDate}"></td>
+	            <td th:text="${vacation.isActive}"></td>
+				<td th:text="${vacation.status}"></td>
+				<td></td>
 	        </tr>
 	    </table>
 	</body>

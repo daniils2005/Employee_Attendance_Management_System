@@ -85,52 +85,52 @@
 	        <button type="submit">Sort</button>
 	    </form>
 		<p th:if="${error}" th:text="${error}" style="color: red"></p>
-	    <table style="width: 100%; border-collapse: collapse;">
+	    <table>
 	        <tr>
-	            <th style="border: 1px solid black;">User id</th>
-	            <th style="border: 1px solid black;">Employee id</th>
-	            <th style="border: 1px solid black;">Username</th>
-				<th style="border: 1px solid black;">Employee name</th>
-				<th style="border: 1px solid black;">Employee surname</th>
-				<th style="border: 1px solid black;">Email</th>
-				<th style="border: 1px solid black;">Phone number</th>
-	            <th style="border: 1px solid black;">Authority</th>
-				<th style="border: 1px solid black;">Action</th>
+	            <th>User id</th>
+	            <th>Employee id</th>
+	            <th>Username</th>
+				<th>Employee name</th>
+				<th>Employee surname</th>
+				<th>Email</th>
+				<th>Phone number</th>
+	            <th>Authority</th>
+				<th>Action</th>
 	        </tr>
 	        <tr>
 	            <form th:action="@{/manage/user/add}" method="post">
-	                <td style="border: 1px solid black;" th:text="${lastUid}"></td>
-	                <td style="border: 1px solid black;"><input type="number" min="1" name="eid" required max="9007199254740991"></td>
-					<td style="border: 1px solid black;"><input type="text" name="username" required pattern="^[A-Za-z0-9_]{3,}$" title="Username must be at least 3 characters long and contain only letters, numbers, and underscores."></td>
-	                <td style="border: 1px solid black;"></td>
-					<td style="border: 1px solid black;"></td>
-	                <td style="border: 1px solid black;"></td>
-					<td style="border: 1px solid black;"></td>
-					<td style="border: 1px solid black;">				
+	                <td th:text="${lastUid}"></td>
+	                <td><input type="number" min="1" name="eid" required max="9007199254740991"></td>
+					<td><input type="text" name="username" required pattern="^[A-Za-z0-9_]{3,}$" title="Username must be at least 3 characters long and contain only letters, numbers, and underscores."></td>
+	                <td></td>
+					<td></td>
+	                <td></td>
+					<td></td>
+					<td>				
 						<select name="authority">
 							<option value="ADMIN">ADMIN</option>
 					        <option value="USER">USER</option>
 						</select>
 					</td>
-	                <td style="border: 1px solid black;"><button type="submit">Add</button></td>
+	                <td><button type="submit">Add</button></td>
 	            </form>
 	        </tr>
 	        <tr th:each="user : ${users}">
 	            <form th:action="@{/manage/user/update-or-delete}" method="post">
-					<td style="border: 1px solid black;"><input type="hidden" name="uid" th:value="${user.uid}" th:text="${user.uid}"></td>
-					<td style="border: 1px solid black;"><input type="number" name="eid" th:value="${user.employee.eid}" min="1" max="9007199254740991"></td>
-					<td style="border: 1px solid black;"><input type="text" name="username" th:value="${user.username}" pattern="^[A-Za-z0-9_]{3,}$" title="Username must be at least 3 characters long and contain only letters, numbers, and underscores." required></td>
-					<td style="border: 1px solid black;"><input type="text" name="employeeName" th:value="${user.employee.name}" pattern="^[A-Z][a-zA-Z]{1,29}$" title="Name must start with a capital letter and contain only letters (2–30 characters)." required></td>
-					<td style="border: 1px solid black;"><input type="text" name="employeeSurname" th:value="${user.employee.surname}" pattern="^[A-Z][a-zA-Z]{1,29}$" title="Surname must start with a capital letter and contain only letters (2–30 characters)." required></td>
-					<td style="border: 1px solid black;"><input type="text" name="email" th:value="${user.employee.email}" pattern="^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$" title="Email is invalid." required></td>
-					<td style="border: 1px solid black;"><input type="text" name="phoneNumber" th:value="${user.employee.number}" pattern="^(\+371|371)?[2-9]\d{7}$" title="The phone number must be an 8 digit Latvian number." required></td>
-					<td style="border: 1px solid black;">			
+					<td><input type="hidden" name="uid" th:value="${user.uid}" th:text="${user.uid}"></td>
+					<td><input type="number" name="eid" th:value="${user.employee.eid}" min="1" max="9007199254740991"></td>
+					<td><input type="text" name="username" th:value="${user.username}" pattern="^[A-Za-z0-9_]{3,}$" title="Username must be at least 3 characters long and contain only letters, numbers, and underscores." required></td>
+					<td><input type="text" name="employeeName" th:value="${user.employee.name}" pattern="^[A-Z][a-zA-Z]{1,29}$" title="Name must start with a capital letter and contain only letters (2–30 characters)." required></td>
+					<td><input type="text" name="employeeSurname" th:value="${user.employee.surname}" pattern="^[A-Z][a-zA-Z]{1,29}$" title="Surname must start with a capital letter and contain only letters (2–30 characters)." required></td>
+					<td><input type="text" name="email" th:value="${user.employee.email}" pattern="^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$" title="Email is invalid." required></td>
+					<td><input type="text" name="phoneNumber" th:value="${user.employee.number}" pattern="^(\+371|371)?[2-9]\d{7}$" title="The phone number must be an 8 digit Latvian number." required></td>
+					<td>			
 						<select name="authority">
 							<option value="ADMIN" th:selected="${user.authority.title == 'ADMIN'}">ADMIN</option>
 					        <option value="USER" th:selected="${user.authority.title == 'USER'}">USER</option>
 						</select>
 					</td>
-	                <td style="border: 1px solid black;"><button type="submit" name="action" value="save">Save</button><button type="submit" name="action" value="delete">Delete</button></td>
+	                <td><button type="submit" name="action" value="save">Save</button><button type="submit" name="action" value="delete">Delete</button></td>
 				</form>
 	        </tr>
 	    </table>

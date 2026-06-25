@@ -54,71 +54,77 @@
 		    </a>
 			<hr>
 		</div>
-		
 	    <h1>My account information</h1>
 		<p th:if="${error}" th:text="${error}" style="color: red"></p>
-	    <table style="width: 100%; border-collapse: collapse;">
-	        <tr style="border: 1px solid black;">
+	    <table>
+	        <tr>
 				<form th:action="@{/account/change-username}" method="post">
-				    <td style="border: 1px solid black;">Username</td>
-				    <td style="border: 1px solid black;"><input type="text" name="newUsername" th:value="${user.username}" pattern="^[A-Za-z0-9_]{3,}$" title="Username must be at least 3 characters long and contain only letters, numbers, and underscores." required></td>
-				    <td style="border: 1px solid black;"><button type="submit">Save</button></td>
+				    <td>Username</td>
+				    <td><input type="text" name="newUsername" th:value="${user.username}" pattern="^[A-Za-z0-9_]{3,}$" title="Username must be at least 3 characters long and contain only letters, numbers, and underscores." required></td>
+				    <td><button type="submit">Save</button></td>
 				</form>
 			</tr>
-			<tr style="border: 1px solid black;">
+			<tr>
 				<form th:action="@{/account/change-name}" method="post">
-				    <td style="border: 1px solid black;">Name</td>
-				    <td style="border: 1px solid black;"><input type="text" name="newName" th:value="${user.employee.name}" pattern="^[A-Z][a-zA-Z]{1,29}$" title="Name must start with a capital letter and contain only letters (2–30 characters)." required></td>
-				    <td style="border: 1px solid black;"><button type="submit">Save</button></td>
+				    <td>Name</td>
+				    <td><input type="text" name="newName" th:value="${user.employee.name}" pattern="^[A-Z][a-zA-Z]{1,29}$" title="Name must start with a capital letter and contain only letters (2–30 characters)." required></td>
+				    <td><button type="submit">Save</button></td>
 				</form>
 			</tr>
 			<tr style="border: 1px solid black;">
 				<form th:action="@{/account/change-surname}" method="post">
-				    <td style="border: 1px solid black;">Surname</td>
-				    <td style="border: 1px solid black;"><input type="text" name="newSurname" th:value="${user.employee.surname}" pattern="^[A-Z][a-zA-Z]{1,29}$" title="Surname must start with a capital letter and contain only letters (2–30 characters)." required></td>
-				    <td style="border: 1px solid black;"><button type="submit">Save</button></td>
+				    <td>Surname</td>
+				    <td><input type="text" name="newSurname" th:value="${user.employee.surname}" pattern="^[A-Z][a-zA-Z]{1,29}$" title="Surname must start with a capital letter and contain only letters (2–30 characters)." required></td>
+				    <td><button type="submit">Save</button></td>
 				</form>
 			</tr>
-			<tr style="border: 1px solid black;">
-				<td style="border: 1px solid black;">Person Code</td>
-				<td style="border: 1px solid black;" th:text="${user.employee.personCode}"></td>
+			<tr>
+				<td>Person Code</td>
+				<td th:text="${user.employee.personCode}"></td>
+				<td></td>
 			</tr>
-			<tr style="border: 1px solid black;">
+			<tr>
 				<form th:action="@{/account/change-number}" method="post">
-				    <td style="border: 1px solid black;">Number</td>
-				    <td style="border: 1px solid black;"><input type="tel" name="newNumber" th:value="${user.employee.number}" pattern="^(\+371|371)?[2-9]\d{7}$" title="The phone number must be an 8 digit Latvian number." required></td>
-				    <td style="border: 1px solid black;"><button type="submit">Save</button></td>
+				    <td>Number</td>
+				    <td><input type="tel" name="newNumber" th:value="${user.employee.number}" pattern="^(\+371|371)?[2-9]\d{7}$" title="The phone number must be an 8 digit Latvian number." required></td>
+				    <td><button type="submit">Save</button></td>
 				</form>
 			</tr>
-			<tr style="border: 1px solid black;">
+			<tr>
 				<form th:action="@{/account/change-email}" method="post">
-				    <td style="border: 1px solid black;">Email</td>
-				    <td style="border: 1px solid black;"><input type="email" name="newEmail" th:value="${user.employee.email}" pattern="^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$" title="Email must be valid" required></td>
-				    <td style="border: 1px solid black;"><button type="submit">Save</button></td>
+				    <td>Email</td>
+				    <td><input type="email" name="newEmail" th:value="${user.employee.email}" pattern="^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$" title="Email must be valid" required></td>
+				    <td><button type="submit">Save</button></td>
 				</form>
 			</tr>
-			<tr style="border: 1px solid black;">
-				<td style="border: 1px solid black;">Position</td>
-				<td style="border: 1px solid black;" th:text="${user.employee.position.name}"></td>
+			<tr>
+				<td>Position</td>
+				<td th:text="${user.employee.position.name}"></td>
+				<td></td>
 			</tr>
-			<tr style="border: 1px solid black;">
+			<tr>
 				<form th:action="@{/account/change-status}" method="post">
-					<td style="border: 1px solid black;">Status</td>
-					<td style="border: 1px solid black;"><select name="newStatus">
-						<option value="Aktivs" th:selected="${user.employee.status == T(lv.venta.model.enums.Status).Aktivs}">Aktivs</option>
-						<option value="Atvalinajums" th:selected="${user.employee.status == T(lv.venta.model.enums.Status).Atvalinajums}">Atvalinajums</option>
-						<option value="Dekrets" th:selected="${user.employee.status == T(lv.venta.model.enums.Status).Dekrets}">Dekrets</option>
-						<option value="Slims" th:selected="${user.employee.status == T(lv.venta.model.enums.Status).Slims}">Slims</option></select></td>
-	                <td style="border: 1px solid black;"><button type="submit" name="action" value="save">Save</button></td>
+					<td>Status</td>
+					<td>
+						<select name="newStatus">
+							<option value="Aktivs" th:selected="${user.employee.status == T(lv.venta.model.enums.Status).Aktivs}">Aktivs</option>
+							<option value="Atvalinajums" th:selected="${user.employee.status == T(lv.venta.model.enums.Status).Atvalinajums}">Atvalinajums</option>
+							<option value="Dekrets" th:selected="${user.employee.status == T(lv.venta.model.enums.Status).Dekrets}">Dekrets</option>
+							<option value="Slims" th:selected="${user.employee.status == T(lv.venta.model.enums.Status).Slims}">Slims</option>
+						</select>
+					</td>
+	                <td><button type="submit" name="action" value="save">Save</button></td>
 				</form>
 			</tr>
-			<tr style="border: 1px solid black;">
-				<td style="border: 1px solid black;">Hourly rate</td>
-				<td style="border: 1px solid black;" th:text="${user.employee.hourlyRate}"></td>
+			<tr>
+				<td>Hourly rate</td>
+				<td th:text="${user.employee.hourlyRate}"></td>
+				<td></td>
 			</tr>
-			<tr style="border: 1px solid black;">
-				<td style="border: 1px solid black;">Department</td>
-				<td style="border: 1px solid black;" th:text="${user.employee.department.departmentName}"></td>
+			<tr>
+				<td>Department</td>
+				<td th:text="${user.employee.department.departmentName}"></td>
+				<td></td>
 	        </tr>
 	    </table>
 		<h2>Change Password</h2>

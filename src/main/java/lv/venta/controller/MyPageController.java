@@ -119,11 +119,9 @@ public class MyPageController {
     	User currentUser = getCurrentUser();
         try {
         	model.addAttribute("vacations", generalService.selectAllVacationsForEmployeeId(currentUser.getEmployee().getEid()));
-        	model.addAttribute(dateToday, LocalDate.now());
         	return "my-vacation-page";
         } catch(Exception e) {
-        	model.addAttribute(errorMessage, e.getMessage());
-        	return errorPage;
+        	return "my-vacation-page";
         }
     }
     

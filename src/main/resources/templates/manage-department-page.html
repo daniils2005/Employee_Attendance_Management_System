@@ -67,27 +67,27 @@
 	            <option value="desc">Descending</option></select>
 	        <button type="submit">Sort</button>
 	    </form>
-	    <table style="width: 100%; border-collapse: collapse;">
+	    <table>
 	        <tr>
-				<th style="border: 1px solid black;">Department id</th>
-				<th style="border: 1px solid black;">Department name</th>
-				<th style="border: 1px solid black;">Department description</th>
-				<th style="border: 1px solid black;">Action</th>
+				<th>Department id</th>
+				<th>Department name</th>
+				<th>Department description</th>
+				<th>Action</th>
 	        </tr>
 	        <tr>
 	            <form th:action="@{/manage/department/add}" method="post">
-					<td style="border: 1px solid black;"th:text="${lastDid}"></td>
-					<td style="border: 1px solid black;"><input type="text" name="addDepartmentName" required>
-					<td style="border: 1px solid black;"><input type="text" name="description" maxlength="100"></td>
-	               	<td style="border: 1px solid black;"><button type="submit">Add</button></td>
+					<td th:text="${lastDid}"></td>
+					<td><input type="text" name="addDepartmentName" required>
+					<td><input type="text" name="description" maxlength="100"></td>
+	               	<td><button type="submit">Add</button></td>
 	            </form>
 	        </tr>
 	        <tr th:each="department : ${departments}">
 	            <form th:action="@{/manage/department/update-or-delete}" method="post">
-					<td style="border: 1px solid black;"><input type="hidden" name="did" th:value="${department.did}"><span th:text="${department.did}"></span></td>
-					<td style="border: 1px solid black;"><input type="text" name="departmentName" th:value="${department.departmentName}"></td>
-	                <td style="border: 1px solid black;"><input type="text" name="description" th:value="${department.description}"></td>
-					<td style="border: 1px solid black;">
+					<td><input type="hidden" name="did" th:value="${department.did}"><span th:text="${department.did}"></span></td>
+					<td><input type="text" name="departmentName" th:value="${department.departmentName}"></td>
+	                <td><input type="text" name="description" th:value="${department.description}"></td>
+					<td>
 					    <button type="submit" name="action" value="save">Save</button>
 					    <button th:if="${department.departmentName != 'Nav_minets'}"type="submit" name="action" value="delete">Delete</button>
 					</td>

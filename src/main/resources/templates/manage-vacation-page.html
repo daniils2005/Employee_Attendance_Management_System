@@ -79,48 +79,54 @@
 	        <button type="submit">Sort</button>
 	    </form>
 		<p th:if="${error}" th:text="${error}" style="color: red"></p>
-	    <table style="width: 100%; border-collapse: collapse;">
+	    <table>
 	        <tr>
-	            <th style="border: 1px solid black;">Vacation id</th>
-	            <th style="border: 1px solid black;">Employee id</th>
-	            <th style="border: 1px solid black;">Employee name</th>
-	            <th style="border: 1px solid black;">Employee surname</th>
-	            <th style="border: 1px solid black;">Start date</th>
-	            <th style="border: 1px solid black;">End date date</th>
-	            <th style="border: 1px solid black;">Active</th>
-	            <th style="border: 1px solid black;">Status</th>
-	            <th style="border: 1px solid black;">Action</th>
+	            <th>Vacation id</th>
+	            <th>Employee id</th>
+	            <th>Employee name</th>
+	            <th>Employee surname</th>
+	            <th>Start date</th>
+	            <th>End date date</th>
+	            <th>Active</th>
+	            <th>Status</th>
+	            <th>Action</th>
 	        </tr>
 	        <tr>
 	            <form th:action="@{/manage/vacation/add}" method="post">
-	                <td style="border: 1px solid black;" th:text="${lastVid}"></td>
-	                <td style="border: 1px solid black;"><input type="number" min="1" max="9223372036854775807" name="eid" required></td>
-					<td style="border: 1px solid black;"></td>
-	                <td style="border: 1px solid black;"></td>
-	                <td style="border: 1px solid black;"><input type="date" name="startDate" required></td>
-	                <td style="border: 1px solid black;"><input type="date" name="endDate" required></td>
-	                <td style="border: 1px solid black;"><input type="checkbox" disabled></td>
-	                <td style="border: 1px solid black;"><select name="status" required>
-			             <option value="IZSKATISANA">IZSKATISANA</option>
-			             <option value="APSTIPRINATS">APSTIPRINATS</option>
-			             <option value="NORAIDITS">NORAIDITS</option></select></td>
-	                <td style="border: 1px solid black;"><button type="submit">Add</button></td>
+	                <td th:text="${lastVid}"></td>
+	                <td><input type="number" min="1" max="9223372036854775807" name="eid" required></td>
+					<td></td>
+	                <td></td>
+	                <td><input type="date" name="startDate" required></td>
+	                <td><input type="date" name="endDate" required></td>
+	                <td><input type="checkbox" disabled></td>
+	                <td>
+						<select name="status" required>
+				            <option value="IZSKATISANA">IZSKATISANA</option>
+				            <option value="APSTIPRINATS">APSTIPRINATS</option>
+				            <option value="NORAIDITS">NORAIDITS</option>
+					 	</select>
+				 	</td>
+	                <td><button type="submit">Add</button></td>
 	            </form>
 	        </tr>
 	        <tr th:each="vacation : ${vacations}">
 	            <form th:action="@{/manage/vacation/update-or-delete}" method="post">
-	                <td style="border: 1px solid black;"><input type="hidden" name="vid" th:value="${vacation.vid}" th:text="${vacation.vid}"></td>
-	                <td style="border: 1px solid black;"><input type="number" min="1" name="eid" th:value="${vacation.employee.eid}" max="9007199254740991" required></td>
-	                <td style="border: 1px solid black;" th:text="${vacation.employee.name}"></td>
-	                <td style="border: 1px solid black;" th:text="${vacation.employee.surname}"></td>
-	                <td style="border: 1px solid black;"><input type="date" name="startDate" th:value="${vacation.startDate}" required></td>
-	                <td style="border: 1px solid black;"><input type="date" name="endDate" th:value="${vacation.endDate}" required></td>
-	                <td style="border: 1px solid black;"><input type="checkbox" th:checked="${vacation.active}" disabled></td>
-	                <td style="border: 1px solid black;"><select name="status">
-			             <option value="IZSKATISANA" th:selected="${vacation.status == T(lv.venta.model.enums.RequestStatus).IZSKATISANA}">IZSKATISANA</option>
-			             <option value="APSTIPRINATS" th:selected="${vacation.status == T(lv.venta.model.enums.RequestStatus).APSTIPRINATS}">APSTIPRINATS</option>
-			             <option value="NORAIDITS"  th:selected="${vacation.status == T(lv.venta.model.enums.RequestStatus).NORAIDITS}">NORAIDITS</option></select></td>
-	                <td style="border: 1px solid black;"><button type="submit" name="action" value="save">Save</button><button type="submit" name="action" value="delete">Delete</button></td>
+	                <td><input type="hidden" name="vid" th:value="${vacation.vid}" th:text="${vacation.vid}"></td>
+	                <td><input type="number" min="1" name="eid" th:value="${vacation.employee.eid}" max="9007199254740991" required></td>
+	                <td th:text="${vacation.employee.name}"></td>
+	                <td th:text="${vacation.employee.surname}"></td>
+	                <td><input type="date" name="startDate" th:value="${vacation.startDate}" required></td>
+	                <td><input type="date" name="endDate" th:value="${vacation.endDate}" required></td>
+	                <td><input type="checkbox" th:checked="${vacation.active}" disabled></td>
+	                <td>
+						<select name="status">
+				            <option value="IZSKATISANA" th:selected="${vacation.status == T(lv.venta.model.enums.RequestStatus).IZSKATISANA}">IZSKATISANA</option>
+				            <option value="APSTIPRINATS" th:selected="${vacation.status == T(lv.venta.model.enums.RequestStatus).APSTIPRINATS}">APSTIPRINATS</option>
+				            <option value="NORAIDITS"  th:selected="${vacation.status == T(lv.venta.model.enums.RequestStatus).NORAIDITS}">NORAIDITS</option>
+					 	</select>
+				 	</td>
+	                <td><button type="submit" name="action" value="save">Save</button><button type="submit" name="action" value="delete">Delete</button></td>
 				</form>
 	        </tr>
 	    </table>

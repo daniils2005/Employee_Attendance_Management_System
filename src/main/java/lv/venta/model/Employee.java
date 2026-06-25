@@ -49,7 +49,6 @@ public class Employee extends Person{
 	@Column(name = "status")
 	private Status status;
 	
-
 	@ManyToOne
 	@JoinColumn(name = "poid")
 	private Position position;
