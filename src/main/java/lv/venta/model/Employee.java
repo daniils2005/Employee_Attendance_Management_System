@@ -40,7 +40,7 @@ public class Employee extends Person{
 	private long eid;
 	
 	@Min(0)
-	@Max(1000)
+	@Max(100000)
 	@Column(name = "hourly_rate")
 	private double hourlyRate;
 	

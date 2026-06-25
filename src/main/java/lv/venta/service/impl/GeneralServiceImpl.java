@@ -55,11 +55,11 @@ public class GeneralServiceImpl implements IGeneralService {
 	
 	@Override
 	public ArrayList<Attendance> selectAllAttendancesForEmployeeId(long eid) throws Exception {
-		if(attendanceRepo.count() == 0) {
-			throw new Exception("Attendance table is empty");
-		}
 		if(eid <= 0) {
 			throw new Exception("id cant be negative or equal to 0");
+		}
+		if(!employeeRepo.existsById(eid)) {
+			throw new Exception("Employee with id=" + eid + " doesn't exist");
 		}
 		ArrayList<Attendance> result = attendanceRepo.findByEmployeeEid(eid);
 		if(result.isEmpty()) {
@@ -88,22 +88,26 @@ public class GeneralServiceImpl implements IGeneralService {
 		if(!employeeRepo.existsById(eid)) {
 			throw new Exception("Employee with id=" + eid + " doesn't exist");
 		}
-		
-		return overtimeRepo.findByEmployeeEid(eid);
+		ArrayList<Overtime> result = overtimeRepo.findByEmployeeEid(eid);
+		if(result.isEmpty()) {
+			throw new Exception("There are no records of overtime for employee id=" + eid);
+		}
+		return result;
 	}
 
 	@Override
 	public ArrayList<Vacation> selectAllVacationsForEmployeeId(long eid) throws Exception {
-		if(vacationRepo.count() == 0) {
-			throw new Exception("Vacation table is empty");
-		}
 		if(eid <= 0) {
 			throw new Exception("id cant be negative or equal to 0");
 		}
 		if(!employeeRepo.existsById(eid)) {
 			throw new Exception("Employee with id=" + eid + " doesn't exist");
 		}
-		return vacationRepo.findByEmployeeEid(eid);
+		ArrayList<Vacation> result = vacationRepo.findByEmployeeEid(eid);
+		if(result.isEmpty()) {
+			throw new Exception("There are no records of vacation for employee id=" + eid);
+		}
+		return result;
 	}
 
 	@Override
