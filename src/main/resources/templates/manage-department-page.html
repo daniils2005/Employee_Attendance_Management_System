@@ -85,11 +85,11 @@
 	        <tr th:each="department : ${departments}">
 	            <form th:action="@{/manage/department/update-or-delete}" method="post">
 					<td><input type="hidden" name="did" th:value="${department.did}"><span th:text="${department.did}"></span></td>
-					<td><input type="text" name="departmentName" th:value="${department.departmentName}"></td>
-	                <td><input type="text" name="description" th:value="${department.description}"></td>
+					<td><input type="text" name="departmentName" th:value="${department.departmentName}" th:readonly="${department.departmentName == 'Nav_minets'}" required></td>
+	                <td><input type="text" name="description" th:value="${department.description}" th:readonly="${department.departmentName == 'Nav_minets'}"></td>
 					<td>
-					    <button type="submit" name="action" value="save">Save</button>
-					    <button th:if="${department.departmentName != 'Nav_minets'}"type="submit" name="action" value="delete">Delete</button>
+					    <button th:if="${department.departmentName != 'Nav_minets'}" type="submit" name="action" value="save">Save</button>
+					    <button th:if="${department.departmentName != 'Nav_minets'}" type="submit" name="action" value="delete">Delete</button>
 					</td>
 	            </form>
 	        </tr>

@@ -87,11 +87,11 @@
 	        <tr th:each="position : ${positions}">
 	            <form th:action="@{/manage/position/update-or-delete}" method="post">
 					<td><input type="hidden" name="pid" th:value="${position.pid}"><span th:text="${position.pid}"></span></td>
-					<td><input type="text" name="positionName" th:value="${position.name}" required></td>
-	                <td><input type="text" name="description" th:value="${position.description}"></td>
+					<td><input type="text" name="positionName" th:value="${position.name}" th:readonly="${position.name == 'Nav_minets'}" required></td>
+	                <td><input type="text" name="description" th:value="${position.description}" th:readonly="${position.name == 'Nav_minets'}"></td>
 					<td>
-					    <button type="submit" name="action" value="save">Save</button>
-					    <button th:if="${position.name != 'Nav_minets'}"type="submit" name="action" value="delete">Delete</button>
+					    <button th:if="${position.name != 'Nav_minets'}" type="submit" name="action" value="save">Save</button>
+					    <button th:if="${position.name != 'Nav_minets'}" type="submit" name="action" value="delete">Delete</button>
 					</td>
 	            </form>
 	        </tr>
