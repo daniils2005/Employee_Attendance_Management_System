@@ -30,7 +30,7 @@ public class OvertimeCRUDServiceImpl implements IOvertimeCRUDService {
 			throw new Exception("id cant be negative or equal to 0");
 		}
 		if(!overtimeRepo.existsById(id)) {
-			throw new Exception("Overtime with id = " + id + " doesn't exist");
+			throw new Exception("Overtime with id=" + id + " doesn't exist");
 		}
 		return overtimeRepo.findById(id).get();
 	}
@@ -41,7 +41,7 @@ public class OvertimeCRUDServiceImpl implements IOvertimeCRUDService {
 			throw new Exception("id cant be negative or equal to 0");
 		}
 		if(!overtimeRepo.existsById(id)) {
-			throw new Exception("Overtime with id = " + id + " doesn't exist");
+			throw new Exception("Overtime with id=" + id + " doesn't exist");
 		}
 		Overtime overtimeForDeleting = overtimeRepo.findById(id).get();
 		overtimeRepo.delete(overtimeForDeleting);
@@ -66,7 +66,7 @@ public class OvertimeCRUDServiceImpl implements IOvertimeCRUDService {
 			throw new Exception("One or more input arguments are invalid");
 		}
 		if(!overtimeRepo.existsById(id)) {
-			throw new Exception("Overtime with id = " + id + " doesn't exist");
+			throw new Exception("Overtime with id=" + id + " doesn't exist");
 		}
 		Overtime overtimeForUpdating = overtimeRepo.findById(id).get();
 		overtimeForUpdating.setOvertimeHours(newOvertimeHours);
@@ -80,7 +80,7 @@ public class OvertimeCRUDServiceImpl implements IOvertimeCRUDService {
 			throw new Exception("One or more input arguments are invalid");
 		}
 		if(!overtimeRepo.existsById(id)) {
-			throw new Exception("Overtime with id = " + id + " doesn't exist");
+			throw new Exception("Overtime with id=" + id + " doesn't exist");
 		}
 		Overtime overtimeForUpdating = overtimeRepo.findById(id).get();
 		overtimeForUpdating.setOvertimeHours(newOvertimeHours);

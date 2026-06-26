@@ -32,7 +32,7 @@ public class AttendanceCRUDServiceImpl implements IAttendanceCRUDService {
 			throw new Exception("id cant be negative or equal to 0");
 		}
 		if(!attendanceRepo.existsById(id)) {
-			throw new Exception("Attendance with id = " + id + " doesnt exist");
+			throw new Exception("Attendance with id=" + id + " doesn't exist");
 		}
 		return attendanceRepo.findById(id).get();
 	}
@@ -43,7 +43,7 @@ public class AttendanceCRUDServiceImpl implements IAttendanceCRUDService {
 			throw new Exception("id cant be negative or equal to 0");
 		}
 		if(!attendanceRepo.existsById(id)) {
-			throw new Exception("Attendance with id = " + id + " doesnt exist");
+			throw new Exception("Attendance with id=" + id + " doesn't exist");
 		}
 		Attendance attendanceForDeleting = attendanceRepo.findById(id).get();
 		attendanceRepo.delete(attendanceForDeleting);
@@ -101,7 +101,7 @@ public class AttendanceCRUDServiceImpl implements IAttendanceCRUDService {
 			throw new Exception("One or more input arguments are invalid");
 		}
 		if(!attendanceRepo.existsById(id)) {
-			throw new Exception("Attendance with id = " + id + " doesnt exist");
+			throw new Exception("Attendance with id=" + id + " doesn't exist");
 		}
 		Attendance attendanceForUpdating = attendanceRepo.findById(id).get();
 		attendanceForUpdating.setHoursWorked(hoursWorked);
@@ -114,7 +114,7 @@ public class AttendanceCRUDServiceImpl implements IAttendanceCRUDService {
 			throw new Exception("One or more input arguments are invalid");
 		}
 		if(!attendanceRepo.existsById(id)) {
-			throw new Exception("Attendance with id = " + id + " doesnt exist");
+			throw new Exception("Attendance with id=" + id + " doesn't exist");
 		}
 		
 		Attendance attendanceForUpdating = attendanceRepo.findById(id).get();

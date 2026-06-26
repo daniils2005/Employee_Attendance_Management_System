@@ -34,7 +34,7 @@ public class PositionCRUDServiceImpl implements IPositionCRUDService {
 			throw new Exception("id cant be negative or equal to 0");
 		}
 		if(!positionRepo.existsById(id)) {
-			throw new Exception("Position with id = " + id + " doesnt exist");
+			throw new Exception("Position with id=" + id + " doesn't exist");
 		}
 		return positionRepo.findById(id).get();
 	}
@@ -46,7 +46,7 @@ public class PositionCRUDServiceImpl implements IPositionCRUDService {
 			throw new Exception("id cant be negative or equal to 0");
 		}
 		if(!positionRepo.existsById(id)) {
-			throw new Exception("Position with id = " + id + " doesnt exist");
+			throw new Exception("Position with id=" + id + " doesn't exist");
 		}
 		Position positionForDeleting = positionRepo.findById(id).get();
 		ArrayList<Employee> employeesFromPosition = employeeRepo.findByPosition(positionForDeleting);
@@ -76,7 +76,7 @@ public class PositionCRUDServiceImpl implements IPositionCRUDService {
 			throw new Exception("One or more input arguments are invalid");
 		}
 		if(!positionRepo.existsById(id)) {
-			throw new Exception("Department with id = " + id + " doesn't exist");
+			throw new Exception("Department with id=" + id + " doesn't exist");
 		}
 
 		Position positionForUpdating = positionRepo.findById(id).get();

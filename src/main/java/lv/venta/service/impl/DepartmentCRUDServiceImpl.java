@@ -32,7 +32,7 @@ public class DepartmentCRUDServiceImpl implements IDepartmentCRUDService {
 			throw new Exception("id cant be negative or equal to 0");
 		}
 		if(!departmentRepo.existsById(id)) {
-			throw new Exception("Department with id = " + id + " doesnt exist");
+			throw new Exception("Department with id=" + id + " doesn't exist");
 		}
 		return departmentRepo.findById(id).get();
 	}
@@ -44,7 +44,7 @@ public class DepartmentCRUDServiceImpl implements IDepartmentCRUDService {
 			throw new Exception("id cant be negative or equal to 0");
 		}
 		if(!departmentRepo.existsById(id)) {
-			throw new Exception("Department with id = " + id + " doesnt exist");
+			throw new Exception("Department with id=" + id + " doesn't exist");
 		}
 		Department departmentForDeleting = departmentRepo.findById(id).get();
 		ArrayList<Employee> employeesFromDepartment = employeeRepo.findByDepartment(departmentForDeleting);
@@ -74,7 +74,7 @@ public class DepartmentCRUDServiceImpl implements IDepartmentCRUDService {
 			throw new Exception("One or more input arguments are invalid");
 		}
 		if(!departmentRepo.existsById(id)) {
-			throw new Exception("Department with id = " + id + " doesn't exist");
+			throw new Exception("Department with id=" + id + " doesn't exist");
 		}
 
 		Department departmentForUpdating = departmentRepo.findById(id).get();

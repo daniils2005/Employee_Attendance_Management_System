@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import lv.venta.helper.MyUserDetails;
 import lv.venta.model.Employee;
 import lv.venta.model.User;
 import lv.venta.repo.IEmployeeRepo;
@@ -40,6 +43,12 @@ public class ManageUserPageController {
 	private IEmployeeCRUDService employeeCRUDService;
 	
 	PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	
+	private User getCurrentUser() {
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    MyUserDetails details = (MyUserDetails) auth.getPrincipal();
+	    return details.getUser();
+	}
 	
 	@GetMapping("/manage/user")
     public String getUsers(@RequestParam(required = false) Long uid, @RequestParam(required = false) String username, @RequestParam(required = false) String sort, @RequestParam(required = false) String order, Model model, RedirectAttributes redirectAttributes) {
@@ -124,6 +133,10 @@ public class ManageUserPageController {
     			userCRUDService.updateUserById(uid, username, user.getPassword(), employee, generalService.selectAuthorityByTitle(authority));
     		 }
     		 else {
+    			if(getCurrentUser().getUid() == uid) {
+    				redirectAttributes.addFlashAttribute("error", "Can't delete your own account");
+    	    		return "redirect:/manage/user";
+    			}
      			User user = userCRUDService.selectUserById(uid);
     			Employee employee = user.getEmployee();
     			employee.setUser(null);

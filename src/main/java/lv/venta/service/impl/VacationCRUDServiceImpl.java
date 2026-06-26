@@ -30,7 +30,7 @@ public class VacationCRUDServiceImpl implements IVacationCRUDService {
 			throw new Exception("id cant be negative or equal to 0");
 		}
 		if(!vacationRepo.existsById(id)) {
-			throw new Exception("Vacation with id = " + id + " doesn't exist");
+			throw new Exception("Vacation with id=" + id + " doesn't exist");
 		}
 		return vacationRepo.findById(id).get();
 	}
@@ -41,7 +41,7 @@ public class VacationCRUDServiceImpl implements IVacationCRUDService {
 			throw new Exception("id cant be negative or equal to 0");
 		}
 		if(!vacationRepo.existsById(id)) {
-			throw new Exception("Vacation with id = " + id + " doesn't exist");
+			throw new Exception("Vacation with id=" + id + " doesn't exist");
 		}
 		Vacation vacationForDeleting = vacationRepo.findById(id).get();
 		vacationRepo.delete(vacationForDeleting);

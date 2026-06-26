@@ -29,7 +29,7 @@ public class UserCRUDServiceImpl implements IUserCRUDService {
 			throw new Exception("id cant be negative or equal to 0");
 		}
 		if(!userRepo.existsById(id)) {
-			throw new Exception("User with id = " + id + " doesnt exist");
+			throw new Exception("User with id=" + id + " doesn't exist");
 		}
 		return userRepo.findById(id).get();
 	}
@@ -40,7 +40,7 @@ public class UserCRUDServiceImpl implements IUserCRUDService {
 			throw new Exception("id cant be negative or equal to 0");
 		}
 		if(!userRepo.existsById(id)) {
-			throw new Exception("User with id = " + id + " doesn't exist");
+			throw new Exception("User with id=" + id + " doesn't exist");
 		}
 		User userForDeleting = userRepo.findById(id).get();		
 		userRepo.delete(userForDeleting);
@@ -52,7 +52,7 @@ public class UserCRUDServiceImpl implements IUserCRUDService {
 			throw new Exception("One or more input arguments are invalid");
 		}
 		if(userRepo.existsByUsername(newUsername)) {
-			throw new Exception("User with username " + newUsername + " already exists");
+			throw new Exception("User with username \"" + newUsername + "\" already exists");
 		}
 		if(userRepo.existsByEmployeeEid(newEmployee.getEid())) {
 			throw new Exception("User for employee id=" + newEmployee.getEid() + " already exists");
@@ -67,7 +67,7 @@ public class UserCRUDServiceImpl implements IUserCRUDService {
 			throw new Exception("One or more input arguments are invalid");
 		}
 		if(!userRepo.existsById(id)) {
-			throw new Exception("User with id = " + id + " doesn't exist");
+			throw new Exception("User with id=" + id + " doesn't exist");
 		}
 		if(userRepo.findById(id).get().getEmployee().getEid() != newEmployee.getEid()) {
 			if(userRepo.existsByEmployeeEid(newEmployee.getEid())) {
@@ -76,7 +76,7 @@ public class UserCRUDServiceImpl implements IUserCRUDService {
 		}
 		User userForUpdating = userRepo.findById(id).get();
 		if(!userForUpdating.getUsername().equalsIgnoreCase(newUsername) && userRepo.existsByUsername(newUsername)) {
-			throw new Exception("Cant cange username to " + newUsername + " because it is already taken");
+			throw new Exception("Can't cange username to \"" + newUsername + "\" because it is already taken");
 		}
 		userForUpdating.setUsername(newUsername);
 		userForUpdating.setPassword(newPassword);
